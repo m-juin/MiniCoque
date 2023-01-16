@@ -6,17 +6,18 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/13 13:27:09 by mjuin            ###   ########.fr        #
+#    Updated: 2023/01/16 11:27:24 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC =	clang
 
-CFLAGS =	-g -Werror -Wextra -Wall 
+CFLAGS =	-g -Werror -Wextra -Wall -I./includes
 
 NAME =	MiniCoque
 
-SRC =	srcs/main.c
+SRC =	srcs/main.c \
+		srcs/built-ins/exit.c
 
 OBJ =	${SRC:.c=.o}
 
