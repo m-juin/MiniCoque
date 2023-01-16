@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/16 09:34:15 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/16 10:46:37 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 void signalhandler(int  sig)
 {
-	/*if (sig == SIGQUIT)
-		return ;*/
+	if (sig == SIGQUIT)
+		exit(0);
 	sig = sig - 1;
 	printf("\n");
 	rl_on_new_line();
