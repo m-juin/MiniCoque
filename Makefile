@@ -6,32 +6,37 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/16 11:27:24 by mjuin            ###   ########.fr        #
+#    Updated: 2023/01/16 16:14:05 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC =	clang
 
-CFLAGS =	-g -Werror -Wextra -Wall -I./includes
+CFLAGS =	-g -Werror -Wextra -Wall -I./includes -I./libft/include
 
 NAME =	MiniCoque
 
 SRC =	srcs/main.c \
-		srcs/built-ins/exit.c
+		srcs/built-ins/exit.c \
+		srcs/built-ins/echo.c \
+
+LIBFT = libft/libft.a
+LIBFT_PATH = libft --no-print-directory
 
 OBJ =	${SRC:.c=.o}
 
-all:	${NAME}
+all:	${LIBFT} ${NAME}
 
 .c.o:
 	@printf "Compiling .c to .o \r"
 	@${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
-
+	
 $(NAME): ${OBJ}
-	@${CC} ${CFLAGS} -lreadline -o ${NAME} ${OBJ}
+	@${CC} ${CFLAGS} ${OBJ} ${LIBFT} -lreadline -o ${NAME} 
 	@printf '\e[1;37m%-6s\e[m' "Compilation complete"
 
 clean:
+	@make clean -C ${LIBFT_PATH}
 	@n=1; \
 	for file in $(OBJ); do \
 		if test -e $$file; then \
@@ -44,6 +49,7 @@ clean:
 	done
 
 fclean:	clean
+	@make fclean -C ${LIBFT_PATH}
 	@n=1; \
 	if test -e ${NAME}; then \
 		if [ $$n -eq 1 ]; then \
@@ -53,7 +59,9 @@ fclean:	clean
 		rm ${NAME}; \
 	fi
 
+$(LIBFT):
+	@make -C ${LIBFT_PATH}
 
 re:	fclean all
 
-.PHONY:	all clean fclean re 
+.PHONY:	all clean fclean re libft

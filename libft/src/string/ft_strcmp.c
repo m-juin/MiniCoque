@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minicoque.h                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/16 17:07:50 by mjuin            ###   ########.fr       */
+/*   Created: 2023/01/16 13:39:31 by mjuin             #+#    #+#             */
+/*   Updated: 2023/01/16 17:10:20 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
-#include "../libft/include/libft.h"
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	unsigned int			i;
+	unsigned char			*s1b;
+	unsigned char			*s2b;
 
-
-/*	echo.c	*/
-
-int		echo(char **args);
-void	ft_exit(int ret);
+	i = 0;
+	s1b = (unsigned char *)s1;
+	s2b = (unsigned char *)s2;
+	while (s1b[i] || s2b[i])
+	{
+		if (s1b[i] != s2b[i])
+			return (s1b[i] - s2b[i]);
+		i++;
+	}
+	return (s1b[i] - s2b[i]);
+}

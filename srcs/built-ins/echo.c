@@ -6,33 +6,53 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:42:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/16 12:04:32 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/16 16:27:00 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	echo(char **args)
+static int	check_newline(char *arg)
 {
 	int	pos;
 
-	if (args == NULL)
+	if (arg[0] == '-')
+	{
+		pos = 1;
+		while (arg[pos] == 'n')
+			pos++;
+		if (arg[pos] == '\0' && pos > 1)
+			return (-1);
+		else
+			return (1);
+	}
+	else
+		return (1);
+}
+
+int	echo(char **args)
+{
+	int	pos;
+	int	newline;
+
+	if (args[1] == NULL)
 	{
 		printf("\n");
 		return (0);
 	}
-	if (args[0] == "-n")
-		pos = 1;
+	newline  = check_newline(args[1]);
+	if (newline == -1)
+		pos = 2;
 	else
-		pos = 0;
+		pos = 1;
 	while (args[pos])
 	{
-		printf ("%s", args[pos]);
+		printf("%s", args[pos]);
 		pos++;
 		if (args[pos] != NULL)
 			printf(" ");
 	}
-	if (args[0] != "-n")
+	if (newline == 1)
 		printf ("\n");
 	return (0);
 }
