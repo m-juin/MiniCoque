@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/17 11:36:46 by mjuin            ###   ########.fr        #
+#    Updated: 2023/01/17 16:32:37 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC =	srcs/main.c \
 		srcs/built-ins/env.c \
 		srcs/built-ins/export.c \
 		srcs/utils/t_env_utils.c \
+		srcs/parsing/lexer.c
 
 LIBFT = libft/libft.a
 
