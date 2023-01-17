@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/17 16:55:16 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:04:31 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,6 @@ static int	token_identifier(int c)
 	return (LITERAL);
 }
 
-static void	free_token(t_token **token_tab)
-{
-	int	i;
-
-	i = 0;
-	while (token_tab[i])
-	{
-		free(token_tab[i]->token);
-		free(token_tab[i]);
-		i++;
-	}
-	free(token_tab);
-}
-
 static int	token_count(char *input)
 {
 	int	token_nb;
@@ -60,7 +46,7 @@ static int	token_count(char *input)
 			i++;
 		token_nb++;
 		while (input[i] && token_identifier(input[i])
-			== token_identifier(input[i + 1]))
+				== token_identifier(input[i + 1]))
 			i++;
 		if (input[i])
 			i++;
@@ -91,13 +77,32 @@ static t_token	**init_tokentab(int token_nb)
 	return (token_tab);
 }
 
-static t_token	**token_join(char *input)
+static void	word_extract(t_token *token, char *input, int i)
+{
+	int		start;
+
+	start = i;
+	while (input[i] && token_identifier(input[i])
+		== token_identifier(input[i + 1]))
+		i++;
+	if (input[i])
+		i++;
+	token->token = ft_substr(input, start, i - start);
+	if (!token->token)
+	{
+		token = NULL;
+		return ;
+	}
+	token->token_type = token_identifier(token->token[0]);
+}
+
+static t_token	**token_join(char *input, t_env_var *env)
 {
 	t_token	**token_tab;
 	int		i;
 	int		token_nb;
-	int		start;
 
+	env = NULL;
 	token_nb = token_count(input);
 	token_tab = init_tokentab(token_nb);
 	if (!token_tab)
@@ -110,21 +115,16 @@ static t_token	**token_join(char *input)
 	{
 		while (token_identifier(input[i]) == BLANK)
 			i++;
-		start = i;
-		while (input[i] && token_identifier(input[i])
-			== token_identifier(input[i + 1]))
-			i++;
-		if (input[i])
-			i++;
-		token_tab[token_nb]->token = ft_substr(input, start, i - start);
-		if (!token_tab[token_nb]->token)
+		word_extract(token_tab[token_nb], &input[i], i);
+		if (!token_tab[token_nb])
 		{
 			free_token(token_tab);
 			return (NULL);
 		}
-		token_tab[token_nb]->token_type
-			= token_identifier(token_tab[token_nb]->token[0]);
 		token_nb++;
+		while (input[i] && token_identifier(input[i])
+			== token_identifier(input[i + 1]))
+			i++;
 	}
 	return (token_tab);
 }
@@ -134,7 +134,7 @@ t_token	*lexer(char *input, t_env_var *env)
 	t_token			**token_tab;
 	int				i;
 
-	token_tab = token_join(input);
+	token_tab = token_join(input, env);
 	if (!token_tab)
 		return (NULL);
 	i = 0;

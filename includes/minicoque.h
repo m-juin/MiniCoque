@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 16:52:48 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/17 17:49:31 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,8 @@ t_env_var	*get_env(t_env_var *lst, char *path);
 
 /*	lexer.c	*/
 
-t_token	*lexer(char *av);
+t_token	*lexer(char *av, t_env_var *env);
+
+/*	token_utils.c	*/
+
+void	free_token(t_token **token_tab);

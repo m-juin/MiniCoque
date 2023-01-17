@@ -6,11 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/01/17 16:43:00 by gpasquet         ###   ########.fr       */
-=======
-/*   Updated: 2023/01/17 17:05:22 by mjuin            ###   ########.fr       */
->>>>>>> 40a3e49fe9d09568b3dd48f9839caa393f9850c5
+/*   Updated: 2023/01/17 17:51:28 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +56,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		readed = readline("Minicoque > ");
-		lexer(readed);
+		lexer(readed, coque_data->env_var);
 		splitted = ft_split(readed, ' ');
 		if (splitted != NULL && splitted[0] != NULL)
 		{
