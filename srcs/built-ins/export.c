@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 16:17:32 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/17 16:40:30 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	export(t_env_var *env, char **args)
 	posx = 1;
 	while (args[posx])
 	{
-		tmp = check_env(env, args[posx]);
+		tmp = get_env(env, args[posx]);
 		if (tmp == NULL)
 			ft_env_add_back(&env, create_env(args[posx]));
 		else

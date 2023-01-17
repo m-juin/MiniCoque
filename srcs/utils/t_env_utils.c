@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:00:50 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 16:05:29 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/17 17:06:07 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		get_new_index(t_env_var *lst, char *new_name)
 	return (count);
 }
 
-t_env_var	*check_env(t_env_var *lst, char *path)
+t_env_var	*get_env(t_env_var *lst, char *path)
 {
 	int	pos;
 	char *name;
