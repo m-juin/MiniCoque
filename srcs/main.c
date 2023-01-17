@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 16:32:13 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/17 16:33:56 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	main(int ac, char **av, char **envp)
 
 	ac = ac - 1;
 	av[0] = 0;
-	char *readed;
-	char **splitted;
 
 	signal(SIGINT, signalhandler);
 	signal(SIGQUIT, signalhandler);
