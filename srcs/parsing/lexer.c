@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/17 16:02:16 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:55:16 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ static t_token	**token_join(char *input)
 	return (token_tab);
 }
 
-t_token	*lexer(char *input)
+t_token	*lexer(char *input, t_env_var *env)
 {
 	t_token			**token_tab;
 	int				i;
@@ -140,7 +140,7 @@ t_token	*lexer(char *input)
 	i = 0;
 	while (token_tab[i])
 	{
-		printf("%s est de type %d\n", token_tab[i]->token, token_tab[i]->token_type);
+		printf("%s\n", token_tab[i]->token);
 		i++;
 	}
 	free_token(token_tab);
