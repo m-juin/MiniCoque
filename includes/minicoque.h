@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 16:31:25 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/17 16:52:48 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@ int			env();
 
 int			export(t_env_var *env, char **args);
 
+/*	uset.c	*/
+
+int			unset(t_env_var *env, char **args);
+
 /*	exit.c	*/
 
 void		ft_exit(int ret);
@@ -64,7 +68,7 @@ void		ft_exit(int ret);
 
 t_env_var	*create_env(char *path);
 void		ft_env_add_back(t_env_var **lst, t_env_var *new);
-t_env_var	*check_env(t_env_var *lst, char *path);
+t_env_var	*get_env(t_env_var *lst, char *path);
 
 /*	lexer.c	*/
 

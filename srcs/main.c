@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 16:33:56 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/17 17:05:22 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	main(int ac, char **av, char **envp)
 				env(coque_data->env_var, splitted);
 			else if (ft_strcmp(splitted[0], "export") == 0)
 				export(coque_data->env_var, splitted);
+			else if (ft_strcmp(splitted[0], "unset") == 0)
+				unset(coque_data->env_var, splitted);
 		}
 	}
 }
