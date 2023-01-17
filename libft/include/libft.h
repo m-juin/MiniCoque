@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 12:51:33 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/16 17:10:46 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/17 16:04:40 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,12 @@ int				ft_printf(const char *s, ...);
 void			ft_striteri(char *s, void (*f)(unsigned int, char*));
 int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
+int				ft_strfindchr(const char *str, const char c);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strnstr(const char *big, const char *litlle, size_t len);
 char			*ft_strdup(const char *s);
+char			*ft_strndup(const char *str, size_t n);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s1, char const *set);

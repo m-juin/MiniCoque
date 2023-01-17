@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 11:14:03 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/17 11:20:24 by mjuin            ###   ########.fr       */
+/*   Created: 2023/01/17 16:21:23 by mjuin             #+#    #+#             */
+/*   Updated: 2023/01/17 16:28:26 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/libft.h"
+#include <minicoque.h>
 
-int	ft_putstr_fd(char *s, int fd)
+int	unset(t_env_var *env, char **args)
 {
-	int	size;
+	int	pos;
 
-	if (!s)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
-	size = ft_strlen(s);
-	write(fd, s, size);
-	return (size);
+	pos = 1;
 }

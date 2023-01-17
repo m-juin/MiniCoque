@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/16 16:14:05 by mjuin            ###   ########.fr        #
+#    Updated: 2023/01/17 11:36:46 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,12 @@ NAME =	MiniCoque
 SRC =	srcs/main.c \
 		srcs/built-ins/exit.c \
 		srcs/built-ins/echo.c \
+		srcs/built-ins/env.c \
+		srcs/built-ins/export.c \
+		srcs/utils/t_env_utils.c \
 
 LIBFT = libft/libft.a
+
 LIBFT_PATH = libft --no-print-directory
 
 OBJ =	${SRC:.c=.o}

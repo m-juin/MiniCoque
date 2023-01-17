@@ -20,6 +20,7 @@ CFLAGS	= 	-Wall -Wextra -Werror
 
 SRCS	=	./src/string/ft_split.c			\
 			./src/string/ft_strdup.c		\
+			./src/string/ft_strndup.c		\
 			./src/string/ft_strrchr.c		\
 			./src/string/ft_strcmp.c		\
 			./src/string/ft_strncmp.c		\
@@ -33,6 +34,7 @@ SRCS	=	./src/string/ft_split.c			\
 			./src/string/ft_substr.c		\
 			./src/string/ft_strnstr.c		\
 			./src/string/ft_strlen.c		\
+			./src/string/ft_strfindchr.c		\
 			./src/memory/ft_memchr.c		\
 			./src/memory/ft_calloc.c		\
 			./src/memory/ft_memmove.c		\
