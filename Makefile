@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/16 16:14:05 by mjuin            ###   ########.fr        #
+#    Updated: 2023/01/17 11:58:35 by gpasquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ NAME =	MiniCoque
 SRC =	srcs/main.c \
 		srcs/built-ins/exit.c \
 		srcs/built-ins/echo.c \
+		srcs/parsing/lexer.c
 
 LIBFT = libft/libft.a
 LIBFT_PATH = libft --no-print-directory
