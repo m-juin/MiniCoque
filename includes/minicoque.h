@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 16:10:03 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 17:07:34 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define BRACKET 5
 # define PARENTHESIS 6
 # define DOLLAR 7
+# define PCOLOR "\001\e[0;36m\002"
+# define RESET   "\001\e[0m\002"
 
 typedef struct s_token {
 	char			*token;

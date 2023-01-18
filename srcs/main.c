@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 16:01:59 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 17:22:07 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,33 @@ t_minicoque	*init(char **envp)
 	return (data);
 }
 
+static char	*get_prompt()
+{
+	char	*prompt;
+	char	*path;
+	char	*tmp;
+	size_t	pos;
+
+	path = malloc(PATH_MAX * sizeof(char));
+	getcwd(path, PATH_MAX);
+	pos = ft_strlen(path);
+	prompt = strndup(PCOLOR, -1);
+	while (pos >= 0 && path[pos] != '/')
+		pos--;
+	tmp = ft_strndup(&path[pos + 1], -1);
+	prompt = ft_strjoin(prompt, tmp);
+	free(tmp);
+	prompt = ft_strjoin(prompt, " > ");
+	prompt = ft_strjoin(prompt, RESET);
+	free(path);
+	return (prompt);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char 		*readed;
 	char		**splitted;
+	char		*prompt;
 	t_minicoque	*coque_data;
 
 	ac = ac - 1;
@@ -69,7 +92,8 @@ int	main(int ac, char **av, char **envp)
 	coque_data = init(envp);
 	while (1)
 	{
-		readed = readline("Minicoque > ");
+		prompt = get_prompt();
+		readed = readline(prompt);
 		lexer(readed, coque_data->env_var);
 		splitted = ft_split(readed, ' ');
 		if (splitted != NULL && splitted[0] != NULL)
@@ -90,5 +114,6 @@ int	main(int ac, char **av, char **envp)
 			else if (ft_strcmp(splitted[0], "cd") == 0)
 				cd(coque_data->env_var, splitted);
 		}
+		free(prompt);
 	}
 }
