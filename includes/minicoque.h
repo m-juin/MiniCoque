@@ -6,40 +6,43 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 17:49:31 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 10:23:49 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
-#include "../libft/include/libft.h"
+#ifndef MINICOQUE_H
+# define MINICOQUE_H
 
-#define BLANK 0
-#define LITERAL 1 
-#define PIPE 2 
-#define S_QUOTE 3 
-#define D_QUOTE 4 
-#define BRACKET 5
-#define PARENTHESIS 6
-#define DOLLAR 7
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
+# include "../libft/include/libft.h"
+
+# define BLANK 0
+# define LITERAL 1 
+# define PIPE 2 
+# define S_QUOTE 3 
+# define D_QUOTE 4 
+# define BRACKET 5
+# define PARENTHESIS 6
+# define DOLLAR 7
 
 typedef struct s_token {
 	char			*token;
 	int				token_type;
 }	t_token;
 
-typedef struct	s_env_var
+typedef struct s_env_var
 {
-	char			*name;
-	char			*value;
-	int				declared;
-	int				index;
+	char				*name;
+	char				*value;
+	int					declared;
+	int					index;
 	struct s_env_var	*next;
 }	t_env_var;
 
-typedef struct	s_minicoque
+typedef struct s_minicoque
 {
 	t_env_var	*env_var;
 }	t_minicoque;
@@ -72,8 +75,11 @@ t_env_var	*get_env(t_env_var *lst, char *path);
 
 /*	lexer.c	*/
 
-t_token	*lexer(char *av, t_env_var *env);
+t_token		*lexer(char *av, t_env_var *env);
 
 /*	token_utils.c	*/
 
-void	free_token(t_token **token_tab);
+void		free_token(t_token **token_tab);
+t_token		**init_tokentab(int token_nb);
+
+#endif

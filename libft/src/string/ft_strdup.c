@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 13:21:18 by gpasquet          #+#    #+#             */
-/*   Updated: 2022/11/03 17:25:06 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 10:54:07 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s)
 	int		i;
 	char	*new_s;
 
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s);
 	new_s = malloc(sizeof(char) * (len + 1));
 	if (new_s == 0)
