@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puthexa.c                                       :+:      :+:    :+:   */
+/*   ft_putptr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 17:23:20 by gpasquet          #+#    #+#             */
-/*   Updated: 2022/12/04 12:43:49 by gpasquet         ###   ########.fr       */
+/*   Created: 2022/10/25 13:23:19 by gpasquet          #+#    #+#             */
+/*   Updated: 2023/01/18 11:07:20 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
 
-static int	ft_printhexa(unsigned int nb, unsigned int size_base, char *base)
+static int	ft_putnbr(unsigned long int nb, unsigned int size_base,
+				char *base, int fd)
 {
 	int					rec;
 	int					j;
@@ -31,36 +32,24 @@ static int	ft_printhexa(unsigned int nb, unsigned int size_base, char *base)
 	}
 	if (n >= size_base)
 	{	
-		ft_printhexa(n / size_base, size_base, base);
+		ft_putnbr(n / size_base, size_base, base, fd);
 	}
 	written_size++;
-	write(1, &rec, 1);
+	write(fd, &rec, 1);
 	return (written_size);
 }
 
-int	ft_puthexa(unsigned int nb, char *base)
+int	ft_putptr_fd(unsigned long int nb, int fd)
 {
-	int				i;
-	int				j;
 	int				written_size;
 
-	i = 0;
-	j = 0;
-	while (base[i])
+	if (nb == 0)
 	{
-		if (base[i] == '+' || base[i] == '-')
-			return (-1);
-		while (j < i)
-		{
-			if (base[j] == base[i])
-				return (-1);
-			j++;
-		}
-		j = 0;
-		i++;
+		write(fd, "(nil)", 5);
+		return (5);
 	}
-	written_size = 0;
-	if (i >= 2)
-		written_size = ft_printhexa(nb, i, base);
+	write(fd, "0x", 2);
+	written_size = 2;
+	written_size += ft_putnbr(nb, 16, "0123456789abcdef", fd);
 	return (written_size);
 }

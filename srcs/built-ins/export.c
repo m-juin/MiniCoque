@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 16:40:30 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 11:29:11 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ static void print_export(t_env_var *env)
 		{
 			if (env->index == cur_index)
 			{
-				ft_printf("declare -x %s",env->name);
+				ft_printf_fd(1 ,"declare -x %s",env->name);
 				if (env->declared == 1)
 				{
 					if (env->value == NULL)
-						ft_printf("=\"\"\n");
+						ft_printf_fd(1 ,"=\"\"\n");
 					else
-						ft_printf("=\"%s\"\n", env->value);
+						ft_printf_fd(1 ,"=\"%s\"\n", env->value);
 				}
 				else
-					ft_printf("\n");
+					ft_printf_fd(1 ,"\n");
 				cur_index++;
 			}
 			env = env->next;
@@ -60,7 +60,10 @@ void replace_value(t_env_var *env, char *path)
 		return ;
 	if (env->value != NULL)
 		free(env->value);
-	env->value = ft_strndup(&path[pos + 1], -1);
+	if (pos != 0)
+		env->value = ft_strndup(&path[pos + 1], -1);
+	else
+		env->value = ft_strndup(&path[pos], -1);
 	env->declared = 1;
 }
 
@@ -68,7 +71,9 @@ int	export(t_env_var *env, char **args)
 {
 	int			posx;
 	t_env_var	*tmp;
-	
+	int			ret;
+
+	ret = 0;
 	if (args[1] == NULL)
 	{
 		print_export(env);
@@ -77,12 +82,21 @@ int	export(t_env_var *env, char **args)
 	posx = 1;
 	while (args[posx])
 	{
-		tmp = get_env(env, args[posx]);
-		if (tmp == NULL)
-			ft_env_add_back(&env, create_env(args[posx]));
+		if (args[posx][0] != '=')
+		{
+			tmp = get_env(env, args[posx]);
+			if (tmp == NULL)
+				ft_env_add_back(&env, create_env(args[posx]));
+			else
+				replace_value(tmp, args[posx]);
+			ret = 0;
+		}
 		else
-			replace_value(tmp, args[posx]);
+		{
+
+			ret = 1;
+		}
 		posx++;
 	}
-	return (1);
+	return (ret);
 }

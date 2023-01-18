@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 17:49:31 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 10:34:12 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int			env();
 /*	export.c	*/
 
 int			export(t_env_var *env, char **args);
+void		replace_value(t_env_var *env, char *path);
 
 /*	uset.c	*/
 

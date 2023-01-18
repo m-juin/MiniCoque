@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 17:51:28 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 10:37:29 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_minicoque	*init(char **envp)
 		ft_env_add_back(&data->env_var, create_env(envp[pos]));
 		pos++;
 	}
+	replace_value(get_env(data->env_var, "_"), "]");
 	return (data);
 }
 
@@ -56,7 +57,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		readed = readline("Minicoque > ");
-		lexer(readed, coque_data->env_var);
+		//lexer(readed, coque_data->env_var);
 		splitted = ft_split(readed, ' ');
 		if (splitted != NULL && splitted[0] != NULL)
 		{
