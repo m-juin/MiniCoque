@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/18 14:23:19 by mjuin            ###   ########.fr        #
+#    Updated: 2023/01/18 14:35:24 by gpasquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC =	srcs/main.c \
 		srcs/utils/t_env_utils.c \
 		srcs/utils/env_last_error.c \
 		srcs/parsing/lexer.c \
-		srcs/parsing/token_utils.c
+		srcs/parsing/token_utils.c \
+		srcs/parsing/param_expansion_function.c
 
 LIBFT = libft/libft.a
 
