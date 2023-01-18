@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 12:51:33 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/17 16:04:40 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 11:04:00 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ int				ft_putchar_fd(char c, int fd);
 int				ft_putstr_fd(char *s, int fd);
 int				ft_putendl_fd(char *s, int fd);
 int				ft_putnbr_fd(long long int n, int fd);
-int				ft_puthexa(unsigned int nb, char *base);
-int				ft_putptr(unsigned long int nb);
-int				ft_printf(const char *s, ...);
+int				ft_puthexa_fd(unsigned int nb, char *base, int fd);
+int				ft_putptr_fd(unsigned long int nb, int fd);
+int				ft_printf_fd(int fd, const char *s, ...);
 
 /*	string	*/
 

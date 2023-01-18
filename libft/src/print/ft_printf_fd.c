@@ -1,44 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:14:30 by gpasquet          #+#    #+#             */
-/*   Updated: 2022/11/08 17:11:18 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:17:50 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
 
-static int	flag_checker(char *s, va_list var)
+static int	flag_checker(char *s, va_list va, int fd)
 {
 	int		ptd_cha;
 
 	ptd_cha = 0;
 	if (*s == 'c')
-		ptd_cha += ft_putchar_fd(va_arg(var, int), 1);
+		ptd_cha += ft_putchar_fd(va_arg(va, int), fd);
 	else if (*s == 's')
-		ptd_cha += ft_putstr_fd((char *)va_arg(var, char *), 1);
+		ptd_cha += ft_putstr_fd((char *)va_arg(va, char *), fd);
 	else if (*s == 'd' || *s == 'i')
-		ptd_cha += ft_putnbr_fd(va_arg(var, int), 1);
+		ptd_cha += ft_putnbr_fd(va_arg(va, int), fd);
 	else if (*s == 'u')
-		ptd_cha += ft_putnbr_fd((unsigned int)va_arg(var, unsigned int), 1);
+		ptd_cha += ft_putnbr_fd((unsigned int)va_arg(va, unsigned int), fd);
 	else if (*s == 'x')
-		ptd_cha += ft_puthexa(va_arg(var, unsigned int), "0123456789abcdef");
+		ptd_cha += ft_puthexa_fd(va_arg(va, unsigned int),
+				"0123456789abcdef", fd);
 	else if (*s == 'X')
-		ptd_cha += ft_puthexa(va_arg(var, unsigned int), "0123456789ABCDEF");
+		ptd_cha += ft_puthexa_fd(va_arg(va, unsigned int),
+				"0123456789ABCDEF", fd);
 	else if (*s == 'p')
-		ptd_cha += ft_putptr((unsigned long int)va_arg(var, unsigned long int));
+		ptd_cha += ft_putptr_fd(
+				(unsigned long int)va_arg(va, unsigned long int), fd);
 	else if (*s == '%')
-		ptd_cha += ft_putchar_fd('%', 1);
+		ptd_cha += ft_putchar_fd('%', fd);
 	else
 		s--;
 	return (ptd_cha);
 }
 
-int	ft_printf(const char *s, ...)
+int	ft_printf_fd(int fd, const char *s, ...)
 {
 	va_list	var;
 	int		written_char;
@@ -50,11 +53,11 @@ int	ft_printf(const char *s, ...)
 	while (*str != '\0')
 	{
 		if (*str != '%')
-			written_char += ft_putchar_fd(*str, 1);
+			written_char += ft_putchar_fd(*str, fd);
 		if (*str == '%')
 		{
 			str++;
-			written_char += flag_checker(str, var);
+			written_char += flag_checker(str, var, fd);
 		}
 		str++;
 	}

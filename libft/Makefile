@@ -65,9 +65,9 @@ SRCS	=	./src/string/ft_split.c			\
 			./src/print/ft_putchar_fd.c		\
 			./src/print/ft_putendl_fd.c		\
 			./src/print/ft_putnbr_fd.c		\
-			./src/print/ft_puthexa.c		\
-			./src/print/ft_putptr.c			\
-			./src/print/ft_printf.c			\
+			./src/print/ft_puthexa_fd.c		\
+			./src/print/ft_putptr_fd.c		\
+			./src/print/ft_printf_fd.c		\
 			./src/gnl/get_next_line.c		\
 			./src/gnl/get_next_line_utils.c	
 			
