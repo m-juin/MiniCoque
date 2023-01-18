@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 10:34:12 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 12:13:47 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,17 @@ int			env();
 int			export(t_env_var *env, char **args);
 void		replace_value(t_env_var *env, char *path);
 
-/*	uset.c	*/
+/*	unset.c	*/
 
 int			unset(t_env_var *env, char **args);
+
+/*	pwd.c	*/
+
+int			pwd(void);
+
+/*	cd.c	*/
+
+int			cd(t_env_var *env, char **args);
 
 /*	exit.c	*/
 
