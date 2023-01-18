@@ -6,26 +6,34 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 11:29:11 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 14:00:24 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static void print_export(t_env_var *env)
+static void	print_elem(t_env_var env)
 {
-	int	cur_index;
-	int	max_index;
-	t_env_var *tmp;
+	ft_printf_fd(1, "declare -x %s", env.name);
+	if (env.declared == 1)
+	{
+		if (env.value == NULL)
+			ft_printf_fd(1, "=\"\"\n");
+		else
+			ft_printf_fd(1, "=\"%s\"\n", env.value);
+	}
+	else
+		ft_printf_fd(1, "\n");
+}
+
+static void	print_export(t_env_var *env)
+{
+	int			cur_index;
+	int			max_index;
+	t_env_var	*tmp;
 
 	tmp = env;
-	max_index = 0;
-	while (env != NULL)
-	{
-		max_index++;
-		env = env->next;
-	}
-	env = tmp;
+	max_index = get_env_size(env);
 	cur_index = 0;
 	while (cur_index < max_index - 1)
 	{
@@ -34,16 +42,7 @@ static void print_export(t_env_var *env)
 		{
 			if (env->index == cur_index)
 			{
-				ft_printf_fd(1 ,"declare -x %s",env->name);
-				if (env->declared == 1)
-				{
-					if (env->value == NULL)
-						ft_printf_fd(1 ,"=\"\"\n");
-					else
-						ft_printf_fd(1 ,"=\"%s\"\n", env->value);
-				}
-				else
-					ft_printf_fd(1 ,"\n");
+				print_elem(*env);
 				cur_index++;
 			}
 			env = env->next;
@@ -51,7 +50,7 @@ static void print_export(t_env_var *env)
 	}
 }
 
-void replace_value(t_env_var *env, char *path)
+void	replace_value(t_env_var *env, char *path)
 {
 	int	pos;
 
@@ -67,22 +66,35 @@ void replace_value(t_env_var *env, char *path)
 	env->declared = 1;
 }
 
+static int	check_validity(char *path)
+{
+	size_t	pos;
+
+	pos = 0;
+	if (ft_isalpha(path[pos]) == 0)
+		return (-1);
+	while (path[pos] && ft_isalnum(path[pos]) == 1)
+		pos++;
+	if (path[pos] == '\0' || path[pos] == '=' )
+		return (1);
+	return (-1);
+}
+
 int	export(t_env_var *env, char **args)
 {
 	int			posx;
 	t_env_var	*tmp;
 	int			ret;
 
-	ret = 0;
 	if (args[1] == NULL)
 	{
 		print_export(env);
 		return (0);
 	}
-	posx = 1;
-	while (args[posx])
+	posx = 0;
+	while (args[++posx])
 	{
-		if (args[posx][0] != '=')
+		if (check_validity(args[posx]) == 1)
 		{
 			tmp = get_env(env, args[posx]);
 			if (tmp == NULL)
@@ -92,11 +104,7 @@ int	export(t_env_var *env, char **args)
 			ret = 0;
 		}
 		else
-		{
-
 			ret = 1;
-		}
-		posx++;
 	}
 	return (ret);
 }

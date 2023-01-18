@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   env_last_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 13:00:07 by mjuin            ###   ########.fr       */
+/*   Created: 2023/01/18 14:18:55 by mjuin             #+#    #+#             */
+/*   Updated: 2023/01/18 14:29:12 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	cd(t_env_var *env, char **args)
+int last_error(int get, int error)
 {
-	int			ret;
-	t_env_var	*tmp;
+	static int lasterror;
 
-	if (args[1] == NULL)
-	{
-		ft_printf_fd(2, "cd need a parameter");
-		return (1);
-	}
-	ret = chdir(args[1]);
-	if (ret == -1)
-		ft_printf_fd(2, "cd: %s No such file or directory\n", args[1]);
-	else
-	{
-		tmp = get_env(env, "PWD");
-		if (tmp == NULL)
-			return (ret);
-		replace_value(get_env(env, "OLDPWD"), tmp->value);
-		getcwd(tmp->value, PATH_MAX);
-	}
-	return (ret);
+	if (get == 1)
+		return (lasterror);
+	lasterror = error;
+	return (lasterror);
 }

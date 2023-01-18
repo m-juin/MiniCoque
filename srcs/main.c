@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 12:13:57 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 14:21:25 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,3 @@ int	main(int ac, char **av, char **envp)
 		}
 	}
 }
-
-/*int last_error(int get, int error)
-{
-	static int lasterror;
-
-	if (get == 1)
-		return (lasterror);
-	else
-		lasterror = error;
-}*/
