@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 10:34:12 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 13:27:49 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,14 @@ t_env_var	*get_env(t_env_var *lst, char *path);
 /*	lexer.c	*/
 
 t_token		*lexer(char *av, t_env_var *env);
+int			token_identifier(int c);
 
 /*	token_utils.c	*/
 
 void		free_token(t_token **token_tab);
 t_token		**init_tokentab(int token_nb);
 
+/*	param_expansion_functions.c	*/
+
+void		doll_management(t_token *token, char *input, t_env_var *env);
 #endif

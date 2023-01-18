@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 12:21:01 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 12:21:39 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		readed = readline("Minicoque > ");
-		//lexer(readed, coque_data->env_var);
+		lexer(readed, coque_data->env_var);
 		splitted = ft_split(readed, ' ');
 		if (splitted != NULL && splitted[0] != NULL)
 		{

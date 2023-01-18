@@ -6,13 +6,13 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/18 12:17:57 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 13:27:07 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	token_identifier(int c)
+int	token_identifier(int c)
 {
 	if (c == ' ' || c == '	')
 		return (BLANK);
@@ -48,7 +48,7 @@ static int	token_count(char *input)
 		if (input[i] == '$')
 			i++;
 		while (input[i] && token_identifier(input[i])
-			== token_identifier(input[i + 1]))
+				== token_identifier(input[i + 1]))
 			i++;
 		if (input[i])
 			i++;
@@ -62,7 +62,7 @@ static void	word_extract(t_token *token, char *input)
 
 	i = 0;
 	while (input[i] && token_identifier(input[i])
-		== token_identifier(input[i + 1]))
+			== token_identifier(input[i + 1]))
 		i++;
 	if (input[i])
 		i++;
@@ -75,27 +75,7 @@ static void	word_extract(t_token *token, char *input)
 	token->token_type = token_identifier(token->token[0]);
 }
 
-static void	doll_management(t_token *token, char *input, t_env_var *env)
-{
-	int			i;
-	t_env_var	*tmp;
 
-	i = 0;
-	while (input[i])
-	{
-		if (token_identifier(input[i]) != token_identifier(input[i + 1]))
-			break ;
-		i++;
-	}
-	if (input[i])
-		i++;
-	tmp = get_env(env, ft_substr(input, 0, i));
-	if (tmp)
-		token->token = ft_strdup(tmp->value);
-	else
-		token->token = ft_strdup("");
-	token->token_type = token_identifier(token->token[0]);
-}
 
 static t_token	**token_join(char *input, t_env_var *env)
 {
@@ -129,9 +109,10 @@ static t_token	**token_join(char *input, t_env_var *env)
 		}
 		token_nb++;
 		while (input[i] && token_identifier(input[i])
-			== token_identifier(input[i + 1]))
+				== token_identifier(input[i + 1]))
 			i++;
-		i++;
+		if (input[i])
+			i++;
 	}
 	return (token_tab);
 }
