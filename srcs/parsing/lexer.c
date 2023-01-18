@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/18 11:30:08 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 12:17:57 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static int	token_count(char *input)
 		while (input[i] == ' ' || input[i] == '	')
 			i++;
 		token_nb++;
+		if (input[i] == '$')
+			i++;
 		while (input[i] && token_identifier(input[i])
 			== token_identifier(input[i + 1]))
 			i++;
@@ -54,17 +56,17 @@ static int	token_count(char *input)
 	return (token_nb);
 }
 
-static void	word_extract(t_token *token, char *input, int i)
+static void	word_extract(t_token *token, char *input)
 {
-	int		start;
+	int		i;
 
-	start = i;
+	i = 0;
 	while (input[i] && token_identifier(input[i])
 		== token_identifier(input[i + 1]))
 		i++;
 	if (input[i])
 		i++;
-	token->token = ft_substr(input, start, i - start);
+	token->token = ft_substr(input, 0, i);
 	if (!token->token)
 	{
 		token = NULL;
@@ -85,6 +87,8 @@ static void	doll_management(t_token *token, char *input, t_env_var *env)
 			break ;
 		i++;
 	}
+	if (input[i])
+		i++;
 	tmp = get_env(env, ft_substr(input, 0, i));
 	if (tmp)
 		token->token = ft_strdup(tmp->value);
@@ -117,7 +121,7 @@ static t_token	**token_join(char *input, t_env_var *env)
 			doll_management(token_tab[token_nb], &input[i], env);
 		}
 		else
-			word_extract(token_tab[token_nb], &input[i], i);
+			word_extract(token_tab[token_nb], &input[i]);
 		if (!token_tab[token_nb])
 		{
 			free_token(token_tab);
@@ -127,6 +131,7 @@ static t_token	**token_join(char *input, t_env_var *env)
 		while (input[i] && token_identifier(input[i])
 			== token_identifier(input[i + 1]))
 			i++;
+		i++;
 	}
 	return (token_tab);
 }
