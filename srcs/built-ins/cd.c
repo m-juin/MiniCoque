@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 13:00:07 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 15:55:52 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	cd(t_env_var *env, char **args)
 	if (args[1] == NULL)
 	{
 		ft_printf_fd(2, "cd need a parameter");
+		last_exit(FALSE, 1);
 		return (1);
 	}
 	ret = chdir(args[1]);
@@ -33,5 +34,6 @@ int	cd(t_env_var *env, char **args)
 		replace_value(get_env(env, "OLDPWD"), tmp->value);
 		getcwd(tmp->value, PATH_MAX);
 	}
-	return (ret);
+	last_exit(FALSE, ret * -1);
+	return (ret * -1);
 }

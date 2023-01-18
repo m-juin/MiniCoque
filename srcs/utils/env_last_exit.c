@@ -6,17 +6,17 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:18:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 14:29:12 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 15:49:32 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int last_error(int get, int error)
+int last_exit(t_bool get, int error)
 {
 	static int lasterror;
 
-	if (get == 1)
+	if (get == TRUE)
 		return (lasterror);
 	lasterror = error;
 	return (lasterror);

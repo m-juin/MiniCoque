@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/18 14:35:24 by gpasquet         ###   ########.fr        #
+#    Updated: 2023/01/18 15:52:21 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC =	srcs/main.c \
 		srcs/built-ins/pwd.c \
 		srcs/built-ins/cd.c \
 		srcs/utils/t_env_utils.c \
-		srcs/utils/env_last_error.c \
+		srcs/utils/env_last_exit.c \
 		srcs/parsing/lexer.c \
 		srcs/parsing/token_utils.c \
 		srcs/parsing/param_expansion_function.c

@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:42:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 12:59:41 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 15:54:47 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	check_newline(char *arg)
+static t_bool	check_newline(char *arg)
 {
 	int	pos;
 
@@ -22,12 +22,12 @@ static int	check_newline(char *arg)
 		while (arg[pos] == 'n')
 			pos++;
 		if (arg[pos] == '\0' && pos > 1)
-			return (-1);
+			return (FALSE);
 		else
-			return (1);
+			return (TRUE);
 	}
 	else
-		return (1);
+		return (FALSE);
 }
 
 int	echo(char **args)
@@ -38,10 +38,11 @@ int	echo(char **args)
 	if (args[1] == NULL)
 	{
 		printf("\n");
+		last_exit(FALSE, 0);
 		return (0);
 	}
 	newline = check_newline(args[1]);
-	if (newline == -1)
+	if (newline == FALSE)
 		pos = 2;
 	else
 		pos = 1;
@@ -52,7 +53,8 @@ int	echo(char **args)
 		if (args[pos] != NULL)
 			printf(" ");
 	}
-	if (newline == 1)
+	if (newline == TRUE)
 		printf ("\n");
+	last_exit(FALSE, 0);
 	return (0);
 }
