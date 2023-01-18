@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:00:50 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 14:17:29 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 16:09:54 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,20 @@ static int	get_new_index(t_env_var *lst, char *new_name)
 	return (count);
 }
 
-int	get_env_size(t_env_var *env)
+void	replace_value(t_env_var *env, char *path)
 {
-	size_t	size;
+	int	pos;
 
-	size = 0;
-	while (env != NULL)
-	{
-		size++;
-		env = env->next;
-	}
-	return (size);
+	pos = ft_strfindchr(path, '=');
+	if (pos == -1)
+		return ;
+	if (env->value != NULL)
+		free(env->value);
+	if (pos != 0)
+		env->value = ft_strndup(&path[pos + 1], -1);
+	else
+		env->value = ft_strndup(&path[pos], -1);
+	env->declared = 1;
 }
 
 t_env_var	*get_env(t_env_var *lst, char *path)

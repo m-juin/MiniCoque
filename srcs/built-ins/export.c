@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 14:37:38 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 16:09:45 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,6 @@ static void	print_export(t_env_var *env)
 	}
 }
 
-void	replace_value(t_env_var *env, char *path)
-{
-	int	pos;
-
-	pos = ft_strfindchr(path, '=');
-	if (pos == -1)
-		return ;
-	if (env->value != NULL)
-		free(env->value);
-	if (pos != 0)
-		env->value = ft_strndup(&path[pos + 1], -1);
-	else
-		env->value = ft_strndup(&path[pos], -1);
-	env->declared = 1;
-}
-
 static int	check_validity(char *path)
 {
 	size_t	pos;
@@ -80,31 +64,40 @@ static int	check_validity(char *path)
 	return (-1);
 }
 
+static int	handle_arg(t_env_var *env, char *arg)
+{
+	t_env_var	*tmp;
+
+	if (check_validity(arg) == 1)
+	{
+		tmp = get_env(env, arg);
+		if (tmp == NULL)
+			ft_env_add_back(&env, create_env(arg));
+		else
+			replace_value(tmp, arg);
+		return (0);
+	}
+	else
+		return (1);
+}
+
 int	export(t_env_var *env, char **args)
 {
 	int			posx;
-	t_env_var	*tmp;
 	int			ret;
 
 	if (args[1] == NULL)
 	{
 		print_export(env);
+		last_exit(FALSE, 0);
 		return (0);
 	}
-	posx = 0;
-	while (args[++posx])
+	posx = 1;
+	while (args[posx])
 	{
-		if (check_validity(args[posx]) == 1)
-		{
-			tmp = get_env(env, args[posx]);
-			if (tmp == NULL)
-				ft_env_add_back(&env, create_env(args[posx]));
-			else
-				replace_value(tmp, args[posx]);
-			ret = 0;
-		}
-		else
-			ret = 1;
+		ret = handle_arg(env, args[posx]);
+		posx++;
 	}
+	last_exit(FALSE, ret);
 	return (ret);
 }

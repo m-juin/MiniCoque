@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 14:42:46 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 16:10:03 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ typedef struct s_minicoque
 	t_env_var	*env_var;
 }	t_minicoque;
 
+/*	main.c	*/
+
+int			get_env_size(t_env_var *env);
+
 /*	echo.c	*/
 
 int			echo(char **args);
@@ -59,7 +63,6 @@ int			env();
 /*	export.c	*/
 
 int			export(t_env_var *env, char **args);
-void		replace_value(t_env_var *env, char *path);
 
 /*	unset.c	*/
 
@@ -81,12 +84,12 @@ void		ft_exit(int ret);
 
 t_env_var	*create_env(char *path);
 void		ft_env_add_back(t_env_var **lst, t_env_var *new);
+void		replace_value(t_env_var *env, char *path);
 t_env_var	*get_env(t_env_var *lst, char *path);
-int			get_env_size(t_env_var *env);
 
-/*	env_last_error	*/
+/*	env_last_exit	*/
 
-int			last_error(int get, int error);
+int			last_exit(t_bool get, int error);
 
 /*	lexer.c	*/
 

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 14:34:47 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:01:59 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,19 @@ void signalhandler(int  sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+int	get_env_size(t_env_var *env)
+{
+	size_t	size;
+
+	size = 0;
+	while (env != NULL)
+	{
+		size++;
+		env = env->next;
+	}
+	return (size);
 }
 
 t_minicoque	*init(char **envp)
