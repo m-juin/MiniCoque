@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   env_last_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/16 11:18:38 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 13:09:43 by mjuin            ###   ########.fr       */
+/*   Created: 2023/01/18 14:18:55 by mjuin             #+#    #+#             */
+/*   Updated: 2023/01/18 14:29:12 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-void	ft_exit(int ret)
+int last_error(int get, int error)
 {
-	printf("exit");
-	exit(ret);
+	static int lasterror;
+
+	if (get == 1)
+		return (lasterror);
+	lasterror = error;
+	return (lasterror);
 }

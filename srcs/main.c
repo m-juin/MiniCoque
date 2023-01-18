@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 12:21:39 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:34:47 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,10 @@ int	main(int ac, char **av, char **envp)
 				export(coque_data->env_var, splitted);
 			else if (ft_strcmp(splitted[0], "unset") == 0)
 				unset(coque_data->env_var, splitted);
+			else if (ft_strcmp(splitted[0], "pwd") == 0)
+				pwd();
+			else if (ft_strcmp(splitted[0], "cd") == 0)
+				cd(coque_data->env_var, splitted);
 		}
 	}
 }
-
-/*int last_error(int get, int error)
-{
-	static int lasterror;
-
-	if (get == 1)
-		return (lasterror);
-	else
-		lasterror = error;
-}*/

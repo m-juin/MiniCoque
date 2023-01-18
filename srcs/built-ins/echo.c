@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:42:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/16 16:27:00 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 12:59:41 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	echo(char **args)
 		printf("\n");
 		return (0);
 	}
-	newline  = check_newline(args[1]);
+	newline = check_newline(args[1]);
 	if (newline == -1)
 		pos = 2;
 	else

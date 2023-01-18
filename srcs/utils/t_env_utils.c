@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:00:50 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/17 17:06:07 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/18 14:17:29 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,61 +14,76 @@
 
 t_env_var	*create_env(char *path)
 {
-	int	pos;
-	t_env_var *new;
-	
+	int			pos;
+	t_env_var	*new;
+
 	new = malloc(sizeof(t_env_var));
 	if (new == NULL)
-		return ( NULL);
+		return (NULL);
 	new->next = NULL;
 	new->declared = 1;
 	new->value = NULL;
 	pos = ft_strfindchr(path, '=');
-	new->name = ft_strndup(path, pos);
-	if (pos == -1)
+	if (pos == 0)
+	{
+		new->name = ft_strndup(path, -1);
 		new->declared = -1;
+	}
 	else
+	{
+		new->name = ft_strndup(path, pos);
 		new->value = ft_strndup(&path[pos + 1], -1);
+	}
 	return (new);
 }
 
-int		get_new_index(t_env_var *lst, char *new_name)
+static int	get_new_index(t_env_var *lst, char *new_name)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	if (ft_strcmp(new_name, "_") == 0)
 		return (-1);
 	while (lst != NULL)
 	{
-		if (ft_strcmp(lst->name, new_name) < 0 && ft_strcmp(lst->name, "_") != 0)
+		if (ft_strcmp(lst->name, new_name) < 0
+			&& ft_strcmp(lst->name, "_") != 0)
 			count++;
 		lst = lst->next;
 	}
 	return (count);
 }
 
+int	get_env_size(t_env_var *env)
+{
+	size_t	size;
+
+	size = 0;
+	while (env != NULL)
+	{
+		size++;
+		env = env->next;
+	}
+	return (size);
+}
+
 t_env_var	*get_env(t_env_var *lst, char *path)
 {
-	int	pos;
-	char *name;
+	int		pos;
+	char	*name;
+
 	pos = 0;
 	name = NULL;
-	while (path[pos])
-	{
-		if (path[pos] == '=' && name == NULL)
-		{
-			name = ft_strndup(path, pos);
-			break;
-		}
+	while (path[pos] && path[pos] != '=')
 		pos++;
-	}
-	if (name == NULL)
+	if (path[pos] == '\0')
 		name = ft_strndup(path, -1);
+	else
+		name = ft_strndup(path, pos);
 	while (lst != NULL)
 	{
 		if (ft_strcmp(lst->name, name) == 0)
-			break;
+			break ;
 		lst = lst->next;
 	}
 	free(name);

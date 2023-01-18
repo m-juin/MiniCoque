@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 13:27:49 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:35:05 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,17 @@ int			env();
 int			export(t_env_var *env, char **args);
 void		replace_value(t_env_var *env, char *path);
 
-/*	uset.c	*/
+/*	unset.c	*/
 
 int			unset(t_env_var *env, char **args);
+
+/*	pwd.c	*/
+
+int			pwd(void);
+
+/*	cd.c	*/
+
+int			cd(t_env_var *env, char **args);
 
 /*	exit.c	*/
 
@@ -73,6 +81,11 @@ void		ft_exit(int ret);
 t_env_var	*create_env(char *path);
 void		ft_env_add_back(t_env_var **lst, t_env_var *new);
 t_env_var	*get_env(t_env_var *lst, char *path);
+int			get_env_size(t_env_var *env);
+
+/*	env_last_error	*/
+
+int			last_error(int get, int error);
 
 /*	lexer.c	*/
 
