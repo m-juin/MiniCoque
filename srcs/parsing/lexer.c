@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/19 14:02:55 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:32:57 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ int	token_identifier(int c)
 	return (LITERAL);
 }
 
+static int	check_prev(char *input, int i)
+{
+	i--;
+	if (!input[i])
+		return (0);
+	while (input[i] && ft_isdigit(input[i]) == 1)
+		i--;
+	if (!input[i] || token_identifier(input[i] == BLANK))
+		return (1);
+	return (0);
+}
+
 static int	token_count(char *input)
 {
 	int	token_nb;
@@ -41,7 +53,7 @@ static int	token_count(char *input)
 			if (input[i + 1] == '|')
 			{
 				ft_printf_fd(2,
-					"minicoque: syntax error near unexpected token `|''\n");
+					"minicoque: syntax error near unexpected token `|'\n");
 				return (-1);
 			}
 			token_nb++;
@@ -51,10 +63,11 @@ static int	token_count(char *input)
 		{
 			if (input[i] == input[i + 1] && input[i] == input[i + 2])
 			{
-				ft_printf_fd(2, "minicoque: syntax error near unexpected token `%c''\n", input[i]);
+				ft_printf_fd(2, "minicoque: syntax error near unexpected token `%c'\n", input[i]);
 				return (-1);
 			}
-			token_nb++;
+			if (check_prev(input, i) == 0)
+				token_nb++;
 			i++;
 		}
 		else
@@ -65,6 +78,20 @@ static int	token_count(char *input)
 		}
 	}
 	return (token_nb);
+}
+
+static int		digit_str(char	*str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 static t_token	**token_join(char *input, t_env_var *env)
@@ -85,16 +112,31 @@ static t_token	**token_join(char *input, t_env_var *env)
 	i = 0;
 	while (input[i])
 	{
+		while (token_identifier(input[i]) == BLANK)
+			i++;
 		while (input[i] && token_identifier(input[i]) != BLANK)
 		{
 			start = i;
 			if (input[i] == '|')
 			{
-				if (token_tab[token_nb]->token[0] != '\0')
+				if (token_tab[token_nb]->token[0] != '\0' && digit_str(token_tab[token_nb]->token) == 0)
 					token_nb++;
 				token_tab[token_nb]->token = ft_strdup("|");
-				if (token_identifier(input[i + 1]) == BLANK)
+				break ;
+			}
+			if (token_identifier(input[i]) == REDIRECT)
+			{
+				if (token_tab[token_nb]->token[0] != '\0')
+					token_nb++;
+				if (ft_isdigit(input[i - 1]) == 1)
+				{
+					start = i;
+					while (ft_isdigit(input[start - 1]) == 1)
+						start--;
+				}
+				if (input[i] == input[i + 1])
 					i++;
+				token_tab[token_nb]->token = ft_substr(input, start, i - start + 1);
 				break ;
 			}
 			while (input[i] && token_identifier(input[i]) == LITERAL)
