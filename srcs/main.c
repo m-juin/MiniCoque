@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 17:22:07 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/19 10:58:49 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-void signalhandler(int  sig)
+void	signalhandler(int sig)
 {
 	if (sig == SIGQUIT)
-		ft_exit(0) ;
+		ft_exit(0);
 	sig = sig - 1;
 	printf("\n");
 	rl_on_new_line();
@@ -39,8 +39,8 @@ int	get_env_size(t_env_var *env)
 t_minicoque	*init(char **envp)
 {
 	t_minicoque	*data;
-	int	pos;
-	
+	int			pos;
+
 	data = malloc(sizeof(data));
 	if (data == NULL)
 		return (NULL);
@@ -55,7 +55,7 @@ t_minicoque	*init(char **envp)
 	return (data);
 }
 
-static char	*get_prompt()
+static char	*get_prompt(void)
 {
 	char	*prompt;
 	char	*path;
@@ -69,8 +69,11 @@ static char	*get_prompt()
 	while (pos >= 0 && path[pos] != '/')
 		pos--;
 	tmp = ft_strndup(&path[pos + 1], -1);
-	prompt = ft_strjoin(prompt, tmp);
-	free(tmp);
+	if (tmp != NULL)
+	{
+		prompt = ft_strjoin(prompt, tmp);
+		free(tmp);
+	}
 	prompt = ft_strjoin(prompt, " > ");
 	prompt = ft_strjoin(prompt, RESET);
 	free(path);
@@ -79,7 +82,7 @@ static char	*get_prompt()
 
 int	main(int ac, char **av, char **envp)
 {
-	char 		*readed;
+	char		*readed;
 	char		**splitted;
 	char		*prompt;
 	t_minicoque	*coque_data;

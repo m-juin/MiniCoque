@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 15:55:52 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/19 11:13:20 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ int	cd(t_env_var *env, char **args)
 	int			ret;
 	t_env_var	*tmp;
 
-	if (args[1] == NULL)
+	if (args[1] == NULL || args[2] != NULL)
 	{
-		ft_printf_fd(2, "cd need a parameter");
+		if (args[1] == NULL)
+			ft_printf_fd(2, "cd need a parameter\n");
+		else
+			ft_printf_fd(2, "cd : too many arguments\n");
 		last_exit(FALSE, 1);
 		return (1);
 	}
