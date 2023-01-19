@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 17:07:34 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/19 11:43:00 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define PIPE 2 
 # define S_QUOTE 3 
 # define D_QUOTE 4 
-# define BRACKET 5
+# define REDIRECT 5
 # define PARENTHESIS 6
 # define DOLLAR 7
 # define PCOLOR "\001\e[0;36m\002"
@@ -105,5 +105,6 @@ t_token		**init_tokentab(int token_nb);
 
 /*	param_expansion_functions.c	*/
 
-void		doll_management(t_token *token, char *input, t_env_var *env);
+char		*doll_management(char *input, t_env_var *env);
+
 #endif
