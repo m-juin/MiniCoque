@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 10:29:53 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/20 11:19:39 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int			last_exit(t_bool get, int error);
 
 /*	lexer.c	*/
 
-t_token		*lexer(char *av, t_env_var *env);
+t_token		**lexer(char *av, t_env_var *env);
 int			token_identifier(int c);
 
 /*	token_utils.c	*/

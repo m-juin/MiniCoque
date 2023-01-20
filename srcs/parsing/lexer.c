@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 10:45:41 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:19:16 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,13 @@ static int	token_count(char *input)
 		}
 		else if (token_identifier(input[i]) == DOLLAR)
 		{
-			token_nb++;
 			i++;
-			while(token_identifier(input[i++]) == LITERAL)
+			while(input[i] && token_identifier(input[i]) == LITERAL)
 				i++;
+			if (token_identifier(input[i]) != DOLLAR)
+				token_nb++;
+			if (!input[i])
+				break ;
 		}
 		else
 		{
@@ -142,7 +145,8 @@ static t_token	**token_join(char *input, t_env_var *env)
 					token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token, tmp);
 					free(tmp);
 					}
-					*/		if (input[i] == '$')
+					*/	
+			if (input[i] == '$')
 			{
 				i++;
 				tmp = doll_management(&input[i], env);
@@ -152,12 +156,17 @@ static t_token	**token_join(char *input, t_env_var *env)
 					= ft_strjoin(token_tab[token_nb]->token, tmp);
 				free(tmp);
 			}
-			while (input[i] && token_identifier(input[i]) == LITERAL)
-				i++;
-			tmp = ft_substr(input, start, i - start);
-			token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token,
-					tmp);
-			start = i;
+			if (token_identifier(input[i]) == LITERAL)
+			{
+				while (input[i] && token_identifier(input[i]) == LITERAL)
+					i++;
+				if	(!input[i])
+					break ;
+				tmp = ft_substr(input, start, i - start);
+				token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token,
+						tmp);
+				start = i;
+			}
 			if (!token_tab[token_nb] || !token_tab[0]->token)
 			{
 				free_token(token_tab);
@@ -173,7 +182,7 @@ static t_token	**token_join(char *input, t_env_var *env)
 	return (token_tab);
 }
 
-t_token	*lexer(char *input, t_env_var *env)
+t_token	**lexer(char *input, t_env_var *env)
 {
 	t_token			**token_tab;
 	int				i;
@@ -188,6 +197,5 @@ t_token	*lexer(char *input, t_env_var *env)
 		i++;
 
 	}
-	free_token(token_tab);
-	return (NULL);
+	return (token_tab);
 }

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/19 15:14:28 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/20 11:19:03 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	main(int ac, char **av, char **envp)
 	char		**splitted;
 	char		*prompt;
 	t_minicoque	*coque_data;
+	t_token		**token_input;
 
 	ac = ac - 1;
 	av[0] = 0;
@@ -112,7 +113,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		prompt = get_prompt();
 		readed = readline(prompt);
-		//lexer(readed, coque_data->env_var);
+		token_input = lexer(readed, coque_data->env_var);
 		splitted = ft_split(readed, ' ');
 		if (splitted != NULL && splitted[0] != NULL)
 		{
