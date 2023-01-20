@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/18 17:10:52 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:32:57 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,23 @@ int	token_identifier(int c)
 		return (BLANK);
 	else if (c == '|')
 		return (PIPE);
-	else if (c == '\'')
-		return (S_QUOTE);
-	else if (c == '"')
-		return (D_QUOTE);
-	else if (c == '(' || c == ')')
-		return (PARENTHESIS);
+//	else if (c == '(' || c == ')')
+//		return (PARENTHESIS);
 	else if (c == '<' || c == '>')
-		return (BRACKET);
-	else if (c == '$')
-		return (DOLLAR);
+		return (REDIRECT);
 	return (LITERAL);
+}
+
+static int	check_prev(char *input, int i)
+{
+	i--;
+	if (!input[i])
+		return (0);
+	while (input[i] && ft_isdigit(input[i]) == 1)
+		i--;
+	if (!input[i] || token_identifier(input[i] == BLANK))
+		return (1);
+	return (0);
 }
 
 static int	token_count(char *input)
@@ -38,77 +44,133 @@ static int	token_count(char *input)
 
 	i = 0;
 	token_nb = 0;
-	while (input[i] == ' ' || input[i] == '	')
-		i++;
 	while (input[i])
 	{
-		while (input[i] == ' ' || input[i] == '	')
+		while (input[i] && token_identifier(input[i]) == BLANK)
 			i++;
-		token_nb++;
-		if (input[i] == '$')
+		if (input[i] == '|')
+		{
+			if (input[i + 1] == '|')
+			{
+				ft_printf_fd(2,
+					"minicoque: syntax error near unexpected token `|'\n");
+				return (-1);
+			}
+			token_nb++;
 			i++;
-		while (input[i] && token_identifier(input[i])
-			== token_identifier(input[i + 1]))
+		}
+		else if (token_identifier(input[i]) == REDIRECT)
+		{
+			if (input[i] == input[i + 1] && input[i] == input[i + 2])
+			{
+				ft_printf_fd(2, "minicoque: syntax error near unexpected token `%c'\n", input[i]);
+				return (-1);
+			}
+			if (check_prev(input, i) == 0)
+				token_nb++;
 			i++;
-		if (input[i])
-			i++;
+		}
+		else
+		{
+			token_nb++;
+			while (input[i] && token_identifier(input[i]) == LITERAL)
+				i++;
+		}
 	}
 	return (token_nb);
 }
 
-static void	word_extract(t_token *token, char *input)
+static int		digit_str(char	*str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	while (input[i] && token_identifier(input[i])
-		== token_identifier(input[i + 1]))
-		i++;
-	if (input[i])
-		i++;
-	token->token = ft_substr(input, 0, i);
-	if (!token->token)
+	while (str[i])
 	{
-		token = NULL;
-		return ;
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
+		i++;
 	}
-	token->token_type = token_identifier(token->token[0]);
+	return (1);
 }
 
 static t_token	**token_join(char *input, t_env_var *env)
 {
 	t_token	**token_tab;
 	int		i;
+	int		start;
 	int		token_nb;
+	char	*tmp;
 
 	token_nb = token_count(input);
+	if (token_nb < 1)
+		return (NULL);
 	token_tab = init_tokentab(token_nb);
 	if (!token_tab)
 		return (NULL);
 	token_nb = 0;
 	i = 0;
-	while (token_identifier(input[i]) == BLANK)
-		i++;
 	while (input[i])
 	{
 		while (token_identifier(input[i]) == BLANK)
 			i++;
-		if (input[i] == '$')
+		while (input[i] && token_identifier(input[i]) != BLANK)
 		{
-			i++;
-			doll_management(token_tab[token_nb], &input[i], env);
+			start = i;
+			if (input[i] == '|')
+			{
+				if (token_tab[token_nb]->token[0] != '\0' && digit_str(token_tab[token_nb]->token) == 0)
+					token_nb++;
+				token_tab[token_nb]->token = ft_strdup("|");
+				break ;
+			}
+			if (token_identifier(input[i]) == REDIRECT)
+			{
+				if (token_tab[token_nb]->token[0] != '\0')
+					token_nb++;
+				if (ft_isdigit(input[i - 1]) == 1)
+				{
+					start = i;
+					while (ft_isdigit(input[start - 1]) == 1)
+						start--;
+				}
+				if (input[i] == input[i + 1])
+					i++;
+				token_tab[token_nb]->token = ft_substr(input, start, i - start + 1);
+				break ;
+			}
+			while (input[i] && token_identifier(input[i]) == LITERAL)
+				i++;
+			tmp = ft_substr(input, start, i - start);
+			token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token,
+					tmp);
+			start = i;
+	/*		if (input[i] == '\'' || input[i] == '\"')
+			{
+				tmp = quotes_management(&input[i], env);
+				i += ft_strlen(tmp);
+				token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token, tmp);
+				free(tmp);
+			}
+	*/		if (input[i] == '$')
+			{
+				i++;
+				tmp = doll_management(&input[i], env);
+				while (input[i] && token_identifier(input[i]) == LITERAL)
+					i++;
+				token_tab[token_nb]->token
+					= ft_strjoin(token_tab[token_nb]->token, tmp);
+				free(tmp);
+			}
+			if (!token_tab[token_nb] || !token_tab[0]->token)
+			{
+				free_token(token_tab);
+				return (NULL);
+			}
 		}
-		else
-			word_extract(token_tab[token_nb], &input[i]);
-		if (!token_tab[token_nb])
-		{
-			free_token(token_tab);
-			return (NULL);
-		}
+		token_tab[token_nb]->token_type
+			= token_identifier(token_tab[token_nb]->token[0]);
 		token_nb++;
-		while (input[i] && token_identifier(input[i])
-			== token_identifier(input[i + 1]))
-			i++;
 		if (input[i])
 			i++;
 	}
@@ -128,6 +190,7 @@ t_token	*lexer(char *input, t_env_var *env)
 	{
 		printf("%s\n", token_tab[i]->token);
 		i++;
+
 	}
 	free_token(token_tab);
 	return (NULL);

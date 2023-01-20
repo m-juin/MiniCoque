@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/18 10:21:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/19 11:28:34 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_token	**init_tokentab(int token_nb)
 			free_token(token_tab);
 			return (NULL);
 		}
+		token_tab[i]->token = ft_strdup("");
 		i++;
 	}
 	token_tab[i] = NULL;
