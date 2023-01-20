@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 16:05:26 by gpasquet          #+#    #+#             */
-/*   Updated: 2022/12/01 13:57:00 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 17:02:36 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/libft.h"
 
 long long int	ft_atoll(const char *nptr)
 {
@@ -21,6 +23,8 @@ long long int	ft_atoll(const char *nptr)
 	sign = 1;
 	while ((nptr[i] > 8 && nptr[i] < 14) || nptr[i] == ' ')
 		i++;
+	if (ft_strcmp(&nptr[i], "-9223372036854775808") == 0)
+		return (-9223372036854775808);
 	if (nptr[i] == '-' || nptr[i] == '+')
 	{
 		if (nptr[i] == '-')

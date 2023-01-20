@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 11:56:10 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/20 16:24:45 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 void	signalhandler(int sig)
 {
 	if (sig == SIGQUIT)
-		ft_exit(0);
-	sig = sig - 1;
+	{
+		ft_printf_fd(2, "Quit (core dumped)\n");
+		return ;
+	}
 	printf("\n");
-	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
@@ -168,6 +169,8 @@ char **token_to_array(t_token **token)
 	size_t	pos;
 
 	size = 0;
+	if (token == NULL)
+		return (NULL);
 	while (token[size] != NULL)
 		size++;
 	if (size == 0)
@@ -197,21 +200,23 @@ int	main(int ac, char **av, char **envp)
 	av[0] = 0;
 
 	signal(SIGINT, signalhandler);
-	signal(SIGQUIT, signalhandler);
 	coque_data = init(envp);
 	while (1)
 	{
 		prompt = get_prompt();
+		signal(SIGQUIT, SIG_IGN);
 		readed = readline(prompt);
 		if (readed == NULL)
 			ft_exit(0);
+		signal(SIGQUIT, signalhandler);
+		if (ft_strcmp(readed, "") != 0)
+			add_history(readed);
 		token_input = lexer(readed, coque_data->env_var);
 		splitted = token_to_array(token_input);
 		if (splitted != NULL && splitted[0] != NULL)
 		{
-			add_history(readed);
 			if (ft_strcmp(splitted[0], "exit") == 0)
-				ft_exit(0);
+				ft_exit(splitted);
 			else if (ft_strcmp(splitted[0], "echo") == 0)
 				echo(splitted);
 			else if (ft_strcmp(splitted[0], "env") == 0)

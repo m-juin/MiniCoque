@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 11:29:57 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:00:20 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			cd(t_env_var *env, char **args);
 
 /*	exit.c	*/
 
-void		ft_exit(int ret);
+void		ft_exit(char **args);
 
 /*	t_env_utils.c */
 
