@@ -31,10 +31,11 @@ SRCS	=	./src/string/ft_split.c			\
 			./src/string/ft_strlcat.c		\
 			./src/string/ft_strlcpy.c		\
 			./src/string/ft_strjoin.c		\
+			./src/string/ft_str_mega_join.c \
 			./src/string/ft_substr.c		\
 			./src/string/ft_strnstr.c		\
 			./src/string/ft_strlen.c		\
-			./src/string/ft_strfindchr.c		\
+			./src/string/ft_strfindchr.c	\
 			./src/memory/ft_memchr.c		\
 			./src/memory/ft_calloc.c		\
 			./src/memory/ft_memmove.c		\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/19 10:58:49 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/19 15:14:28 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,6 @@ void	signalhandler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-}
-
-int	get_env_size(t_env_var *env)
-{
-	size_t	size;
-
-	size = 0;
-	while (env != NULL)
-	{
-		size++;
-		env = env->next;
-	}
-	return (size);
 }
 
 t_minicoque	*init(char **envp)
@@ -80,6 +67,34 @@ static char	*get_prompt(void)
 	return (prompt);
 }
 
+void	print_array(char * const *array)
+{
+	int	pos;
+
+	pos = 0;
+	while (array[pos] != NULL)
+	{
+		printf("%s\n", array[pos]);
+		pos++;
+	}
+}
+
+void	ft_exec(char **splitted, t_env_var *env)
+{
+	pid_t	pid;
+	int		status;
+	
+	pid = fork();
+	if (pid < 0)
+		return ;
+	if (pid == 0)
+	{
+		execve("/bin/ls", splitted, env_to_array(env));
+	}
+	else
+		waitpid(pid, &status, 0);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*readed;
@@ -97,7 +112,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		prompt = get_prompt();
 		readed = readline(prompt);
-		lexer(readed, coque_data->env_var);
+		//lexer(readed, coque_data->env_var);
 		splitted = ft_split(readed, ' ');
 		if (splitted != NULL && splitted[0] != NULL)
 		{
@@ -116,6 +131,8 @@ int	main(int ac, char **av, char **envp)
 				pwd();
 			else if (ft_strcmp(splitted[0], "cd") == 0)
 				cd(coque_data->env_var, splitted);
+			else if (ft_strcmp(splitted[0], "ls") == 0)
+				ft_exec(splitted, coque_data->env_var);
 		}
 		free(prompt);
 	}
