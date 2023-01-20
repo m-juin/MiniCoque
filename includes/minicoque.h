@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 11:19:39 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:29:57 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@
 # define S_QUOTE 3 
 # define D_QUOTE 4 
 # define REDIRECT 5
-# define PARENTHESIS 6
-# define DOLLAR 7
+# define DOLLAR 6
 # define PCOLOR "\001\e[0;36m\002"
 # define RESET   "\001\e[0m\002"
 
