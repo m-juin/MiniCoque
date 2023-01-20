@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:39:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 10:27:50 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/20 10:51:59 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	get_env_size(t_env_var *env)
 
 char *const	*env_to_array(t_env_var *env)
 {
-	char 	**array;
+	char	**array;
 	size_t	size;
 	size_t	pos;
 
