@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 11:45:45 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:56:10 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,81 @@ void	print_array(char * const *array)
 	}
 }
 
+size_t	strtab_len(char **str_tab)
+{
+	int	i;
+
+	i = 0;
+	while (str_tab[i])
+		i++;
+	return (i);
+}
+
+static char	**get_splitted_envp(char *const *envp)
+{
+	int		i;
+	char	**splitted_envp;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			break ;
+		i++;
+	}
+	splitted_envp = ft_split(envp[i] + 5, ':');
+	return (splitted_envp);
+}
+
+static char	**get_paths(char *const *envp)
+{
+	int		i;
+	char	**paths;
+	char	**splitted_envp;
+
+	splitted_envp = get_splitted_envp(envp);
+	if (!splitted_envp)
+		return (NULL);
+	paths = malloc((strtab_len(splitted_envp) + 1) * sizeof(char *));
+	if (!paths)
+	{
+		//free_tab(splitted_envp);
+		return (NULL);
+	}
+	i = 0;
+	while (splitted_envp[i])
+	{
+		paths[i] = ft_strjoin(splitted_envp[i], "/");
+		i++;
+	}
+	paths[i] = 0;
+	//free_tab(splitted_envp);
+	return (paths);
+}
+
+static char	*get_cmds(char *av, char *const *envp)
+{
+	char	**paths;
+	char	*cmd;
+	int		i;
+
+	paths = get_paths(envp);
+	i = 0;
+	while (paths[i])
+	{
+		cmd = ft_strjoin(paths[i], av);
+		if (access(cmd, X_OK) == 0)
+		{
+			//free_tab(paths);
+			return (cmd);
+		}
+		free(cmd);
+		i++;
+	}
+	//free_tab(paths);
+	return (NULL);
+}
+
 void	ft_exec(char **splitted, t_env_var *env)
 {
 	pid_t	pid;
@@ -80,10 +155,34 @@ void	ft_exec(char **splitted, t_env_var *env)
 		return ;
 	if (pid == 0)
 	{
-		execve("/bin/ls", splitted, env_to_array(env));
+		execve(get_cmds(splitted[0], env_to_array(env)), splitted, env_to_array(env));
 	}
 	else
 		waitpid(pid, &status, 0);
+}
+
+char **token_to_array(t_token **token)
+{
+	char	**array;
+	size_t	size;
+	size_t	pos;
+
+	size = 0;
+	while (token[size] != NULL)
+		size++;
+	if (size == 0)
+		return (NULL);
+	array = malloc((size + 1) * sizeof(char *));
+	if (array == NULL)
+		return (NULL);
+	pos = 0;
+	while (token[pos] != NULL)
+	{
+		array[pos] = strndup(token[pos]->token, -1);
+		pos++;
+	}
+	array[pos] = NULL;
+	return (array);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -107,7 +206,7 @@ int	main(int ac, char **av, char **envp)
 		if (readed == NULL)
 			ft_exit(0);
 		token_input = lexer(readed, coque_data->env_var);
-		splitted = ft_split(readed, ' ');
+		splitted = token_to_array(token_input);
 		if (splitted != NULL && splitted[0] != NULL)
 		{
 			add_history(readed);
@@ -125,7 +224,7 @@ int	main(int ac, char **av, char **envp)
 				pwd();
 			else if (ft_strcmp(splitted[0], "cd") == 0)
 				cd(coque_data->env_var, splitted);
-			else if (ft_strcmp(splitted[0], "ls") == 0)
+			else
 				ft_exec(splitted, coque_data->env_var);
 		}
 		free(prompt);
