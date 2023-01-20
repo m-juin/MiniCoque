@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/19 16:32:57 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 10:45:41 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,13 @@ int	token_identifier(int c)
 		return (BLANK);
 	else if (c == '|')
 		return (PIPE);
-//	else if (c == '(' || c == ')')
-//		return (PARENTHESIS);
+	//	else if (c == '(' || c == ')')
+	//		return (PARENTHESIS);
+	else if (c == '$')
+		return (DOLLAR);
 	else if (c == '<' || c == '>')
 		return (REDIRECT);
 	return (LITERAL);
-}
-
-static int	check_prev(char *input, int i)
-{
-	i--;
-	if (!input[i])
-		return (0);
-	while (input[i] && ft_isdigit(input[i]) == 1)
-		i--;
-	if (!input[i] || token_identifier(input[i] == BLANK))
-		return (1);
-	return (0);
 }
 
 static int	token_count(char *input)
@@ -53,7 +43,7 @@ static int	token_count(char *input)
 			if (input[i + 1] == '|')
 			{
 				ft_printf_fd(2,
-					"minicoque: syntax error near unexpected token `|'\n");
+						"minicoque: syntax error near unexpected token `|'\n");
 				return (-1);
 			}
 			token_nb++;
@@ -66,9 +56,22 @@ static int	token_count(char *input)
 				ft_printf_fd(2, "minicoque: syntax error near unexpected token `%c'\n", input[i]);
 				return (-1);
 			}
-			if (check_prev(input, i) == 0)
-				token_nb++;
+			if (input[i] == '>' && input[i + 1] == '<')
+			{
+				ft_printf_fd(2, "minicoque: syntax error near unexpected token `%c'\n", input[i]);
+				return (-1);
+			}
+			token_nb++;
+			if ((input[i] == '<' && input[i + 1] == '>') || input[i] == input[i + 1])
+				i++;
 			i++;
+		}
+		else if (token_identifier(input[i]) == DOLLAR)
+		{
+			token_nb++;
+			i++;
+			while(token_identifier(input[i++]) == LITERAL)
+				i++;
 		}
 		else
 		{
@@ -126,33 +129,20 @@ static t_token	**token_join(char *input, t_env_var *env)
 			}
 			if (token_identifier(input[i]) == REDIRECT)
 			{
-				if (token_tab[token_nb]->token[0] != '\0')
-					token_nb++;
-				if (ft_isdigit(input[i - 1]) == 1)
-				{
-					start = i;
-					while (ft_isdigit(input[start - 1]) == 1)
-						start--;
-				}
-				if (input[i] == input[i + 1])
+				token_nb++;
+				if (input[i] == input[i + 1] || (input[i] == '<' && input[i + 1] == '>'))
 					i++;
 				token_tab[token_nb]->token = ft_substr(input, start, i - start + 1);
 				break ;
 			}
-			while (input[i] && token_identifier(input[i]) == LITERAL)
-				i++;
-			tmp = ft_substr(input, start, i - start);
-			token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token,
-					tmp);
-			start = i;
-	/*		if (input[i] == '\'' || input[i] == '\"')
-			{
-				tmp = quotes_management(&input[i], env);
-				i += ft_strlen(tmp);
-				token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token, tmp);
-				free(tmp);
-			}
-	*/		if (input[i] == '$')
+			/*		if (input[i] == '\'' || input[i] == '\"')
+					{
+					tmp = quotes_management(&input[i], env);
+					i += ft_strlen(tmp);
+					token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token, tmp);
+					free(tmp);
+					}
+					*/		if (input[i] == '$')
 			{
 				i++;
 				tmp = doll_management(&input[i], env);
@@ -162,6 +152,12 @@ static t_token	**token_join(char *input, t_env_var *env)
 					= ft_strjoin(token_tab[token_nb]->token, tmp);
 				free(tmp);
 			}
+			while (input[i] && token_identifier(input[i]) == LITERAL)
+				i++;
+			tmp = ft_substr(input, start, i - start);
+			token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token,
+					tmp);
+			start = i;
 			if (!token_tab[token_nb] || !token_tab[0]->token)
 			{
 				free_token(token_tab);
