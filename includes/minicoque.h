@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 11:29:57 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:32:26 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@
 # define D_QUOTE 4 
 # define REDIRECT 5
 # define DOLLAR 6
+# define NUULL 7
 # define PCOLOR "\001\e[0;36m\002"
 # define RESET   "\001\e[0m\002"
 
 typedef struct s_token {
-	char			*token;
+	char			*str;
 	int				token_type;
 }	t_token;
 
@@ -97,15 +98,25 @@ int			last_exit(t_bool get, int error);
 /*	lexer.c	*/
 
 t_token		**lexer(char *av, t_env_var *env);
-int			token_identifier(int c);
 
 /*	token_utils.c	*/
 
 void		free_token(t_token **token_tab);
-t_token		**init_tokentab(int token_nb);
+t_token		**init_tokentab(char *input);
+void		pipe_token(t_token **token_tab, int *i, int *nb);
+void		redirect_token(t_token **token_tab, char *input, int *i, int *nb);
 
 /*	param_expansion_functions.c	*/
 
 char		*doll_management(char *input, t_env_var *env);
+
+/*	param_utils.c	*/
+
+int			typify(int c);
+int			digit_str(char *str);
+
+/*	counting_functions.c	*/
+
+int			token_count(char *input);
 
 #endif
