@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 16:24:45 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/20 17:05:56 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ char **token_to_array(t_token **token)
 	pos = 0;
 	while (token[pos] != NULL)
 	{
-		array[pos] = strndup(token[pos]->token, -1);
+		array[pos] = strndup(token[pos]->str, -1);
 		pos++;
 	}
 	array[pos] = NULL;

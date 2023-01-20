@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:18:38 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 17:04:27 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/20 17:13:36 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static t_bool	isvalidnum(char *arg)
 
 void	ft_exit(char **args)
 {
-	int	tmp;
+	long long	tmp;
 
 	ft_printf_fd(1, "exit\n");
 	if (args[1] == NULL)
@@ -94,6 +94,7 @@ void	ft_exit(char **args)
 		exit(2);
 	}
 	tmp = ft_atoll(args[1]);
+	printf("%lli", tmp);
 	tmp = tmp % 256;
 	exit(tmp);
 }
