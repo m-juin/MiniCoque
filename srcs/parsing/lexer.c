@@ -6,181 +6,88 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 11:52:41 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:34:55 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	token_identifier(int c)
+static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 {
-	if (c == ' ' || c == '	')
-		return (BLANK);
-	else if (c == '|')
-		return (PIPE);
-	else if (c == '$')
-		return (DOLLAR);
-	else if (c == '<' || c == '>')
-		return (REDIRECT);
-	return (LITERAL);
+	char	*tmp;
+
+	while (input[*i] == '$')
+	{
+		(*i)++;
+		tmp = doll_management(&input[*i], env);
+		while (input[*i] && typify(input[*i]) == LITERAL)
+			(*i)++;
+		token->str = ft_strjoin(token->str, tmp);
+		free(tmp);
+	}
 }
 
-static int	token_count(char *input)
+static void	literal_token(t_token *token, char *input, int *i)
 {
-	int		token_nb;
-	int		i;
-	char	*err_msg;
+	char	*tmp;
+	int		start;
 
-	i = 0;
-	token_nb = 0;
-	err_msg = ft_strdup("minicoque: syntax error nearunexpected token");
-	while (input[i])
-	{
-		while (input[i] && token_identifier(input[i]) == BLANK)
-			i++;
-		if (input[i] == '|')
-		{
-			if (input[i + 1] == '|')
-			{
-				ft_printf_fd(2, "%s `|'\n", err_msg);
-				return (-1);
-			}
-			token_nb++;
-			i++;
-		}
-		else if (token_identifier(input[i]) == REDIRECT)
-		{
-			if (input[i] == input[i + 1] && input[i] == input[i + 2])
-			{
-				ft_printf_fd(2, "%s `%c'\n", err_msg, input[i]);
-				return (-1);
-			}
-			if (input[i] == '>' && input[i + 1] == '<')
-			{
-				ft_printf_fd(2, "%s`%c'\n", err_msg, input[i]);
-				return (-1);
-			}
-			token_nb++;
-			if ((input[i] == '<' && input[i + 1] == '>')
-				|| input[i] == input[i + 1])
-				i++;
-			i++;
-		}
-		else if (token_identifier(input[i]) == DOLLAR)
-		{
-			i++;
-			while (input[i] && token_identifier(input[i]) == LITERAL)
-				i++;
-			if (token_identifier(input[i]) != DOLLAR)
-				token_nb++;
-			if (!input[i])
-				break ;
-		}
-		else
-		{
-			token_nb++;
-			while (input[i] && token_identifier(input[i]) == LITERAL)
-				i++;
-		}
-	}
-	free(err_msg);
-	return (token_nb);
+	start = *i;
+	while (input[*i] && typify(input[*i]) == LITERAL)
+		(*i)++;
+	tmp = ft_substr(input, start, *i - start);
+	token->str = ft_strjoin(token->str, tmp);
 }
 
-static int	digit_str(char	*str)
+static void	token_join_part2(t_token *token, char *input,
+			t_env_var *env, int *i)
 {
-	int	i;
+	int	start;
 
-	i = 0;
-	while (str[i])
+	start = *i;
+	while (input[*i] && (typify(input[*i]) == LITERAL || input[*i] == '$'))
 	{
-		if (ft_isdigit(str[i]) == 0)
-			return (0);
-		i++;
+		/*		if (input[i] == '\'' || input[i] == '\"')
+				{
+				tmp = quotes_management(&input[i], env);
+				i += ft_strlen(tmp);
+				token_tab[nb]->str = ft_strjoin(token_tab[nb]->str, tmp);
+				free(tmp);
+				}
+				*/		
+		if (input[*i] == '$')
+			dollar_token(token, &input[*i], env, i);
+		if (typify(input[*i]) == LITERAL)
+			literal_token(token, input, i);
+		if (!token || !token->str)
+			free(token);
 	}
-	return (1);
 }
 
 static t_token	**token_join(char *input, t_env_var *env)
 {
 	t_token	**token_tab;
 	int		i;
-	int		start;
-	int		token_nb;
-	char	*tmp;
+	int		nb;
 
-	token_nb = token_count(input);
-	if (token_nb < 1)
-		return (NULL);
-	token_tab = init_tokentab(token_nb);
+	token_tab = init_tokentab(input);
 	if (!token_tab)
 		return (NULL);
-	token_nb = 0;
+	nb = 0;
 	i = 0;
 	while (input[i])
 	{
-		while (token_identifier(input[i]) == BLANK)
+		while (typify(input[i]) == BLANK)
 			i++;
-		while (input[i] && token_identifier(input[i]) != BLANK)
-		{
-			start = i;
-			if (input[i] == '|')
-			{
-				if (token_tab[token_nb]->token[0] != '\0'
-					&& digit_str(token_tab[token_nb]->token) == 0)
-					token_nb++;
-				token_tab[token_nb]->token = ft_strdup("|");
-				break ;
-			}
-			if (token_identifier(input[i]) == REDIRECT)
-			{
-				token_nb++;
-				if (input[i] == input[i + 1] || (input[i] == '<'
-						&& input[i + 1] == '>'))
-					i++;
-				token_tab[token_nb]->token
-					= ft_substr(input, start, i - start + 1);
-				break ;
-			}
-			/*		if (input[i] == '\'' || input[i] == '\"')
-					{
-					tmp = quotes_management(&input[i], env);
-					i += ft_strlen(tmp);
-					token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token, tmp);
-					free(tmp);
-					}
-					*/	
-			if (input[i] == '$')
-			{
-				i++;
-				tmp = doll_management(&input[i], env);
-				while (input[i] && token_identifier(input[i]) == LITERAL)
-					i++;
-				token_tab[token_nb]->token
-					= ft_strjoin(token_tab[token_nb]->token, tmp);
-				free(tmp);
-			}
-			if (token_identifier(input[i]) == LITERAL)
-			{
-				while (input[i] && token_identifier(input[i]) == LITERAL)
-					i++;
-				if (token_identifier(input[i]) != DOLLAR)
-					tmp = ft_substr(input, start, i - start);
-				token_tab[token_nb]->token
-					= ft_strjoin(token_tab[token_nb]->token, tmp);
-				start = i;
-			}
-			if (!token_tab[token_nb] || !token_tab[0]->token)
-			{
-				free_token(token_tab);
-				return (NULL);
-			}
-		}
-		token_tab[token_nb]->token_type
-			= token_identifier(token_tab[token_nb]->token[0]);
-		token_nb++;
-		if (input[i])
-			i++;
+		if (input[i] == '|')
+			pipe_token(token_tab, &i, &nb);
+		else if (typify(input[i]) == REDIRECT)
+			redirect_token(token_tab, &input[i], &i, &nb);
+		else
+			token_join_part2(token_tab[nb], input, env, &i);
+		if (token_tab[nb])
+			token_tab[nb]->token_type = typify(token_tab[nb]->str[0]);
+		nb++;
 	}
 	return (token_tab);
 }
@@ -198,7 +105,7 @@ t_token	**lexer(char *input, t_env_var *env)
 	i = 0;
 	while (token_tab[i])
 	{
-		printf("%s\n", token_tab[i]->token);
+		printf("%s\n", token_tab[i]->str);
 		i++;
 	}
 	return (token_tab);

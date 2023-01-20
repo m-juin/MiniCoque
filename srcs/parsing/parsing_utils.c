@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   param_expansion_function.c                         :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 13:10:41 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 13:14:13 by gpasquet         ###   ########.fr       */
+/*   Created: 2023/01/20 13:57:31 by gpasquet          #+#    #+#             */
+/*   Updated: 2023/01/20 16:30:48 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-char	*doll_management(char *input, t_env_var *env)
+int	typify(int c)
 {
-	int			i;
-	t_env_var	*var;
+	if (c == ' ' || c == '	')
+		return (BLANK);
+	else if (c == '|')
+		return (PIPE);
+	else if (c == '$')
+		return (DOLLAR);
+	else if (c == '<' || c == '>')
+		return (REDIRECT);
+	else if (c == '\0')
+		return (NUULL);
+	return (LITERAL);
+}
+
+int	digit_str(char	*str)
+{
+	int	i;
 
 	i = 0;
-	while (input[i])
+	while (str[i])
 	{
-		if (typify(input[i]) != typify(input[i + 1]))
-			break ;
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
 		i++;
 	}
-	if (input[i])
-		i++;
-	var = get_env(env, ft_substr(input, 0, i));
-	if (var)
-		return (ft_strdup(var->value));
-	else
-		return (ft_strdup(""));
+	return (1);
 }
