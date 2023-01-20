@@ -6,7 +6,11 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/01/20 11:19:03 by gpasquet         ###   ########.fr       */
+=======
+/*   Updated: 2023/01/20 10:59:12 by mjuin            ###   ########.fr       */
+>>>>>>> 155ae0349ef84be609b3f60b535d424ecccd1244
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +50,14 @@ static char	*get_prompt(void)
 {
 	char	*prompt;
 	char	*path;
-	char	*tmp;
 	size_t	pos;
 
 	path = malloc(PATH_MAX * sizeof(char));
 	getcwd(path, PATH_MAX);
 	pos = ft_strlen(path);
-	prompt = strndup(PCOLOR, -1);
 	while (pos >= 0 && path[pos] != '/')
 		pos--;
-	tmp = ft_strndup(&path[pos + 1], -1);
-	if (tmp != NULL)
-	{
-		prompt = ft_strjoin(prompt, tmp);
-		free(tmp);
-	}
-	prompt = ft_strjoin(prompt, " > ");
-	prompt = ft_strjoin(prompt, RESET);
+	prompt = ft_str_mega_join("%s%s > %s", PCOLOR, &path[pos + 1], RESET);
 	free(path);
 	return (prompt);
 }
@@ -113,6 +108,8 @@ int	main(int ac, char **av, char **envp)
 	{
 		prompt = get_prompt();
 		readed = readline(prompt);
+		if (readed == NULL)
+			ft_exit(0);
 		token_input = lexer(readed, coque_data->env_var);
 		splitted = ft_split(readed, ' ');
 		if (splitted != NULL && splitted[0] != NULL)
