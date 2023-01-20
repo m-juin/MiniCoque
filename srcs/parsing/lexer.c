@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 11:19:16 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:52:41 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	token_identifier(int c)
 		return (BLANK);
 	else if (c == '|')
 		return (PIPE);
-	//	else if (c == '(' || c == ')')
-	//		return (PARENTHESIS);
 	else if (c == '$')
 		return (DOLLAR);
 	else if (c == '<' || c == '>')
@@ -29,11 +27,13 @@ int	token_identifier(int c)
 
 static int	token_count(char *input)
 {
-	int	token_nb;
-	int	i;
+	int		token_nb;
+	int		i;
+	char	*err_msg;
 
 	i = 0;
 	token_nb = 0;
+	err_msg = ft_strdup("minicoque: syntax error nearunexpected token");
 	while (input[i])
 	{
 		while (input[i] && token_identifier(input[i]) == BLANK)
@@ -42,8 +42,7 @@ static int	token_count(char *input)
 		{
 			if (input[i + 1] == '|')
 			{
-				ft_printf_fd(2,
-						"minicoque: syntax error near unexpected token `|'\n");
+				ft_printf_fd(2, "%s `|'\n", err_msg);
 				return (-1);
 			}
 			token_nb++;
@@ -53,23 +52,24 @@ static int	token_count(char *input)
 		{
 			if (input[i] == input[i + 1] && input[i] == input[i + 2])
 			{
-				ft_printf_fd(2, "minicoque: syntax error near unexpected token `%c'\n", input[i]);
+				ft_printf_fd(2, "%s `%c'\n", err_msg, input[i]);
 				return (-1);
 			}
 			if (input[i] == '>' && input[i + 1] == '<')
 			{
-				ft_printf_fd(2, "minicoque: syntax error near unexpected token `%c'\n", input[i]);
+				ft_printf_fd(2, "%s`%c'\n", err_msg, input[i]);
 				return (-1);
 			}
 			token_nb++;
-			if ((input[i] == '<' && input[i + 1] == '>') || input[i] == input[i + 1])
+			if ((input[i] == '<' && input[i + 1] == '>')
+				|| input[i] == input[i + 1])
 				i++;
 			i++;
 		}
 		else if (token_identifier(input[i]) == DOLLAR)
 		{
 			i++;
-			while(input[i] && token_identifier(input[i]) == LITERAL)
+			while (input[i] && token_identifier(input[i]) == LITERAL)
 				i++;
 			if (token_identifier(input[i]) != DOLLAR)
 				token_nb++;
@@ -83,10 +83,11 @@ static int	token_count(char *input)
 				i++;
 		}
 	}
+	free(err_msg);
 	return (token_nb);
 }
 
-static int		digit_str(char	*str)
+static int	digit_str(char	*str)
 {
 	int	i;
 
@@ -125,7 +126,8 @@ static t_token	**token_join(char *input, t_env_var *env)
 			start = i;
 			if (input[i] == '|')
 			{
-				if (token_tab[token_nb]->token[0] != '\0' && digit_str(token_tab[token_nb]->token) == 0)
+				if (token_tab[token_nb]->token[0] != '\0'
+					&& digit_str(token_tab[token_nb]->token) == 0)
 					token_nb++;
 				token_tab[token_nb]->token = ft_strdup("|");
 				break ;
@@ -133,9 +135,11 @@ static t_token	**token_join(char *input, t_env_var *env)
 			if (token_identifier(input[i]) == REDIRECT)
 			{
 				token_nb++;
-				if (input[i] == input[i + 1] || (input[i] == '<' && input[i + 1] == '>'))
+				if (input[i] == input[i + 1] || (input[i] == '<'
+						&& input[i + 1] == '>'))
 					i++;
-				token_tab[token_nb]->token = ft_substr(input, start, i - start + 1);
+				token_tab[token_nb]->token
+					= ft_substr(input, start, i - start + 1);
 				break ;
 			}
 			/*		if (input[i] == '\'' || input[i] == '\"')
@@ -160,11 +164,10 @@ static t_token	**token_join(char *input, t_env_var *env)
 			{
 				while (input[i] && token_identifier(input[i]) == LITERAL)
 					i++;
-				if	(!input[i])
-					break ;
-				tmp = ft_substr(input, start, i - start);
-				token_tab[token_nb]->token = ft_strjoin(token_tab[token_nb]->token,
-						tmp);
+				if (token_identifier(input[i]) != DOLLAR)
+					tmp = ft_substr(input, start, i - start);
+				token_tab[token_nb]->token
+					= ft_strjoin(token_tab[token_nb]->token, tmp);
 				start = i;
 			}
 			if (!token_tab[token_nb] || !token_tab[0]->token)
@@ -187,6 +190,8 @@ t_token	**lexer(char *input, t_env_var *env)
 	t_token			**token_tab;
 	int				i;
 
+	if (!input)
+		return (NULL);
 	token_tab = token_join(input, env);
 	if (!token_tab)
 		return (NULL);
@@ -195,7 +200,6 @@ t_token	**lexer(char *input, t_env_var *env)
 	{
 		printf("%s\n", token_tab[i]->token);
 		i++;
-
 	}
 	return (token_tab);
 }
