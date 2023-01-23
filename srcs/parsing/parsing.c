@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/23 11:54:13 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:04:04 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	tab_len(t_token **tab)
 		len++;
 	return (len);
 }
+
 char	**tab_dup(char	**tab_str)
 {
 	char	**new_tab;
@@ -88,6 +89,25 @@ static t_btree	*insert_node(t_token **token_array)
 	return (new_node);
 }
 
+static int	is_builtin(char	*str)
+{
+	if (ft_strcmp(str, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(str, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "export") == 0)
+		return (1);
+	else if (ft_strcmp(str, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(str, "env") == 0)
+		return (1);
+	else if (ft_strcmp(str, "exit") == 0)
+		return (1);
+	return (0);
+}
+
 static	t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 {
 	t_btree	*new_node;
@@ -101,7 +121,10 @@ static	t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 		free(new_node);
 		return (NULL);
 	}
-	new_node->tab_str[0] = get_cmds(array[0]->str, env_to_array(env));
+	if (is_builtin(array[0]->str) == 1)
+		new_node->tab_str[0] = ft_strdup(array[0]->str);
+	else
+		new_node->tab_str[0] = get_cmds(array[0]->str, env_to_array(env));
 	new_node->tab_str[1] = NULL;
 	return (new_node);
 }
@@ -147,8 +170,10 @@ t_btree	*parsing(t_token **token_tab, t_env_var *env)
 	{
 		if (token_tab[i]->str[0] == '|')
 		{
+			parsed_tree->type = PIPE;
 			parsed_tree->left = parsing(sub_token_tab(token_tab, 0, i), env);
-			parsed_tree->right = parsing(sub_token_tab(token_tab, i + 1, tab_len(token_tab) - i), env);
+			parsed_tree->right = parsing(sub_token_tab(token_tab, i + 1,
+						tab_len(token_tab) - i), env);
 			break ;
 		}
 		i++;
