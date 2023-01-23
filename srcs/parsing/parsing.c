@@ -6,24 +6,11 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/23 13:04:04 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:31:08 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
-
-void	free_tab(char **str_tab)
-{
-	int	i;
-
-	i = 0;
-	while (str_tab[i])
-	{
-		free(str_tab[i]);
-		i++;
-	}
-	free(str_tab);
-}
 
 int	tab_len(t_token **tab)
 {
@@ -164,6 +151,8 @@ t_btree	*parsing(t_token **token_tab, t_env_var *env)
 	t_btree	*parsed_tree;
 	int		i;
 
+	if (!token_tab)
+		return (NULL);
 	parsed_tree = init_tree_node();
 	i = 0;
 	while (token_tab[i])
