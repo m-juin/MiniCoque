@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/23 15:28:43 by gpasquet         ###   ########.fr        #
+#    Updated: 2023/01/23 16:32:25 by gpasquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,15 @@ SRC =	srcs/main.c \
 		srcs/utils/exec_utils.c \
 		srcs/utils/tree_creation_utils.c \
 		srcs/utils/tree_exec_utils.c \
+		srcs/utils/tab_utils.c \
+		srcs/utils/get_cmd_utils.c \
 		srcs/parsing/lexer.c \
 		srcs/parsing/token_utils.c \
 		srcs/parsing/param_expansion_function.c \
 		srcs/parsing/parsing_utils.c \
 		srcs/parsing/counting_functions.c \
-		srcs/parsing/parsing.c 
+		srcs/parsing/parsing.c \
+		srcs/parsing/quotes_management_functions.c
 
 LIBFT = libft/libft.a
 

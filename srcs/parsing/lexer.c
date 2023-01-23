@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 16:34:55 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:12:50 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,18 @@ static void	literal_token(t_token *token, char *input, int *i)
 static void	token_join_part2(t_token *token, char *input,
 			t_env_var *env, int *i)
 {
-	int	start;
+	int		start;
+	char	*tmp;
 
 	start = *i;
 	while (input[*i] && (typify(input[*i]) == LITERAL || input[*i] == '$'))
 	{
-		/*		if (input[i] == '\'' || input[i] == '\"')
-				{
-				tmp = quotes_management(&input[i], env);
-				i += ft_strlen(tmp);
-				token_tab[nb]->str = ft_strjoin(token_tab[nb]->str, tmp);
-				free(tmp);
-				}
-				*/		
+		if (input[*i] == '\'' || input[*i] == '\"')
+		{
+			tmp = quotes_management(input, env, i);
+			token->str = ft_strjoin(token->str, tmp);
+			free(tmp);
+		}
 		if (input[*i] == '$')
 			dollar_token(token, &input[*i], env, i);
 		if (typify(input[*i]) == LITERAL)
@@ -95,18 +94,11 @@ static t_token	**token_join(char *input, t_env_var *env)
 t_token	**lexer(char *input, t_env_var *env)
 {
 	t_token			**token_tab;
-	int				i;
 
 	if (!input)
 		return (NULL);
 	token_tab = token_join(input, env);
 	if (!token_tab)
 		return (NULL);
-	i = 0;
-	while (token_tab[i])
-	{
-		printf("%s\n", token_tab[i]->str);
-		i++;
-	}
 	return (token_tab);
 }
