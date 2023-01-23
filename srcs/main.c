@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 11:29:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 11:53:55 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,26 @@ char **token_to_array(t_token **token)
 	return (array);
 }
 
+void	ft_execute(t_minicoque *data, t_btree *tree)
+{
+	if (ft_strcmp(tree->right->tab_str[0], "exit") == 0)
+		ft_exit(tree->right->tab_str, data);
+	else if (ft_strcmp(tree->right->tab_str[0], "echo") == 0)
+		echo(tree->right->tab_str);
+	else if (ft_strcmp(tree->right->tab_str[0], "env") == 0)
+		env(data->env_var, tree->right->tab_str);
+	else if (ft_strcmp(tree->right->tab_str[0], "export") == 0)
+		export(data->env_var, tree->right->tab_str);
+	else if (ft_strcmp(tree->right->tab_str[0], "unset") == 0)
+		unset(data->env_var, tree->right->tab_str);
+	else if (ft_strcmp(tree->right->tab_str[0], "pwd") == 0)
+		pwd();
+	else if (ft_strcmp(tree->right->tab_str[0], "cd") == 0)
+		cd(data->env_var, tree->right->tab_str);
+	else
+		ft_exec(tree->right->tab_str, data->env_var);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*readed;
@@ -218,27 +238,7 @@ int	main(int ac, char **av, char **envp)
 		parsed_tree	= parsing(token_input, coque_data->env_var);
 		splitted = token_to_array(token_input);
 		if (splitted != NULL && splitted[0] != NULL)
-		{
-			if (ft_strcmp(splitted[0], "exit") == 0)
-			{
-				s_free(prompt);
-				ft_exit(splitted, coque_data);
-			}
-			else if (ft_strcmp(splitted[0], "echo") == 0)
-				echo(splitted);
-			else if (ft_strcmp(splitted[0], "env") == 0)
-				env(coque_data->env_var, splitted);
-			else if (ft_strcmp(splitted[0], "export") == 0)
-				export(coque_data->env_var, splitted);
-			else if (ft_strcmp(splitted[0], "unset") == 0)
-				unset(coque_data->env_var, splitted);
-			else if (ft_strcmp(splitted[0], "pwd") == 0)
-				pwd();
-			else if (ft_strcmp(splitted[0], "cd") == 0)
-				cd(coque_data->env_var, splitted);
-			else
-				ft_exec(splitted, coque_data->env_var);
-		}
+			ft_execute(coque_data, parsed_tree);
 		d_tab_free(splitted);
 		s_free(prompt);
 	}

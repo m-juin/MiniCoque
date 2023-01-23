@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:42:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 15:54:47 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 12:05:15 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_bool	check_newline(char *arg)
 			return (TRUE);
 	}
 	else
-		return (FALSE);
+		return (TRUE);
 }
 
 int	echo(char **args)
