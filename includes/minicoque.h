@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 17:06:28 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 10:39:09 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ typedef struct s_token {
 	int				token_type;
 }	t_token;
 
+typedef struct s_btree {
+	char			**tab_str;
+	int				type;
+	struct s_btree	*left;
+	struct s_btree	*right;
+}				t_btree;
+
 typedef struct s_env_var
 {
 	char				*name;
@@ -51,12 +58,18 @@ typedef struct s_minicoque
 	t_env_var	*env_var;
 }	t_minicoque;
 
+/*	main	*/
+
+char	**token_to_array(t_token **token);
+size_t	strtab_len(char **str_tab);
+
 /*	env_clst_utils.c	*/
 
 int			get_env_size(t_env_var *env);
 char *const	*env_to_array(t_env_var *env);
+char	*get_cmds(char *av, char *const *envp);
 
-/*	echo.c	*/
+	/*	echo.c	*/
 
 int			echo(char **args);
 
@@ -118,5 +131,9 @@ int			digit_str(char *str);
 /*	counting_functions.c	*/
 
 int			token_count(char *input);
+
+/*	parsing.c	*/
+
+t_btree	*parsing(t_token **token_tab, t_env_var *var);
 
 #endif
