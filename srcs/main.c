@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 12:18:14 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 15:19:01 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,153 +60,6 @@ static char	*get_prompt(void)
 	return (prompt);
 }
 
-void	print_array(char * const *array)
-{
-	int	pos;
-
-	pos = 0;
-	while (array[pos] != NULL)
-	{
-		printf("%s\n", array[pos]);
-		pos++;
-	}
-}
-
-size_t	strtab_len(char **str_tab)
-{
-	int	i;
-
-	i = 0;
-	while (str_tab[i])
-		i++;
-	return (i);
-}
-
-static char	**get_splitted_envp(char *const *envp)
-{
-	int		i;
-	char	**splitted_envp;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	splitted_envp = ft_split(envp[i] + 5, ':');
-	return (splitted_envp);
-}
-
-static char	**get_paths(char *const *envp)
-{
-	int		i;
-	char	**paths;
-	char	**splitted_envp;
-
-	splitted_envp = get_splitted_envp(envp);
-	if (!splitted_envp)
-		return (NULL);
-	paths = malloc((strtab_len(splitted_envp) + 1) * sizeof(char *));
-	if (!paths)
-	{
-		d_tab_free(splitted_envp);
-		return (NULL);
-	}
-	i = 0;
-	while (splitted_envp[i])
-	{
-		paths[i] = ft_strjoin(splitted_envp[i], "/");
-		i++;
-	}
-	paths[i] = 0;
-	d_tab_free(splitted_envp);
-	return (paths);
-}
-
-char	*get_cmds(char *av, char *const *envp)
-{
-	char	**paths;
-	char	*cmd;
-	int		i;
-
-	paths = get_paths(envp);
-	i = 0;
-	while (paths[i])
-	{
-		cmd = ft_strjoin(paths[i], av);
-		if (access(cmd, X_OK) == 0)
-		{
-			d_tab_free(paths);
-			return (cmd);
-		}
-		free(cmd);
-		i++;
-	}
-	d_tab_free(paths);
-	return (NULL);
-}
-
-void	ft_exec(char **splitted, t_env_var *env)
-{
-	pid_t	pid;
-	int		status;
-	
-	pid = fork();
-	if (pid < 0)
-		return ;
-	if (pid == 0)
-		execve(get_cmds(splitted[0], env_to_array(env)), splitted, env_to_array(env));
-	else
-		waitpid(pid, &status, 0);
-}
-
-char **token_to_array(t_token **token)
-{
-	char	**array;
-	size_t	size;
-	size_t	pos;
-
-	size = 0;
-	if (token == NULL)
-		return (NULL);
-	while (token[size] != NULL)
-		size++;
-	if (size == 0)
-		return (NULL);
-	array = malloc((size + 1) * sizeof(char *));
-	if (array == NULL)
-		return (NULL);
-	pos = 0;
-	while (token[pos] != NULL)
-	{
-		array[pos] = strndup(token[pos]->str, -1);
-		pos++;
-	}
-	array[pos] = NULL;
-	return (array);
-}
-
-void	ft_execute(t_minicoque *data, t_btree *tree)
-{
-	if (ft_strcmp(tree->right->tab_str[0], "exit") == 0)
-		ft_exit(tree->right->tab_str, data);
-	else if (ft_strcmp(tree->right->tab_str[0], "echo") == 0)
-		echo(tree->right->tab_str);
-	else if (ft_strcmp(tree->right->tab_str[0], "env") == 0)
-		env(data->env_var, tree->right->tab_str);
-	else if (ft_strcmp(tree->right->tab_str[0], "export") == 0)
-		export(data->env_var, tree->right->tab_str);
-	else if (ft_strcmp(tree->right->tab_str[0], "unset") == 0)
-		unset(data->env_var, tree->right->tab_str);
-	else if (ft_strcmp(tree->right->tab_str[0], "pwd") == 0)
-		pwd();
-	else if (ft_strcmp(tree->right->tab_str[0], "cd") == 0)
-		cd(data->env_var, tree->right->tab_str);
-	else
-		ft_exec(tree->right->tab_str, data->env_var);
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	char		*readed;
@@ -236,7 +89,7 @@ int	main(int ac, char **av, char **envp)
 		token_input = lexer(readed, coque_data->env_var);
 		parsed_tree	= parsing(token_input, coque_data->env_var);
 		if (parsed_tree != NULL)
-			ft_execute(coque_data, parsed_tree);
+			ft_read_tree(coque_data, parsed_tree);
 		s_free(prompt);
 	}
 }
