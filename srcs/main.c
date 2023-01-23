@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 11:53:55 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 12:18:14 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,6 @@ void	ft_execute(t_minicoque *data, t_btree *tree)
 int	main(int ac, char **av, char **envp)
 {
 	char		*readed;
-	char		**splitted;
 	char		*prompt;
 	t_minicoque	*coque_data;
 	t_token		**token_input;
@@ -236,10 +235,8 @@ int	main(int ac, char **av, char **envp)
 			add_history(readed);
 		token_input = lexer(readed, coque_data->env_var);
 		parsed_tree	= parsing(token_input, coque_data->env_var);
-		splitted = token_to_array(token_input);
-		if (splitted != NULL && splitted[0] != NULL)
+		if (parsed_tree != NULL)
 			ft_execute(coque_data, parsed_tree);
-		d_tab_free(splitted);
 		s_free(prompt);
 	}
 }
