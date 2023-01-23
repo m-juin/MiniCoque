@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 10:39:09 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:29:29 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int			cd(t_env_var *env, char **args);
 
 /*	exit.c	*/
 
-void		ft_exit(char **args);
+void		ft_exit(char **args, t_minicoque *data);
 
 /*	t_env_utils.c */
 
@@ -107,6 +107,12 @@ t_env_var	*get_env(t_env_var *lst, char *path);
 /*	env_last_exit	*/
 
 int			last_exit(t_bool get, int error);
+
+/*	free_utils.c	*/
+
+void	d_tab_free(char **elem);
+void	s_free(void *elem);
+void	free_coque_data(t_minicoque *data);
 
 /*	lexer.c	*/
 
