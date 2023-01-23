@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 17:05:56 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 11:14:21 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_minicoque	*init(char **envp)
 		pos++;
 	}
 	replace_value(get_env(data->env_var, "_"), "]");
+	
 	return (data);
 }
 
@@ -109,7 +110,7 @@ static char	**get_paths(char *const *envp)
 	paths = malloc((strtab_len(splitted_envp) + 1) * sizeof(char *));
 	if (!paths)
 	{
-		//free_tab(splitted_envp);
+		d_tab_free(splitted_envp);
 		return (NULL);
 	}
 	i = 0;
@@ -119,7 +120,7 @@ static char	**get_paths(char *const *envp)
 		i++;
 	}
 	paths[i] = 0;
-	//free_tab(splitted_envp);
+	d_tab_free(splitted_envp);
 	return (paths);
 }
 
@@ -136,13 +137,13 @@ static char	*get_cmds(char *av, char *const *envp)
 		cmd = ft_strjoin(paths[i], av);
 		if (access(cmd, X_OK) == 0)
 		{
-			//free_tab(paths);
+			d_tab_free(paths);
 			return (cmd);
 		}
 		free(cmd);
 		i++;
 	}
-	//free_tab(paths);
+	d_tab_free(paths);
 	return (NULL);
 }
 
@@ -155,9 +156,7 @@ void	ft_exec(char **splitted, t_env_var *env)
 	if (pid < 0)
 		return ;
 	if (pid == 0)
-	{
 		execve(get_cmds(splitted[0], env_to_array(env)), splitted, env_to_array(env));
-	}
 	else
 		waitpid(pid, &status, 0);
 }
@@ -207,7 +206,10 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		readed = readline(prompt);
 		if (readed == NULL)
-			ft_exit(0);
+		{
+			s_free(prompt);
+			ft_exit(0, coque_data);
+		}
 		signal(SIGQUIT, signalhandler);
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
@@ -216,7 +218,10 @@ int	main(int ac, char **av, char **envp)
 		if (splitted != NULL && splitted[0] != NULL)
 		{
 			if (ft_strcmp(splitted[0], "exit") == 0)
-				ft_exit(splitted);
+			{
+				s_free(prompt);
+				ft_exit(splitted, coque_data);
+			}
 			else if (ft_strcmp(splitted[0], "echo") == 0)
 				echo(splitted);
 			else if (ft_strcmp(splitted[0], "env") == 0)
@@ -232,6 +237,7 @@ int	main(int ac, char **av, char **envp)
 			else
 				ft_exec(splitted, coque_data->env_var);
 		}
-		free(prompt);
+		d_tab_free(splitted);
+		s_free(prompt);
 	}
 }

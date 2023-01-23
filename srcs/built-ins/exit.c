@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:18:38 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 09:40:45 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 11:27:28 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,14 @@ static t_bool	isvalidnum(char *arg)
 	return (isvalidlong(&arg[start], "9223372036854775807"));
 }
 
-void	ft_exit(char **args)
+void	ft_exit(char **args, t_minicoque *data)
 {
 	long long	tmp;
 
 	ft_printf_fd(1, "exit\n");
-	if (args[1] == NULL)
-		exit(0);
+	tmp = -1;
+	if (args == NULL || args[1] == NULL)
+		tmp = 0;
 	else if (args[2] != NULL)
 	{
 		ft_printf_fd(2, "exit: too many arguments\n");
@@ -91,9 +92,11 @@ void	ft_exit(char **args)
 	else if (isvalidnum(args[1]) == FALSE)
 	{
 		ft_printf_fd(2, "exit: %s: numeric argument required\n", args[1]);
-		exit(2);
+		tmp = 2;
 	}
-	tmp = ft_atoll(args[1]);
-	tmp = tmp % 256;
+	if (tmp == -1)
+		tmp = ft_atoll(args[1]) % 256;
+	free_coque_data(data);
+	d_tab_free(args);
 	exit(tmp);
 }
