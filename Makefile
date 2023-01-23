@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/23 10:53:14 by mjuin            ###   ########.fr        #
+#    Updated: 2023/01/23 11:29:15 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRC =	srcs/main.c \
 		srcs/parsing/token_utils.c \
 		srcs/parsing/param_expansion_function.c \
 		srcs/parsing/parsing_utils.c \
-		srcs/parsing/counting_functions.c
+		srcs/parsing/counting_functions.c \
+		srcs/parsing/parsing.c
 
 LIBFT = libft/libft.a
 

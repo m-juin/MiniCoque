@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 11:14:21 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 11:29:58 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static char	**get_paths(char *const *envp)
 	return (paths);
 }
 
-static char	*get_cmds(char *av, char *const *envp)
+char	*get_cmds(char *av, char *const *envp)
 {
 	char	**paths;
 	char	*cmd;
@@ -194,6 +194,7 @@ int	main(int ac, char **av, char **envp)
 	char		*prompt;
 	t_minicoque	*coque_data;
 	t_token		**token_input;
+	t_btree		*parsed_tree;
 
 	ac = ac - 1;
 	av[0] = 0;
@@ -214,6 +215,7 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
 		token_input = lexer(readed, coque_data->env_var);
+		parsed_tree	= parsing(token_input, coque_data->env_var);
 		splitted = token_to_array(token_input);
 		if (splitted != NULL && splitted[0] != NULL)
 		{
