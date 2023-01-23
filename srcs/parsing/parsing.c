@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/23 10:53:33 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:54:13 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ void	free_tab(char **str_tab)
 	free(str_tab);
 }
 
+int	tab_len(t_token **tab)
+{
+	int	len;
+
+	len = 0;
+	while (tab[len])
+		len++;
+	return (len);
+}
 char	**tab_dup(char	**tab_str)
 {
 	char	**new_tab;
@@ -97,13 +106,58 @@ static	t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 	return (new_node);
 }
 
+static t_token	**sub_token_tab(t_token **token_tab, int start, int len)
+{
+	t_token	**sub_tab;
+	int		i;
+
+	sub_tab = ft_calloc(len + 1, sizeof(t_token *));
+	if (!sub_tab)
+		return (NULL);
+	i = 0;
+	while (token_tab[start + i] && i < len)
+	{
+		sub_tab[i] = ft_calloc(1, sizeof(t_token));
+		if (!sub_tab[i])
+		{
+			free_token(sub_tab);
+			return (NULL);
+		}
+		sub_tab[i]->str = ft_strdup(token_tab[start + i]->str);
+		if (!sub_tab[i]->str)
+		{
+			free_token(sub_tab);
+			return (NULL);
+		}
+		sub_tab[i]->token_type = typify(sub_tab[i]->str[0]);
+		i++;
+	}
+	sub_tab[i] = NULL;
+	return (sub_tab);
+}
+
 t_btree	*parsing(t_token **token_tab, t_env_var *env)
 {
 	t_btree	*parsed_tree;
+	int		i;
 
 	parsed_tree = init_tree_node();
-	parsed_tree->type = LITERAL;
-	parsed_tree->right = insert_node(token_tab);
-	parsed_tree->left = insert_cmd_node(token_tab, env);
+	i = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->str[0] == '|')
+		{
+			parsed_tree->left = parsing(sub_token_tab(token_tab, 0, i), env);
+			parsed_tree->right = parsing(sub_token_tab(token_tab, i + 1, tab_len(token_tab) - i), env);
+			break ;
+		}
+		i++;
+	}
+	if (!token_tab[i])
+	{
+		parsed_tree->type = LITERAL;
+		parsed_tree->right = insert_node(token_tab);
+		parsed_tree->left = insert_cmd_node(token_tab, env);
+	}
 	return (parsed_tree);
 }
