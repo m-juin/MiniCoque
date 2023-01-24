@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 13:50:27 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:48:42 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,11 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 					(*i)++;
 			var = get_env(env, ft_substr(input, start_param, *i - start_param));
 			if (var)
-			{
 				s = ft_strjoin(s, var->value);
-				free(var);
-			}
 			start = *i;
 		}
-		(*i)++;
+		if (input[*i] != '\"')
+			(*i)++;
 	}	
 	if ((!input[*i] || input[*i] == '|') && !s)
 	{
