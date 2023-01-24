@@ -6,27 +6,27 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/20 10:51:25 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/24 12:02:25 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static void	print_elem(t_env_var env)
+static void	print_elem(t_env_var env, int fd)
 {
-	ft_printf_fd(1, "declare -x %s", env.name);
+	ft_printf_fd(fd, "declare -x %s", env.name);
 	if (env.declared == 1)
 	{
 		if (env.value == NULL)
-			ft_printf_fd(1, "=\"\"\n");
+			ft_printf_fd(fd, "=\"\"\n");
 		else
-			ft_printf_fd(1, "=\"%s\"\n", env.value);
+			ft_printf_fd(fd, "=\"%s\"\n", env.value);
 	}
 	else
-		ft_printf_fd(1, "\n");
+		ft_printf_fd(fd, "\n");
 }
 
-static void	print_export(t_env_var *env)
+static void	print_export(t_env_var *env, int fd)
 {
 	int			cur_index;
 	int			max_index;
@@ -42,7 +42,7 @@ static void	print_export(t_env_var *env)
 		{
 			if (env->index == cur_index)
 			{
-				print_elem(*env);
+				print_elem(*env, fd);
 				cur_index++;
 			}
 			env = env->next;
@@ -81,14 +81,14 @@ static int	handle_arg(t_env_var *env, char *arg)
 		return (1);
 }
 
-int	export(t_env_var *env, char **args)
+int	export(t_env_var *env, char **args, int fds[2])
 {
 	int			posx;
 	int			ret;
 
 	if (args[1] == NULL)
 	{
-		print_export(env);
+		print_export(env, fds[1]);
 		last_exit(FALSE, 0);
 		return (0);
 	}

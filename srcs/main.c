@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 15:19:01 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 16:47:52 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	main(int ac, char **av, char **envp)
 		token_input = lexer(readed, coque_data->env_var);
 		parsed_tree	= parsing(token_input, coque_data->env_var);
 		if (parsed_tree != NULL)
-			ft_read_tree(coque_data, parsed_tree);
+			init_tree_exec(coque_data, parsed_tree);
 		s_free(prompt);
 	}
 }
