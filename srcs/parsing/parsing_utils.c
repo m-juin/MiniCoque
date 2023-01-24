@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 13:57:31 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 16:30:48 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:24:46 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ int	typify(int c)
 		return (DOLLAR);
 	else if (c == '<' || c == '>')
 		return (REDIRECT);
+	else if (c == '\'')
+		return (S_QUOTE);
+	else if (c == '\"')
+		return (D_QUOTE);
 	else if (c == '\0')
 		return (NUULL);
 	return (LITERAL);

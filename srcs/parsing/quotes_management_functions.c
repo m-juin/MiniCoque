@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 13:03:16 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:50:27 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 			s = ft_substr(input, start, *i - start);
 			(*i)++;
 			start_param = *i;
-			while (input[*i] && (typify(input[*i]) != BLANK && input[*i] != '|' && input[*i] == '\"' && input[*i] == '\''))
+			while (input[*i] && (typify(input[*i]) != BLANK && input[*i] != '|' && input[*i] != '\"' && input[*i] != '\'' && input[*i] != '$'))
 					(*i)++;
-			var = get_env(env, ft_substr(input, start_param, *i - start_param - 1));
-			if	(var)
+			var = get_env(env, ft_substr(input, start_param, *i - start_param));
+			if (var)
 			{
 				s = ft_strjoin(s, var->value);
 				free(var);
@@ -72,9 +72,8 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 
 char	*quotes_management(char *input, t_env_var *env, int *i)
 {
-	char	*s;
+	char	*s; 
 
-	(void)env;
 	if (input[*i] == '\'')
 		s = simple_q(input, i);
 	else if (input[*i] == '\"')

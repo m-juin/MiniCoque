@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 10:58:21 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:31:52 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	token_join_part2(t_token *token, char *input,
 	char	*tmp;
 
 	start = *i;
-	while (input[*i] && (typify(input[*i]) == LITERAL || input[*i] == '$'))
+	while (input[*i] && (typify(input[*i]) == LITERAL || input[*i] == '\'' || input[*i] == '\"' || input[*i] == '$'))
 	{
 		if (input[*i] == '\'' || input[*i] == '\"')
 		{

@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 15:16:38 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:27:15 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,17 @@ static void	dollar_count(char *input, int *i, int *nb)
 
 static void	token_count_part2(char *input, int *i, int *nb)
 {
+	if (input[*i] == '\'')
+	{
+		(*i)++;
+		while (input[*i] && input[*i] != '\'')
+			(*i)++;
+		(*nb)++;
+		if (!input[*i])
+			return ;
+		else
+			(*i)++;
+	}
 	if (typify(input[*i]) == DOLLAR)
 		dollar_count(input, i, nb);
 	else if (typify(input[*i]) == LITERAL)
