@@ -6,109 +6,77 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 15:17:59 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/23 16:05:38 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static char	**get_splitted_envp(char *const *envp)
+static int	is_builtin(char	*str)
 {
-	int		i;
-	char	**splitted_envp;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	splitted_envp = ft_split(envp[i] + 5, ':');
-	return (splitted_envp);
+	if (ft_strcmp(str, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(str, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "export") == 0)
+		return (1);
+	else if (ft_strcmp(str, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(str, "env") == 0)
+		return (1);
+	else if (ft_strcmp(str, "exit") == 0)
+		return (1);
+	return (0);
 }
 
-size_t	strtab_len(char **str_tab)
+t_btree	*init_tree_node(void)
 {
-	int	i;
+	t_btree	*btree;
 
-	i = 0;
-	while (str_tab[i])
-		i++;
-	return (i);
+	btree = malloc(sizeof(t_btree));
+	if (!btree)
+		return (NULL);
+	btree->tab_str = NULL;
+	btree->left = NULL;
+	btree->right = NULL;
+	return (btree);
 }
 
-static char	**get_paths(char *const *envp)
+t_btree	*insert_node(t_token **token_array)
 {
-	int		i;
-	char	**paths;
-	char	**splitted_envp;
+	t_btree	*new_node;
 
-	splitted_envp = get_splitted_envp(envp);
-	if (!splitted_envp)
+	new_node = init_tree_node();
+	if (!new_node)
 		return (NULL);
-	paths = malloc((strtab_len(splitted_envp) + 1) * sizeof(char *));
-	if (!paths)
+	new_node->tab_str = token_to_array(token_array);
+	if (!new_node->tab_str)
 	{
-		d_tab_free(splitted_envp);
+		free(new_node);
 		return (NULL);
 	}
-	i = 0;
-	while (splitted_envp[i])
-	{
-		paths[i] = ft_strjoin(splitted_envp[i], "/");
-		i++;
-	}
-	paths[i] = 0;
-	d_tab_free(splitted_envp);
-	return (paths);
+	return (new_node);
 }
 
-char	*get_cmds(char *av, char *const *envp)
+t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 {
-	char	**paths;
-	char	*cmd;
-	int		i;
+	t_btree	*new_node;
 
-	paths = get_paths(envp);
-	i = 0;
-	while (paths[i])
+	new_node = init_tree_node();
+	if (!new_node)
+		return (NULL);
+	new_node->tab_str = malloc(sizeof(char *) * 2);
+	if (!new_node->tab_str)
 	{
-		cmd = ft_strjoin(paths[i], av);
-		if (access(cmd, X_OK) == 0)
-		{
-			d_tab_free(paths);
-			return (cmd);
-		}
-		free(cmd);
-		i++;
+		free(new_node);
+		return (NULL);
 	}
-	d_tab_free(paths);
-	return (NULL);
-}
-
-char **token_to_array(t_token **token)
-{
-	char	**array;
-	size_t	size;
-	size_t	pos;
-
-	size = 0;
-	if (token == NULL)
-		return (NULL);
-	while (token[size] != NULL)
-		size++;
-	if (size == 0)
-		return (NULL);
-	array = malloc((size + 1) * sizeof(char *));
-	if (array == NULL)
-		return (NULL);
-	pos = 0;
-	while (token[pos] != NULL)
-	{
-		array[pos] = strndup(token[pos]->str, -1);
-		pos++;
-	}
-	array[pos] = NULL;
-	return (array);
+	if (is_builtin(array[0]->str) == 1)
+		new_node->tab_str[0] = ft_strdup(array[0]->str);
+	else
+		new_node->tab_str[0] = get_cmds(array[0]->str, env_to_array(env));
+	new_node->tab_str[1] = NULL;
+	return (new_node);
 }

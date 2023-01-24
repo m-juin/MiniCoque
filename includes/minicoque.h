@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 11:30:37 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/24 12:53:26 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,18 +104,23 @@ int				last_exit(t_bool get, int error);
 
 /*	free_utils.c	*/
 
-void			d_tab_free(char **elem);
-void			s_free(void *elem);
-void			free_coque_data(t_minicoque *data);
+void	free_tab(char **str_tab);
+void	d_tab_free(char **elem);
+void	s_free(void *elem);
+void	free_coque_data(t_minicoque *data);
 
 /*	tree_exec_utils.c	*/
 
 void			init_tree_exec(t_minicoque *data, t_btree *root);
 
-/*	tree_creation_utils.c	*/
+/*	get_cmd_utils.c	*/
 
 char			**token_to_array(t_token **token);
 char			*get_cmds(char *av, char *const *envp);
+
+/*	tab_utils.c	*/
+
+char			**tab_dup(char	**tab_str);
 size_t			strtab_len(char **str_tab);
 
 /*	lexer.c	*/
@@ -128,6 +133,7 @@ void			free_token(t_token **token_tab);
 t_token			**init_tokentab(char *input);
 void			pipe_token(t_token **token_tab, int *i, int *nb);
 void			redirect_token(t_token **token_tab, char *input, int *i, int *nb);
+int				token_tab_len(t_token **tab);
 
 /*	exec_utils.c	*/
 
@@ -152,5 +158,15 @@ int				token_count(char *input);
 /*	parsing.c	*/
 
 t_btree			*parsing(t_token **token_tab, t_env_var *var);
+
+/*	tree_creation_utils.c	*/
+
+t_btree			*init_tree_node(void);
+t_btree			*insert_node(t_token **token_array);
+t_btree			*insert_cmd_node(t_token **array, t_env_var *env);
+
+/*	quotes_magement_functions.c	*/
+
+char	*quotes_management(char *input, t_env_var *env, int *i);
 
 #endif
