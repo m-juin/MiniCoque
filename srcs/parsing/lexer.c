@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 09:32:29 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 10:58:21 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ static t_token	**token_join(char *input, t_env_var *env)
 			redirect_token(token_tab, &input[i], &i, &nb);
 		else
 			token_join_part2(token_tab[nb], input, env, &i);
-		if (token_tab[nb])
-			token_tab[nb]->token_type = typify(token_tab[nb]->str[0]);
+		if (!token_tab[nb]->str)
+			return (NULL);
 		nb++;
 	}
 	return (token_tab);
@@ -93,11 +93,20 @@ static t_token	**token_join(char *input, t_env_var *env)
 
 t_token	**lexer(char *input, t_env_var *env)
 {
-	t_token			**token_tab;
+	t_token	**token_tab;
+	int		i;
 
+	i = 0;
 	if (!input)
 		return (NULL);
 	token_tab = token_join(input, env);
+	if (!token_tab)
+		return (NULL);
+	while (token_tab[i])
+	{
+		token_tab[i]->token_type = typify(token_tab[i]->str[0]);
+		i++;
+	}
 	if (!token_tab)
 		return (NULL);
 	return (token_tab);

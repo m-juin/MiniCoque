@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tree_creation_utils.c                              :+:      :+:    :+:   */
+/*   get_cmd_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 15:44:12 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:16:12 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_cmds(char *av, char *const *envp)
 		i++;
 	}
 	d_tab_free(paths);
-	return (NULL);
+	return (av);
 }
 
 char **token_to_array(t_token **token)
