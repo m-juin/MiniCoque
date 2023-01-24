@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 12:20:10 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/24 15:34:23 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	ft_exec(char **splitted, t_env_var *env, int fds[2])
 			close(fds[1]);
 		}
 		ret = execve(get_cmds(splitted[0], env_to_array(env)), splitted, env_to_array(env));
+		exit (1);
 	}
 	else
 		wait(NULL);
@@ -40,7 +41,9 @@ static int	ft_exec(char **splitted, t_env_var *env, int fds[2])
 
 void	ft_execute(t_minicoque *data, t_btree *tree, int fds[2])
 {
-	if (ft_strcmp(tree->left->tab_str[0], "exit") == 0)
+	if (tree->left->tab_str == NULL || tree->left->tab_str[0] == NULL)
+		return ;
+	else if (ft_strcmp(tree->left->tab_str[0], "exit") == 0)
 		ft_exit(tree->right->tab_str, data);
 	else if (ft_strcmp(tree->left->tab_str[0], "echo") == 0)
 		echo(tree->right->tab_str, fds);
@@ -61,7 +64,7 @@ void	ft_execute(t_minicoque *data, t_btree *tree, int fds[2])
 void	last_exec(t_minicoque *data, t_btree *tree, int fds[2])
 {
 	close(fds[1]);
-	fds[1] = -1;
+	fds[1] = 1;
 	ft_execute(data, tree, fds);
 	close(fds[0]);
 }
@@ -79,6 +82,6 @@ void	ft_first_exec(t_minicoque *data, t_btree *tree, int fds[2])
 void	child_cmd(int fds[2], t_minicoque *data, t_btree *tree)
 {
 	ft_execute(data, tree, fds);
-	close(fds[0]);
-	close(fds[1]);
+	//close(fds[0]);
+	//close(fds[1]);
 }

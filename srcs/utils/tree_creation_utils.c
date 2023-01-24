@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 16:05:38 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:43:31 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	is_builtin(char	*str)
+int	is_builtin(char	*str)
 {
 	if (ft_strcmp(str, "echo") == 0)
 		return (1);
