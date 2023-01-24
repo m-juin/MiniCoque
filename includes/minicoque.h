@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 16:49:12 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 12:53:26 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,15 @@ char *const		*env_to_array(t_env_var *env);
 
 /*	echo.c	*/
 
-int				echo(char **args);
+int				echo(char **args, int fds[2]);
 
 /*	env.c	*/
 
-int				env();
+int				env(t_env_var *env_data, char **args, int fds[2]);
 
 /*	export.c	*/
 
-int				export(t_env_var *env, char **args);
+int				export(t_env_var *env, char **args, int fds[2]);
 
 /*	unset.c	*/
 
@@ -81,7 +81,7 @@ int				unset(t_env_var *env, char **args);
 
 /*	pwd.c	*/
 
-int				pwd(void);
+int				pwd(int fds[2]);
 
 /*	cd.c	*/
 
@@ -90,11 +90,6 @@ int				cd(t_env_var *env, char **args);
 /*	exit.c	*/
 
 void			ft_exit(char **args, t_minicoque *data);
-
-/*	exec_utils.c	*/
-
-void			ft_exec(char **splitted, t_env_var *env);
-void			ft_execute(t_minicoque *data, t_btree *tree);
 
 /*	t_env_utils.c */
 
@@ -116,7 +111,7 @@ void	free_coque_data(t_minicoque *data);
 
 /*	tree_exec_utils.c	*/
 
-void	ft_read_tree(t_minicoque *data, t_btree *root);
+void			init_tree_exec(t_minicoque *data, t_btree *root);
 
 /*	get_cmd_utils.c	*/
 
@@ -139,6 +134,13 @@ t_token			**init_tokentab(char *input);
 void			pipe_token(t_token **token_tab, int *i, int *nb);
 void			redirect_token(t_token **token_tab, char *input, int *i, int *nb);
 int				token_tab_len(t_token **tab);
+
+/*	exec_utils.c	*/
+
+void			last_exec(t_minicoque *data, t_btree *tree, int fds[2]);
+void			ft_first_exec(t_minicoque *data, t_btree *tree, int fds[2]);
+void			child_cmd(int fds[2], t_minicoque *data, t_btree *tree);
+void			ft_execute(t_minicoque *data, t_btree *tree, int fds[2]);
 
 /*	param_expansion_functions.c	*/
 

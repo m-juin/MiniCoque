@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:42:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 12:05:15 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/24 11:46:23 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ static t_bool	check_newline(char *arg)
 		return (TRUE);
 }
 
-int	echo(char **args)
+int	echo(char **args, int fds[2])
 {
 	int	pos;
 	int	newline;
 
 	if (args[1] == NULL)
 	{
-		printf("\n");
+		ft_printf_fd(fds[1], "\n");
 		last_exit(FALSE, 0);
 		return (0);
 	}
@@ -48,13 +48,13 @@ int	echo(char **args)
 		pos = 1;
 	while (args[pos])
 	{
-		printf("%s", args[pos]);
+		ft_printf_fd(fds[1], "%s", args[pos]);
 		pos++;
 		if (args[pos] != NULL)
-			printf(" ");
+			ft_printf_fd(fds[1], " ");
 	}
 	if (newline == TRUE)
-		printf ("\n");
+		ft_printf_fd (fds[1], "\n");
 	last_exit(FALSE, 0);
 	return (0);
 }
