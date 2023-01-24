@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/19 13:37:40 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/24 16:01:05 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	cd(t_env_var *env, char **args)
 	}
 	ret = chdir(args[1]);
 	if (ret == -1)
-		ft_printf_fd(2, "cd: %s No such file or directory\n", args[1]);
+		ft_printf_fd(2, "cd: %s: No such file or directory\n", args[1]);
 	else
 	{
 		tmp = get_env(env, "PWD");

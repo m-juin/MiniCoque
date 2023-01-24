@@ -6,19 +6,19 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 13:46:57 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/24 17:25:26 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
 static void	ft_read_tree(t_minicoque *data, t_btree *root, int fds[2])
-{
+{	
 	if (root == NULL)
 		return ;
 	while (root->type == PIPE)
 	{
-		child_cmd(fds, data, root);
+		child_cmd(fds, data, root->left);
 		root = root->right;
 	}
 	last_exec(data, root, fds);
