@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:35:32 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:40:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int				last_exit(t_bool get, int error);
 
 /*	free_utils.c	*/
 
-void	free_tab(char **str_tab);
 void	d_tab_free(char **elem);
 void	s_free(void *elem);
 void	free_coque_data(t_minicoque *data);

@@ -6,24 +6,11 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:38:43 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 11:41:12 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
-
-void	free_tab(char **str_tab)
-{
-	int	i;
-
-	i = 0;
-	while (str_tab[i])
-	{
-		free(str_tab[i]);
-		i++;
-	}
-	free(str_tab);
-}
 
 void	s_free(void *elem)
 {
