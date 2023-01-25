@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:31:30 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 11:35:54 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_exec(char **splitted, t_env_var *env, int fds[2], int fd)
 {
-	int ret;
+	int	ret;
 	int	pid;
 
 	ret = 0;
@@ -31,7 +31,8 @@ static int	ft_exec(char **splitted, t_env_var *env, int fds[2], int fd)
 			dup2(fds[1], 1);
 			close(fds[1]);
 		}
-		ret = execve(get_cmds(splitted[0], env_to_array(env)), splitted, env_to_array(env));
+		ret = execve(get_cmds(splitted[0], env_to_array(env)),
+				splitted, env_to_array(env));
 		exit (1);
 	}
 	else
@@ -48,7 +49,7 @@ void	ft_execute(t_minicoque *data, t_btree *tree, int fds[2], int fd)
 	else if (ft_strcmp(tree->left->tab_str[0], "echo") == 0)
 		echo(tree->right->tab_str, fds);
 	else if (ft_strcmp(tree->left->tab_str[0], "env") == 0)
-		 env(data->env_var, tree->right->tab_str, fds);
+		env(data->env_var, tree->right->tab_str, fds);
 	else if (ft_strcmp(tree->left->tab_str[0], "export") == 0)
 		export(data->env_var, tree->right->tab_str, fds);
 	else if (ft_strcmp(tree->left->tab_str[0], "unset") == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tab_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:37:37 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/23 15:43:48 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:40:13 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	**tab_dup(char	**tab_str)
 		new_tab[i] = ft_strdup(tab_str[i]);
 		if (!new_tab[i])
 		{
-			free_tab(new_tab);
+			d_tab_free(new_tab);
 			return (NULL);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:31:24 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 11:37:46 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ void	ft_check_error(t_btree *root)
 		if (is_builtin(root->left->right->tab_str[0]) == 0)
 		{
 			if (access(root->left->left->tab_str[0], F_OK) != 0)
-				ft_printf_fd(2, "%s: command not found\n", root->left->right->tab_str[0]);
+				ft_printf_fd(2, "%s: command not found\n",
+					root->left->right->tab_str[0]);
 			else if (access(root->left->left->tab_str[0], X_OK) != 0)
-				ft_printf_fd(2, "MiniCoque: %s: Permission denied\n", root->left->left->tab_str[0]);
+				ft_printf_fd(2, "MiniCoque: %s: Permission denied\n",
+					root->left->left->tab_str[0]);
 		}
 		root = root->right;
 	}
@@ -54,15 +56,16 @@ void	ft_check_error(t_btree *root)
 		if (access(root->left->tab_str[0], F_OK) != 0)
 			ft_printf_fd(2, "%s: command not found\n", root->right->tab_str[0]);
 		else if (access(root->left->tab_str[0], X_OK) != 0)
-			ft_printf_fd(2, "MiniCoque: %s: Permission denied\n", root->left->tab_str[0]);
+			ft_printf_fd(2, "MiniCoque: %s: Permission denied\n",
+				root->left->tab_str[0]);
 	}
 }
 
-void init_tree_exec(t_minicoque *data, t_btree *root)
+void	init_tree_exec(t_minicoque *data, t_btree *root)
 {
-	t_btree *rooted;
+	t_btree	*rooted;
 	int		fds[2];
-	
+
 	rooted = root;
 	fds[0] = 0;
 	fds[1] = 1;
