@@ -6,28 +6,11 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 15:36:09 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/24 16:43:49 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
-
-static int	pipe_count(char *input, int *i, int *nb)
-{
-	char	*err_msg;
-
-	err_msg = ft_strdup("minicoque: syntax error nearunexpected token");
-	if (input[*i + 1] == '|')
-	{
-		ft_printf_fd(2, "%s `|'\n", err_msg);
-		free(err_msg);
-		return (-1);
-	}
-	(*nb)++;
-	(*i)++;
-	free(err_msg);
-	return (0);
-}
 
 static int	redirect_count(char *input, int *i, int *nb)
 {
@@ -48,12 +31,13 @@ static int	redirect_count(char *input, int *i, int *nb)
 	}
 	(*nb)++;
 	if ((input[*i] == '<' && input[*i + 1] == '>')
-			|| input[*i] == input[*i + 1])
+		|| input[*i] == input[*i + 1])
 		(*i)++;
 	(*i)++;
 	free(err_msg);
 	return (0);
 }
+
 static void	d_quote_count(char *input, int *i, int *nb)
 {
 	(*i)++;
@@ -95,7 +79,7 @@ static void	token_count_part2(char *input, int *i, int *nb)
 	else if (typify(input[*i]) == LITERAL)
 	{
 		while (input[*i] && (typify(input[*i]) == LITERAL || typify(input[*i])
-					== D_QUOTE || typify(input[*i]) == D_QUOTE))
+				== D_QUOTE || typify(input[*i]) == D_QUOTE))
 			(*i)++;
 		if (typify(input[*i]) != DOLLAR)
 			(*nb)++;

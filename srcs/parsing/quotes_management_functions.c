@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 15:48:42 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 10:10:31 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,37 @@ static char	*simple_q(char *input, int *i)
 	return (s);
 }
 
+static char	*quoted_var(char *input, int *i, int start, t_env_var *env)
+{
+	char		*s;
+	int			start_param;
+	t_env_var	*var;
+
+	s = ft_substr(input, start, *i - start);
+	(*i)++;
+	start_param = *i;
+	while (input[*i] && (typify(input[*i]) != BLANK && input[*i] != '|'
+			&& input[*i] != '\"' && input[*i] != '\''
+			&& input[*i] != '$'))
+		(*i)++;
+	var = get_env(env, ft_substr(input, start_param, *i - start_param));
+	if (var)
+		s = ft_strjoin(s, var->value);
+	(*i)++;
+	return (s);
+}
+
 static char	*double_q(char *input, int *i, t_env_var *env)
 {
-	char	*s;
-	t_env_var	*var;
-	int		start;
-	int		start_param;
+	char		*s;
+	int			start;
 
 	(*i)++;
 	start = *i;
 	while (input[*i] && (input[*i] != '\"' || input[*i] == '|'))
 	{
 		if (input[*i] == '$')
-		{
-			s = ft_substr(input, start, *i - start);
-			(*i)++;
-			start_param = *i;
-			while (input[*i] && (typify(input[*i]) != BLANK && input[*i] != '|' && input[*i] != '\"' && input[*i] != '\'' && input[*i] != '$'))
-					(*i)++;
-			var = get_env(env, ft_substr(input, start_param, *i - start_param));
-			if (var)
-				s = ft_strjoin(s, var->value);
-			start = *i;
-		}
+			s = quoted_var(input, i, start, env);
 		if (input[*i] != '\"')
 			(*i)++;
 	}	
@@ -64,13 +72,16 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	if (!s)
 		s = ft_substr(input, start, *i - start);
 	else
+	{
+		start = *i;
 		s = ft_strjoin(s, ft_substr(input, start, *i - start));
+	}
 	return (s);
 }
 
 char	*quotes_management(char *input, t_env_var *env, int *i)
 {
-	char	*s; 
+	char	*s;
 
 	if (input[*i] == '\'')
 		s = simple_q(input, i);

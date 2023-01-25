@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 13:43:56 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/24 16:44:43 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,10 @@ int				digit_str(char *str);
 /*	counting_functions.c	*/
 
 int				token_count(char *input);
+
+/*	counting_utils.c	*/
+
+int				pipe_count(char *input, int *i, int *nb);
 
 /*	parsing.c	*/
 
