@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 16:24:40 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:08:55 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,13 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 	{
 		(*i)++;
 		tmp = doll_management(&input[*i], env);
-		while (input[*i] && typify(input[*i]) == LITERAL)
+		if (input[*i] == '?')
 			(*i)++;
+		else
+		{
+			while (input[*i] && typify(input[*i]) == LITERAL)
+			(*i)++;
+		}
 		token->str = ft_strjoin(token->str, tmp);
 		free(tmp);
 	}

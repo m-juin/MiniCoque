@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/25 15:10:58 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:49:14 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*quoted_var(char *input, int *i, int *start, t_env_var *env)
 	return (s);
 }
 
-static char	*double_q_part2(char *input, int *i, int start, t_env_var *env)
+static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 {
 	char	*s;
 
@@ -58,11 +58,12 @@ static char	*double_q_part2(char *input, int *i, int start, t_env_var *env)
 	if (input[*i] == '$' && input[*i + 1] == '?')
 	{
 		s = ft_itoa(last_exit(TRUE, 0));
-		(*i)++;
+		(*i) += 2;
+		*start = *i;
 		return (s);
 	}
 	else if (input[*i] == '$' && typify(input[*i + 1]) == LITERAL)
-		s = quoted_var(input, i, &start, env);
+		s = quoted_var(input, i, start, env);
 	if (input[*i] != '\"')
 		(*i)++;
 	return (s);
@@ -74,8 +75,17 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	int			start;
 
 	start = *i;
-	while (input[*i] && (input[*i] != '\"' || input[*i] == '|'))
-		s = double_q_part2(input, i, start, env);
+	s = "";
+	while (input[*i] && input[*i] != '\"')
+	{	
+		if (input[*i] == '$')
+		{
+			s = ft_strjoin(s, ft_substr(input, start, *i - start));
+			s = ft_strjoin(s, double_q_part2(input, i, &start, env));
+		}
+		else
+			(*i)++;
+	}
 	if ((!input[*i] || input[*i] == '|') && !s)
 	{
 		ft_printf_fd(2, "minicoque: syntax error near unexpected `''\n");
