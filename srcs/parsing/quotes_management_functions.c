@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/25 10:10:31 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 10:23:36 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ static char	*simple_q(char *input, int *i)
 	return (s);
 }
 
-static char	*quoted_var(char *input, int *i, int start, t_env_var *env)
+static char	*quoted_var(char *input, int *i, int *start, t_env_var *env)
 {
 	char		*s;
 	int			start_param;
 	t_env_var	*var;
 
-	s = ft_substr(input, start, *i - start);
+	s = ft_substr(input, *start, *i - *start);
 	(*i)++;
 	start_param = *i;
 	while (input[*i] && (typify(input[*i]) != BLANK && input[*i] != '|'
@@ -46,7 +46,7 @@ static char	*quoted_var(char *input, int *i, int start, t_env_var *env)
 	var = get_env(env, ft_substr(input, start_param, *i - start_param));
 	if (var)
 		s = ft_strjoin(s, var->value);
-	(*i)++;
+	*start = *i;
 	return (s);
 }
 
@@ -60,7 +60,7 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	while (input[*i] && (input[*i] != '\"' || input[*i] == '|'))
 	{
 		if (input[*i] == '$')
-			s = quoted_var(input, i, start, env);
+			s = quoted_var(input, i, &start, env);
 		if (input[*i] != '\"')
 			(*i)++;
 	}	
@@ -73,7 +73,6 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 		s = ft_substr(input, start, *i - start);
 	else
 	{
-		start = *i;
 		s = ft_strjoin(s, ft_substr(input, start, *i - start));
 	}
 	return (s);
