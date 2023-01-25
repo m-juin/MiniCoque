@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 13:29:24 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:38:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	d_tab_free(char **elem)
 
 void	free_coque_data(t_minicoque *data)
 {
-	t_env_var *tmp;
+	t_env_var	*tmp;
+
 	while (data->env_var != NULL)
 	{
 		tmp = data->env_var->next;
