@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/25 10:23:36 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:51:11 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	start = *i;
 	while (input[*i] && (input[*i] != '\"' || input[*i] == '|'))
 	{
-		if (input[*i] == '$')
+		if (input[*i] == '$' && typify(input[*i + 1]) == LITERAL)
 			s = quoted_var(input, i, &start, env);
 		if (input[*i] != '\"')
 			(*i)++;
