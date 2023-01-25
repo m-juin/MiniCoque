@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:35:54 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 11:46:04 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static int	ft_exec(char **splitted, t_env_var *env, int fds[2], int fd)
 				splitted, env_to_array(env));
 		exit (1);
 	}
-	else
-		wait(NULL);
+	//else
+		//wait(NULL);
 	return (ret);
 }
 

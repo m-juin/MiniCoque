@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 12:02:25 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 11:58:53 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ static int	handle_arg(t_env_var *env, char *arg)
 		return (0);
 	}
 	else
+	{
+		ft_printf_fd(2, "export: `%s\': not a valid identifier\n", arg);
 		return (1);
+	}
 }
 
 int	export(t_env_var *env, char **args, int fds[2])
