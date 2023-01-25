@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:24:17 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:35:32 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,10 @@ int				token_tab_len(t_token **tab);
 
 /*	exec_utils.c	*/
 
-void			last_exec(t_minicoque *data, t_btree *tree, int fds[2]);
+void			last_exec(t_minicoque *data, t_btree *tree, int fds[2], int fd);
 void			ft_first_exec(t_minicoque *data, t_btree *tree, int fds[2]);
-void			child_cmd(int fds[2], t_minicoque *data, t_btree *tree);
-void			ft_execute(t_minicoque *data, t_btree *tree, int fds[2]);
+void			child_cmd(int fds[2], t_minicoque *data, t_btree *tree, int fd);
+void			ft_execute(t_minicoque *data, t_btree *tree, int fds[2], int fd);
 
 /*	param_expansion_functions.c	*/
 
