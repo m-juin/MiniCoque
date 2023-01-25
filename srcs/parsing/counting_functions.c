@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/25 13:41:13 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:47:37 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static void	d_quote_count(char *input, int *i, int *nb)
 	(*i)++;
 	while (input[*i] && input[*i] != '\"')
 		(*i)++;
-	if (typify(input[*i] != LITERAL && input[*i] != '\'' && input[*i] != '\"'))
+	if (typify(input[*i + 1]) != LITERAL && input[*i + 1] != '\''
+		&& input[*i + 1] != '\"')
 		(*nb)++;
 	if (!input[*i])
 		return ;
@@ -67,7 +68,9 @@ static void	token_count_part2(char *input, int *i, int *nb)
 		(*i)++;
 		while (input[*i] && input[*i] != '\'')
 			(*i)++;
-		(*nb)++;
+		if (typify(input[*i + 1]) != LITERAL && input[*i + 1] != '\''
+			&& input[*i + 1] != '\"')
+			(*nb)++;
 		if (!input[*i])
 			return ;
 		else
