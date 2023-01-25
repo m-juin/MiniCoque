@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/25 13:04:57 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:11:12 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	redirect_count(char *input, int *i, int *nb)
 	}
 	(*nb)++;
 	if ((input[*i] == '<' && input[*i + 1] == '>')
-			|| input[*i] == input[*i + 1])
+		|| input[*i] == input[*i + 1])
 		(*i)++;
 	(*i)++;
 	free(err_msg);
@@ -80,7 +80,8 @@ static void	token_count_part2(char *input, int *i, int *nb)
 	{
 		while (input[*i] && (typify(input[*i]) == LITERAL))
 			(*i)++;
-		if (typify(input[*i]) != DOLLAR && typify(input[*i]) != D_QUOTE && typify(input[*i]) != S_QUOTE)
+		if (typify(input[*i]) != DOLLAR && typify(input[*i]) != D_QUOTE
+			&& typify(input[*i]) != S_QUOTE)
 			(*nb)++;
 	}
 }

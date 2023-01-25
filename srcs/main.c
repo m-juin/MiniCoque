@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 16:47:52 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 13:19:20 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_minicoque	*init(char **envp)
 		pos++;
 	}
 	replace_value(get_env(data->env_var, "_"), "]");
-	
 	return (data);
 }
 
@@ -70,7 +69,6 @@ int	main(int ac, char **av, char **envp)
 
 	ac = ac - 1;
 	av[0] = 0;
-
 	signal(SIGINT, signalhandler);
 	coque_data = init(envp);
 	while (1)
@@ -87,7 +85,7 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
 		token_input = lexer(readed, coque_data->env_var);
-		parsed_tree	= parsing(token_input, coque_data->env_var);
+		parsed_tree = parsing(token_input, coque_data->env_var);
 		if (parsed_tree != NULL)
 			init_tree_exec(coque_data, parsed_tree);
 		s_free(prompt);
