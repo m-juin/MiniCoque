@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 16:44:43 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:24:17 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@
 # include "../libft/include/libft.h"
 
 # define BLANK 0
-# define LITERAL 1 
+# define COMMAND 0
+# define LITERAL 1
+# define PATH 1
 # define PIPE 2 
+# define ARGS 3
 # define S_QUOTE 3 
 # define D_QUOTE 4 
 # define REDIRECT 5

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 13:43:31 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 11:23:20 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_btree	*insert_node(t_token **token_array)
 		free(new_node);
 		return (NULL);
 	}
+	new_node->type = ARGS;
 	return (new_node);
 }
 
@@ -78,5 +79,6 @@ t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 	else
 		new_node->tab_str[0] = get_cmds(array[0]->str, env_to_array(env));
 	new_node->tab_str[1] = NULL;
+	new_node->type = PATH;
 	return (new_node);
 }
