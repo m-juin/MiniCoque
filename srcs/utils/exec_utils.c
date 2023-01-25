@@ -6,16 +6,17 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:46:04 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 14:20:49 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	ft_exec(char **splitted, t_env_var *env, int fds[2], int fd)
+static int	ft_exec(char **splitted, t_minicoque *data, int fds[2], int fd)
 {
 	int	ret;
 	int	pid;
+	int	pos;
 
 	ret = 0;
 	pid = fork();
@@ -31,12 +32,17 @@ static int	ft_exec(char **splitted, t_env_var *env, int fds[2], int fd)
 			dup2(fds[1], 1);
 			close(fds[1]);
 		}
-		ret = execve(get_cmds(splitted[0], env_to_array(env)),
-				splitted, env_to_array(env));
+		ret = execve(get_cmds(splitted[0], env_to_array(data->env_var)),
+				splitted, env_to_array(data->env_var));
 		exit (1);
 	}
-	//else
-		//wait(NULL);
+	else
+	{
+		pos = 0;
+		while(data->curprocess[pos] != -1)
+			pos++;
+		data->curprocess[pos] = pid;
+	}
 	return (ret);
 }
 
@@ -59,7 +65,7 @@ void	ft_execute(t_minicoque *data, t_btree *tree, int fds[2], int fd)
 	else if (ft_strcmp(tree->right->tab_str[0], "cd") == 0)
 		cd(data->env_var, tree->right->tab_str);
 	else
-		ft_exec(tree->right->tab_str, data->env_var, fds, fd);
+		ft_exec(tree->right->tab_str, data, fds, fd);
 }
 
 void	last_exec(t_minicoque *data, t_btree *tree, int fds[2], int fd)

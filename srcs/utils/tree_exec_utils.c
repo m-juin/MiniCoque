@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:37:46 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 15:47:04 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,59 @@ void	ft_check_error(t_btree *root)
 	}
 }
 
+static int	countcmd(t_btree *tree)
+{
+	int	count;
+
+	count = 0;
+	while (tree->type == PIPE)
+	{
+		count++;
+		tree = tree->right;
+	}
+	count++;
+	return (count);
+}
+
+static int *ft_setcur(t_btree *root)
+{
+	int	pos;
+	int	size;
+	int	*curprocess;
+
+	pos = 0;
+	size = countcmd(root) + 1;
+	curprocess = malloc(size * sizeof(int));
+	if (curprocess == NULL)
+		return (NULL);
+	while(pos < size)
+	{
+		curprocess[pos] = -1;
+		pos++;
+	}
+	return (curprocess);
+}
+
+void	ft_wait_pids(int *curprocess)
+{
+	int	pos;
+
+	pos = 0;
+	while (curprocess[pos] != -1)
+	{
+		waitpid(curprocess[pos], NULL, 0);
+		pos++;
+	}
+}
+
 void	init_tree_exec(t_minicoque *data, t_btree *root)
 {
-	t_btree	*rooted;
 	int		fds[2];
 
-	rooted = root;
+	data->curprocess = ft_setcur(root);
+	if (data->curprocess == NULL)
+		return ;
+	errno = 0;
 	fds[0] = 0;
 	fds[1] = 1;
 	if (root->type != PIPE)
@@ -76,5 +123,11 @@ void	init_tree_exec(t_minicoque *data, t_btree *root)
 		ft_first_exec(data, root->left, fds);
 		ft_read_tree(data, root->right, fds);
 	}
-	ft_check_error(rooted);
+	ft_wait_pids(data->curprocess);
+	ft_check_error(root);
+	while(root->type == PIPE)
+		root = root->right;
+	if (is_builtin(root->right->tab_str[0]) == 0)
+		last_exit(FALSE, errno);
+	free(data->curprocess);
 }
