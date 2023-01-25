@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 13:19:20 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:21:04 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_minicoque	*init(char **envp)
 		ft_env_add_back(&data->env_var, create_env(envp[pos]));
 		pos++;
 	}
+	data->curprocess = NULL;
 	replace_value(get_env(data->env_var, "_"), "]");
 	return (data);
 }

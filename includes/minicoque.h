@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:40:43 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 15:19:36 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <signal.h>
 # include <ft_boolean.h>
 # include <sys/wait.h>
+# include <errno.h>
 # include "../libft/include/libft.h"
 
 # define BLANK 0
@@ -59,6 +60,7 @@ typedef struct s_env_var
 typedef struct s_minicoque
 {
 	t_env_var	*env_var;
+	pid_t		*curprocess;
 }	t_minicoque;
 
 /*	env_clst_utils.c	*/

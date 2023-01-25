@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:18:38 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 11:27:28 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/25 13:38:14 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	ft_exit(char **args, t_minicoque *data)
 	else if (args[2] != NULL)
 	{
 		ft_printf_fd(2, "exit: too many arguments\n");
+		last_exit(FALSE, 1);
 		return ;
 	}
 	else if (isvalidnum(args[1]) == FALSE)
