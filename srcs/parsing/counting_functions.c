@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 10:29:57 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:38:29 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,21 @@ static int	redirect_count(char *input, int *i, int *nb)
 		return (-1);
 	}
 	(*nb)++;
-	if ((input[*i] == '<' && input[*i + 1] == '>')
-		|| input[*i] == input[*i + 1])
+	while (typify(input[*i]) == REDIRECT)
 		(*i)++;
-	(*i)++;
+	while (typify(input[*i]) == BLANK)
+		(*i)++;
+	if (!input[*i] || input[*i] == '|' || typify(input[*i]) == REDIRECT)
+	{
+		if (input[*i] == '\0')
+			ft_printf_fd(2, "%s `newline'\n", err_msg, input[*i]);
+		else
+			ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
+		free(err_msg);
+		return (-1);
+	}
+	while (input[*i] && typify(input[*i]) != BLANK && typify(input[*i]) != REDIRECT && input[*i] != '|')
+			(*i)++;
 	free(err_msg);
 	return (0);
 }
@@ -101,17 +112,17 @@ int	token_count(char *input)
 	{
 		while (input[i] && typify(input[i]) == BLANK)
 			i++;
-		if (input[i] == '|')
+		if (input[i] && input[i] == '|')
 		{
 			if (pipe_count(input, &i, &nb) == -1)
 				return (-1);
 		}
-		else if (typify(input[i]) == REDIRECT)
+		else if (input[i] && typify(input[i]) == REDIRECT)
 		{
 			if (redirect_count(input, &i, &nb) == -1)
 				return (-1);
 		}
-		else
+		else if (input[i])
 			token_count_part2(input, &i, &nb);
 	}
 	return (nb);

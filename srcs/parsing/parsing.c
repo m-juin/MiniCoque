@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/25 11:24:26 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:00:03 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,42 @@ static t_token	**sub_token_tab(t_token **token_tab, int start, int len)
 	sub_tab[i] = NULL;
 	return (sub_tab);
 }
+/*
+static char	*get_redir(char *str)
+{
+	char	*redir_path;
 
+
+}
+
+static char	**redirtab_create(t_token **token_tab)
+{
+	char	**redir_tab;
+	int		i;
+
+	redir_tab = malloc(sizeof(char *) * 3);
+	if (!redir_tab)
+		return (NULL);
+	while (token_tab[i])
+	{
+		if (token_tab[i]->token_type == REDIRECT)
+		{
+			redir_tab[i] = get_redir(token_tab[i]->str);
+			if (!redir_tab[i])
+			{
+				d_tab_free(redir_tab);
+				return (NULL);
+			}
+		}	
+	}
+	return (redir_tab);
+}
+*/
 static	void	cmd_node_create(t_btree *parsed_tree, t_token **token_tab,
 		t_env_var *env)
 {
 		parsed_tree->type = COMMAND;
+//		parsed_tree->tab_str = redirtab_create(token_tab);
 		parsed_tree->right = insert_node(token_tab);
 		parsed_tree->left = insert_cmd_node(token_tab, env);
 }
