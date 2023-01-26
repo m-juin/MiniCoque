@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 11:57:12 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:44:32 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,5 @@ void	redirect_token(t_token *token, char *input, int *i)
 		(*i)++;
 	while (typify(input[*i]) == BLANK)
 		(*i)++;
-	token->str = ft_substr(input, start, start - *i);
-	(*i)++;
+	token->str = ft_substr(input, start, *i - start);
 }

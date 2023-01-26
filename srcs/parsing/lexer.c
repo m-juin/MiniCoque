@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 11:53:46 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:06:04 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ t_token	**lexer(char *input, t_env_var *env)
 	while (token_tab[i])
 	{
 		token_tab[i]->token_type = typify(token_tab[i]->str[0]);
-		ft_printf_fd(1, "%s est de type %d\n", token_tab[i]->str, token_tab[i]->token_type);
 		i++;
 	}
 	if (!token_tab)

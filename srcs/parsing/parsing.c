@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 11:00:03 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:48:58 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,42 +48,74 @@ static t_token	**sub_token_tab(t_token **token_tab, int start, int len)
 	sub_tab[i] = NULL;
 	return (sub_tab);
 }
-/*
+
 static char	*get_redir(char *str)
 {
 	char	*redir_path;
+	int		i;
+	int		start;
 
+	i = 0;
+	while (typify(str[i]) == REDIRECT)
+		i++;
+	while (typify(str[i]) == BLANK)
+		i++;
+	start = i;
+	while (str[i])
+		i++;
+	redir_path = ft_substr(str, start, i - start);
+	return (redir_path);
+}
 
+static char	*redir_in(t_token **token_tab)
+{
+	int		redir_nb;
+	int		i;
+	int		j;
+	char	*redir_path;
+
+	i = 0;
+	redir_nb = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->str[0] == '<')
+			redir_nb++;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	while (token_tab[i] && j < redir_nb)
+	{
+		if (token_tab[i]->str[0] == '<')
+			j++;
+		if (j == redir_nb)
+			redir_path = get_redir(token_tab[i]->str);
+		i++;
+	}
+	return (redir_path);
 }
 
 static char	**redirtab_create(t_token **token_tab)
 {
 	char	**redir_tab;
-	int		i;
 
-	redir_tab = malloc(sizeof(char *) * 3);
+	redir_tab = malloc(sizeof(char *) * 4);
 	if (!redir_tab)
 		return (NULL);
-	while (token_tab[i])
-	{
-		if (token_tab[i]->token_type == REDIRECT)
-		{
-			redir_tab[i] = get_redir(token_tab[i]->str);
-			if (!redir_tab[i])
-			{
-				d_tab_free(redir_tab);
-				return (NULL);
-			}
-		}	
-	}
+	redir_tab[0] = redir_in(token_tab);
+	redir_tab[1] = NULL;
+	redir_tab[2] = NULL;
+	redir_tab[3] = NULL;
+	//redir_tab[1] == redir_out(token_tab);
 	return (redir_tab);
 }
-*/
+
 static	void	cmd_node_create(t_btree *parsed_tree, t_token **token_tab,
 		t_env_var *env)
 {
 		parsed_tree->type = COMMAND;
-//		parsed_tree->tab_str = redirtab_create(token_tab);
+		parsed_tree->tab_str = redirtab_create(token_tab);
+		ft_printf_fd(1, "%s\n", parsed_tree->tab_str[0]);
 		parsed_tree->right = insert_node(token_tab);
 		parsed_tree->left = insert_cmd_node(token_tab, env);
 }

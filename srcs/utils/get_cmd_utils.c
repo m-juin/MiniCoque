@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:27:57 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:10:13 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,29 @@ char	**token_to_array(t_token **token)
 	size_t	pos;
 
 	size = 0;
+	pos = 0;
 	if (token == NULL)
 		return (NULL);
-	while (token[size] != NULL)
-		size++;
+	while (token[pos] != NULL)
+	{
+		if (token[pos]->token_type != REDIRECT)
+			size++;
+		pos++;
+	}
 	if (size == 0)
 		return (NULL);
 	array = malloc((size + 1) * sizeof(char *));
 	if (array == NULL)
 		return (NULL);
 	pos = 0;
+	size = 0;
 	while (token[pos] != NULL)
 	{
-		array[pos] = strndup(token[pos]->str, -1);
+		if (token[pos]->token_type != REDIRECT)
+		{
+			array[size] = strndup(token[pos]->str, -1);
+			size++;
+		}
 		pos++;
 	}
 	array[pos] = NULL;

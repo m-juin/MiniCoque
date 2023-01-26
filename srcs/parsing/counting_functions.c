@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 11:38:29 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:06:25 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static int	redirect_count(char *input, int *i, int *nb)
 		free(err_msg);
 		return (-1);
 	}
-	while (input[*i] && typify(input[*i]) != BLANK && typify(input[*i]) != REDIRECT && input[*i] != '|')
+	while (input[*i] && typify(input[*i]) != BLANK && typify(input[*i])
+		!= REDIRECT && input[*i] != '|')
 			(*i)++;
 	free(err_msg);
 	return (0);
