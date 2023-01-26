@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 15:42:03 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/26 16:10:16 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,41 @@ static char	*get_redir(char *str)
 	return (redir_path);
 }
 
+static char	*redir_out(t_token **token_tab)
+{
+	int		redir_nb;
+	int		i;
+	int		j;
+	char	*redir_path;
+
+	i = 0;
+	redir_nb = 0;
+	redir_path = NULL;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->str[0] == '>')
+			redir_nb++;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	while (token_tab[i] && j < redir_nb)
+	{
+		if (token_tab[i]->str[0] == '>')
+			j++;
+		if (j == redir_nb)
+		{	
+			if (redir_path)
+				free(redir_path);
+			redir_path = get_redir(token_tab[i]->str);
+			if (access(redir_path, F_OK) != 0)
+				open(redir_path, O_CREAT, 0644);
+		}
+		i++;
+	}
+	return (redir_path);
+}
+
 static char	*redir_in(t_token **token_tab)
 {
 	int		redir_nb;
@@ -76,6 +111,7 @@ static char	*redir_in(t_token **token_tab)
 
 	i = 0;
 	redir_nb = 0;
+	redir_path = NULL;
 	while (token_tab[i])
 	{
 		if (token_tab[i]->str[0] == '<')
@@ -95,6 +131,39 @@ static char	*redir_in(t_token **token_tab)
 	return (redir_path);
 }
 
+static char	*get_redir_type(t_token **token_tab)
+{
+	char	*type;
+	int		i;
+	int		j;
+	int		redir_nb;
+
+	i = 0;
+	redir_nb = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->str[0] == '>')
+			redir_nb++;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	while (token_tab[i] && j < redir_nb)
+	{
+		if (token_tab[i]->str[0] == '>')
+			j++;
+		if (j == redir_nb)
+		{
+			if (token_tab[i]->str[1] == '>')
+				type = ft_strdup("A");
+			else
+				type = ft_strdup("T");
+		}	
+		i++;
+	}
+	return (type);
+}
+
 static char	**redirtab_create(t_token **token_tab)
 {
 	char	**redir_tab;
@@ -103,10 +172,12 @@ static char	**redirtab_create(t_token **token_tab)
 	if (!redir_tab)
 		return (NULL);
 	redir_tab[0] = redir_in(token_tab);
-	redir_tab[1] = NULL;
-	redir_tab[2] = NULL;
+	redir_tab[1] = redir_out(token_tab);
+	if (redir_tab[1])
+		redir_tab[2] = get_redir_type(token_tab);
+	else
+		redir_tab[2] = NULL;
 	redir_tab[3] = NULL;
-	//redir_tab[1] == redir_out(token_tab);
 	return (redir_tab);
 }
 
