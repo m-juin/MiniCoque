@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 10:31:33 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/26 11:42:56 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ void	ft_first_exec(t_minicoque *data, t_btree *root, int fds[2])
 	err = pipe(fds);
 	if (err == -1)
 		return ;
-	if (ft_strcmp(root->left->left->tab_str[0], "export") != 0)
+	if (ft_strcmp(root->left->left->tab_str[0], "export") != 0
+		|| root->left->right->tab_str[1] == NULL)
 		ft_execute(data, root->left, fds, fds[0]);
 }
 
 void	child_cmd(int fds[2], t_minicoque *data, t_btree *tree, int fd)
 {
-	if (ft_strcmp(tree->left->tab_str[0], "export") != 0)
+	if (ft_strcmp(tree->left->tab_str[0], "export") != 0
+		|| tree->right->tab_str[1] == NULL)
 		ft_execute(data, tree, fds, fd);
 }
