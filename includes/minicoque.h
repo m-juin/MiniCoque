@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 11:59:43 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:33:33 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <ft_boolean.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <fcntl.h>
 # include "../libft/include/libft.h"
 
 # define BLANK 0
