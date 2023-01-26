@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 14:21:04 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/26 11:18:01 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ t_minicoque	*init(char **envp)
 	t_minicoque	*data;
 	int			pos;
 
-	data = malloc(sizeof(data));
+	data = malloc((1 * sizeof(data)) + (1 * sizeof(pid_t *)));
 	if (data == NULL)
 		return (NULL);
 	data->env_var = NULL;
+	data->curprocess = NULL;
 	pos = 0;
 	while (envp[pos])
 	{
 		ft_env_add_back(&data->env_var, create_env(envp[pos]));
 		pos++;
 	}
-	data->curprocess = NULL;
 	replace_value(get_env(data->env_var, "_"), "]");
 	return (data);
 }
