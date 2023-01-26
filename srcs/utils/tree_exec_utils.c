@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 15:47:04 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/26 09:52:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,15 @@ static int *ft_setcur(t_btree *root)
 void	ft_wait_pids(int *curprocess)
 {
 	int	pos;
-
+	int exit_status;
+	
 	pos = 0;
+	exit_status = 0;
 	while (curprocess[pos] != -1)
 	{
-		waitpid(curprocess[pos], NULL, 0);
+		waitpid(curprocess[pos], &exit_status, 0);
+		if (WIFEXITED(exit_status))
+       		last_exit(FALSE, WEXITSTATUS(exit_status));
 		pos++;
 	}
 }
