@@ -6,19 +6,17 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 11:42:56 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/26 16:06:53 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	ft_exec(char **splitted, t_minicoque *data, int fds[2], int fd)
+static void	ft_exec(t_btree *branch, t_minicoque *data, int fds[2], int fd)
 {
-	int	ret;
 	int	pid;
 	int	pos;
 
-	ret = 0;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -32,8 +30,8 @@ static int	ft_exec(char **splitted, t_minicoque *data, int fds[2], int fd)
 			dup2(fds[1], 1);
 			close(fds[1]);
 		}
-		ret = execve(get_cmds(splitted[0], env_to_array(data->env_var)),
-				splitted, env_to_array(data->env_var));
+		execve(branch->left->tab_str[0], branch->right->tab_str,
+			env_to_array(data->env_var));
 		exit (1);
 	}
 	else
@@ -43,7 +41,7 @@ static int	ft_exec(char **splitted, t_minicoque *data, int fds[2], int fd)
 			pos++;
 		data->curprocess[pos] = pid;
 	}
-	return (ret);
+	return ;
 }
 
 void	ft_execute(t_minicoque *data, t_btree *tree, int fds[2], int fd)
@@ -65,11 +63,18 @@ void	ft_execute(t_minicoque *data, t_btree *tree, int fds[2], int fd)
 	else if (ft_strcmp(tree->right->tab_str[0], "cd") == 0)
 		cd(data->env_var, tree->right->tab_str);
 	else
-		ft_exec(tree->right->tab_str, data, fds, fd);
+		ft_exec(tree, data, fds, fd);
 }
 
 void	last_exec(t_minicoque *data, t_btree *tree, int fds[2], int fd)
 {
+	if (tree->tab_str != NULL && tree->tab_str[0] != NULL)
+	{
+		close(fd);
+		fd = open(tree->tab_str[0], O_RDONLY);
+	}
+	if (fd == -1)
+		return ;
 	close(fds[1]);
 	fds[1] = 1;
 	ft_execute(data, tree, fds, fd);
@@ -79,17 +84,31 @@ void	last_exec(t_minicoque *data, t_btree *tree, int fds[2], int fd)
 void	ft_first_exec(t_minicoque *data, t_btree *root, int fds[2])
 {
 	int	err;
+	int fd;
 
+	if (root->tab_str != NULL && root->tab_str[0] != NULL)
+		fd = open(root->tab_str[0], O_RDONLY);
+	else
+		fd = fds[0];
+	if (fd == -1)
+			return ;
 	err = pipe(fds);
 	if (err == -1)
 		return ;
 	if (ft_strcmp(root->left->left->tab_str[0], "export") != 0
 		|| root->left->right->tab_str[1] == NULL)
-		ft_execute(data, root->left, fds, fds[0]);
+		ft_execute(data, root->left, fds, fd);
 }
 
 void	child_cmd(int fds[2], t_minicoque *data, t_btree *tree, int fd)
 {
+	if (tree->tab_str != NULL && tree->tab_str[0] != NULL)
+	{
+		close(fd);
+		fd = open(tree->tab_str[0], O_RDONLY);
+	}
+	if (fd == -1)
+		return ;
 	if (ft_strcmp(tree->left->tab_str[0], "export") != 0
 		|| tree->right->tab_str[1] == NULL)
 		ft_execute(data, tree, fds, fd);

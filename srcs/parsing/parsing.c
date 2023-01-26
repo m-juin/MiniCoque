@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 13:48:58 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:42:03 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ static	void	cmd_node_create(t_btree *parsed_tree, t_token **token_tab,
 {
 		parsed_tree->type = COMMAND;
 		parsed_tree->tab_str = redirtab_create(token_tab);
-		ft_printf_fd(1, "%s\n", parsed_tree->tab_str[0]);
 		parsed_tree->right = insert_node(token_tab);
 		parsed_tree->left = insert_cmd_node(token_tab, env);
 }
