@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 14:10:13 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:16:41 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,25 @@ char	*get_cmds(char *av, char *const *envp)
 	return (av);
 }
 
+static void	tokenarr_cpy(t_token **src, char **dst, int size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (src[i] != NULL && j < size)
+	{
+		if (src[i]->token_type != REDIRECT)
+		{
+			dst[j] = strndup(src[i]->str, -1);
+			j++;
+		}
+		i++;
+	}
+	dst[i] = NULL;
+}
+
 char	**token_to_array(t_token **token)
 {
 	char	**array;
@@ -87,28 +106,12 @@ char	**token_to_array(t_token **token)
 	pos = 0;
 	if (token == NULL)
 		return (NULL);
-	while (token[pos] != NULL)
-	{
-		if (token[pos]->token_type != REDIRECT)
-			size++;
-		pos++;
-	}
+	size = token_tab_len(token, 1);
 	if (size == 0)
 		return (NULL);
 	array = malloc((size + 1) * sizeof(char *));
 	if (array == NULL)
 		return (NULL);
-	pos = 0;
-	size = 0;
-	while (token[pos] != NULL)
-	{
-		if (token[pos]->token_type != REDIRECT)
-		{
-			array[size] = strndup(token[pos]->str, -1);
-			size++;
-		}
-		pos++;
-	}
-	array[pos] = NULL;
+	tokenarr_cpy(token, array, size);
 	return (array);
 }

@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 13:57:31 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/24 14:24:46 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:32:02 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,41 @@ int	digit_str(char	*str)
 		i++;
 	}
 	return (1);
+}
+
+t_token	*sub_token_create(t_token **token_tab, int pos)
+{
+	t_token	*token;
+
+	token = ft_calloc(1, sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->str = ft_strdup(token_tab[pos]->str);
+	if (!token->str)
+		return (NULL);
+	token->token_type = typify(token->str[0]);
+	return (token);
+}
+
+t_token	**sub_token_tab(t_token **token_tab, int start, int len)
+{
+	t_token	**sub_tab;
+	int		i;
+
+	sub_tab = ft_calloc(len + 1, sizeof(t_token *));
+	if (!sub_tab)
+		return (NULL);
+	i = 0;
+	while (token_tab[start + i] && i < len)
+	{
+		sub_tab[i] = sub_token_create(token_tab, start + i);
+		if (!sub_tab[i])
+		{
+			free_token(sub_tab);
+			return (NULL);
+		}
+		i++;
+	}
+	sub_tab[i] = NULL;
+	return (sub_tab);
 }

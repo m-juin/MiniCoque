@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 12:06:25 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:54:27 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,8 @@ static int	redirect_count(char *input, int *i, int *nb)
 	char	*err_msg;
 
 	err_msg = ft_strdup("minicoque: syntax error nearunexpected token");
-	if (input[*i] == input[*i + 1] && input[*i] == input[*i + 2])
-	{
-		ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
-		free(err_msg);
+	if (redirect_syntax_check(input, i, err_msg) == -1)
 		return (-1);
-	}
-	if (input[*i] == '>' && input[*i + 1] == '<')
-	{
-		ft_printf_fd(2, "%s`%c'\n", err_msg, input[*i]);
-		free(err_msg);
-		return (-1);
-	}
 	(*nb)++;
 	while (typify(input[*i]) == REDIRECT)
 		(*i)++;

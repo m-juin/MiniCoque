@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:23:20 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:41:12 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_btree	*insert_node(t_token **token_array)
 t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 {
 	t_btree	*new_node;
+	int		i;
 
 	new_node = init_tree_node();
 	if (!new_node)
@@ -74,10 +75,13 @@ t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 		free(new_node);
 		return (NULL);
 	}
+	i = 0;
+	while (array[i]->token_type == REDIRECT)
+		i++;
 	if (is_builtin(array[0]->str) == 1)
-		new_node->tab_str[0] = ft_strdup(array[0]->str);
+		new_node->tab_str[0] = ft_strdup(array[i]->str);
 	else
-		new_node->tab_str[0] = get_cmds(array[0]->str, env_to_array(env));
+		new_node->tab_str[0] = get_cmds(array[i]->str, env_to_array(env));
 	new_node->tab_str[1] = NULL;
 	new_node->type = PATH;
 	return (new_node);

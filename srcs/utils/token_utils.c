@@ -6,19 +6,30 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 13:44:32 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:10:11 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	token_tab_len(t_token **tab)
+int	token_tab_len(t_token **tab, int redir)
 {
 	int	len;
+	int	i;
 
+	i = 0;
 	len = 0;
-	while (tab[len])
-		len++;
+	while (tab[i])
+	{
+		if (redir == 0)
+			len++;
+		else
+		{
+			if (tab[i]->token_type != REDIRECT)
+				len++;
+		}
+		i++;
+	}
 	return (len);
 }
 

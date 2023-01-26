@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 16:10:32 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/26 18:02:16 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void			free_token(t_token **token_tab);
 t_token			**init_tokentab(char *input);
 void			pipe_token(t_token **token_tab, int *i, int *nb);
 void			redirect_token(t_token *token, char *input, int *i);
-int				token_tab_len(t_token **tab);
+int				token_tab_len(t_token **tab, int redir);
 
 /*	exec_utils.c	*/
 
@@ -151,10 +151,12 @@ void			ft_execute(t_minicoque *data, t_btree *tree, int fds[2], int fd);
 
 char			*doll_management(char *input, t_env_var *env);
 
-/*	param_utils.c	*/
+/*	parsing_utils.c	*/
 
 int				typify(int c);
 int				digit_str(char *str);
+t_token			*sub_token_create(t_token **token_tab, int pos);
+t_token			**sub_token_tab(t_token **token_tab, int start, int len);
 
 /*	counting_functions.c	*/
 
@@ -177,6 +179,14 @@ int				is_builtin(char	*str);
 
 /*	quotes_magement_functions.c	*/
 
-char	*quotes_management(char *input, t_env_var *env, int *i);
+char			*quotes_management(char *input, t_env_var *env, int *i);
+
+/*	redirect_parsing_utils.c	*/
+
+int				redirect_syntax_check(char *input, int *i, char *err_msg);
+int				redir_in_count(t_token **token_count);
+int				redir_out_count(t_token **token_count);
+char			*get_redir(char *str);
+char			*get_redir_type(t_token **token_tab);
 
 #endif
