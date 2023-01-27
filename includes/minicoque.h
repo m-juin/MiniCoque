@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 18:02:16 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/27 09:22:20 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,10 @@ int				is_builtin(char	*str);
 /*	quotes_magement_functions.c	*/
 
 char			*quotes_management(char *input, t_env_var *env, int *i);
+
+/*	redirection_parsing.c	*/
+
+char			**redirtab_create(t_token **token_tab);
 
 /*	redirect_parsing_utils.c	*/
 
