@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 15:05:42 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:08:06 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
 		token_input = lexer(readed, coque_data->env_var);
+		heredoc(token_input);
 		parsed_tree = parsing(token_input, coque_data->env_var);
 		if (parsed_tree != NULL)
 			init_tree_exec(coque_data, parsed_tree);
