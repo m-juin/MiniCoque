@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 15:58:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/27 16:03:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include "../libft/include/libft.h"
+# include "../libft/include/get_next_line.h"
 
 # define BLANK 0
 # define COMMAND 0
@@ -32,8 +33,9 @@
 # define S_QUOTE 3 
 # define D_QUOTE 4 
 # define REDIRECT 5
-# define DOLLAR 6
-# define NUULL 7
+# define HEREDOC 6
+# define DOLLAR 7
+# define NUULL 8
 # define PCOLOR "\001\e[0;36m\002"
 # define RESET   "\001\e[0m\002"
 
@@ -165,7 +167,8 @@ int			token_count(char *input);
 
 /*	counting_utils.c	*/
 
-int			pipe_count(char *input, int *i, int *nb);
+int				pipe_count(char *input, int *i, int *nb);
+int				pipe_token_count(t_token **token_tab);
 
 /*	parsing.c	*/
 
@@ -188,10 +191,14 @@ char		**redirtab_create(t_token **token_tab);
 
 /*	redirect_parsing_utils.c	*/
 
-int			redirect_syntax_check(char *input, int *i, char *err_msg);
-int			redir_in_count(t_token **token_count);
-int			redir_out_count(t_token **token_count);
-char		*get_redir(char *str);
-char		*get_redir_type(t_token **token_tab);
+int				redirect_syntax_check(char *input, int *i, char *err_msg);
+int				redir_in_count(t_token **token_count);
+int				redir_out_count(t_token **token_count);
+char			*get_redir(char *str);
+char			*get_redir_type(t_token **token_tab);
+
+/*	heredoc_functions.	*/
+
+void			heredoc(t_token **token_tab);
 
 #endif

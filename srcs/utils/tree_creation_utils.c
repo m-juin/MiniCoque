@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 16:41:12 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:56:01 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ t_btree	*insert_cmd_node(t_token **array, t_env_var *env)
 	while (array[i]->token_type == REDIRECT)
 		i++;
 	if (is_builtin(array[0]->str) == 1)
+		new_node->tab_str[0] = ft_strdup(array[i]->str);
+	else if (array[0]->str[0] == '/'
+		|| (array[0]->str[0] == '.' && array[0]->str[1] == '/'))
 		new_node->tab_str[0] = ft_strdup(array[i]->str);
 	else
 		new_node->tab_str[0] = get_cmds(array[i]->str, env_to_array(env));
