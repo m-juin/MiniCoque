@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minicoque.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 14:49:36 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:07:12 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,9 @@ int				last_exit(t_bool get, int error);
 
 /*	free_utils.c	*/
 
-void	d_tab_free(char **elem);
-void	s_free(void *elem);
-void	free_coque_data(t_minicoque *data);
+void		d_tab_free(char **elem);
+void		s_free(void *elem);
+void		free_coque_data(t_minicoque *data);
 
 /*	tree_exec_utils.c	*/
 
@@ -148,6 +148,7 @@ void			last_exec(t_minicoque *data, t_btree *tree, int fds[2], int fd);
 void			ft_first_exec(t_minicoque *data, t_btree *tree, int fds[2]);
 void			child_cmd(int fds[2], t_minicoque *data, t_btree *tree, int fd);
 void			ft_execute(t_minicoque *data, t_btree *tree, int fds[2], int fd);
+void			ft_single_exec(t_minicoque *data, t_btree *tree, int fds[2]);
 
 /*	param_expansion_functions.c	*/
 

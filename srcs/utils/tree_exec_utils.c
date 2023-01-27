@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_exec_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/26 15:18:18 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/27 10:10:00 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	init_tree_exec(t_minicoque *data, t_btree *root)
 	fds[0] = 0;
 	fds[1] = 1;
 	if (root->type != PIPE)
-		ft_execute(data, root, fds, 0);
+		ft_single_exec(data, root, fds);
 	else
 	{
 		ft_first_exec(data, root, fds);
