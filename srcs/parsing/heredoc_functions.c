@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/27 14:53:58 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:38:14 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static char	*init_heredoc_path(int pipe_nb)
 	free(suffix);
 	if (!path)
 		return (NULL);
-	path = ft_strjoin("<< ", path);
 	return (path);
 }
 
@@ -39,6 +38,9 @@ static char	*get_limiter(char *token)
 	while (typify(token[i]) == BLANK || token[i] == '<')
 		i++;
 	limiter = (ft_substr(token, i, ft_strlen(token) - i));
+	if (!limiter)
+		return (NULL);
+	limiter = ft_strjoin(limiter, "\n");
 	if (!limiter)
 		return (NULL);
 	return (limiter);
@@ -54,14 +56,14 @@ static void	read_heredoc(t_token **token_tab, char *path)
 	i = 0;
 	while (token_tab[i])
 	{
+		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd == -1)
+		{
+			free(path);
+			exit(EXIT_FAILURE);
+		}
 		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
 		{
-			fd = open(path, O_RDONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd == -1)
-			{
-				free(path);
-				exit(EXIT_FAILURE);
-			}
 			limiter = get_limiter(token_tab[i]->str);
 			if (!limiter)
 				exit(EXIT_FAILURE);
@@ -78,8 +80,10 @@ static void	read_heredoc(t_token **token_tab, char *path)
 			free(limiter);
 			free(tmp);
 		}
+		close(fd);
 		i++;
 	}
+	exit(EXIT_SUCCESS);
 }
 
 static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
@@ -100,7 +104,22 @@ static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 	if (pid == 0)
 		read_heredoc(token_tab, path);
 	waitpid(pid, &status, 0);
+	path = ft_strjoin("<< ", path);
 	return (path);
+}
+
+static int	got_heredoc(t_token **token_tab)
+{
+	int	i;
+
+	i = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 void	heredoc(t_token **token_tab)
@@ -110,6 +129,10 @@ void	heredoc(t_token **token_tab)
 	int		start;
 	int		pipe_count;
 
+	if (!token_tab || !token_tab[0])
+		return ;
+	if (got_heredoc(token_tab) == 1)
+		return ;
 	i = 0;
 	j = 1;
 	start = 0;
