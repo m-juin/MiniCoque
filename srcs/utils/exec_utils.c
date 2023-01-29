@@ -6,11 +6,19 @@
 /*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 16:00:06 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/29 11:23:19 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+int	ft_close_fd(int fd, t_bool force)
+{
+	if ((force == FALSE && fd < 3) || (force == TRUE && fd < 0))
+		return (fd);
+	close(fd);
+	return (-1);
+}
 
 static void	ft_exec(t_btree *branch, t_minicoque *data, int fds[2], int fd)
 {
@@ -23,12 +31,12 @@ static void	ft_exec(t_btree *branch, t_minicoque *data, int fds[2], int fd)
 		if (fd != 0 && fd != -1)
 		{
 			dup2(fd, 0);
-			close(fds[0]);
+			ft_close_fd(fd, FALSE);
 		}
 		if (fds[1] != 1 && fds[1] != -1)
 		{
 			dup2(fds[1], 1);
-			close(fds[1]);
+			ft_close_fd(fds[1], FALSE);
 		}
 		execve(branch->left->tab_str[0], branch->right->tab_str,
 			env_to_array(data->env_var));
@@ -66,25 +74,18 @@ void	ft_execute(t_minicoque *data, t_btree *root, int fds[2], int fd)
 		ft_exec(root, data, fds, fd);
 }
 
-int	ft_close_fd(int fd, t_bool force)
-{
-	if ((force == FALSE && fd < 3) || (force == TRUE && fd < 0))
-		return (fd);
-	close(fd);
-	return (-1);
-}
-
-void	set_exit_fd(t_btree *curbranch, int next_type, int fds[2])
+void	set_exit_fd(t_btree *curbranch, int type, int fds[2])
 {
 	ft_close_fd(fds[1], FALSE);
 	if (curbranch->tab_str[1] != NULL)
 	{
+		ft_close_fd(fds[0], FALSE);
 		if (curbranch->tab_str[2][0] == 'T')
 			fds[1] = open(curbranch->tab_str[1], O_WRONLY, O_TRUNC);
 		else
 			fds[1] = open(curbranch->tab_str[1], O_WRONLY, O_APPEND);
 	}
-	else if (next_type != PIPE)
+	else if (type != PIPE)
 		fds[1] = 1;
 	else
 		pipe(fds);
@@ -111,9 +112,9 @@ void	ft_single_exec(t_minicoque *data, t_btree *root, int fds[2])
 {
 	int	fd;
 
-	fd = get_entry_fd(fds, root->left);
-	set_exit_fd(root->left, root->right->type, fds);
-	ft_execute(data, root, fds, fds[0]);
+	fd = get_entry_fd(fds, root);
+	set_exit_fd(root, root->type, fds);
+	ft_execute(data, root, fds, fd);
 	ft_close_fd(fd, FALSE);
 	ft_close_fd(fds[1], FALSE);
 }
@@ -122,8 +123,8 @@ void	last_exec(t_minicoque *data, t_btree *root, int fds[2])
 {
 	int	fd;
 
-	fd = get_entry_fd(fds, root->left);
-	set_exit_fd(root->left, root->right->type, fds);
+	fd = get_entry_fd(fds, root);
+	set_exit_fd(root, root->type, fds);
 	ft_execute(data, root, fds, fd);
 	ft_close_fd(fd, FALSE);
 }
@@ -133,7 +134,7 @@ void	ft_first_exec(t_minicoque *data, t_btree *root, int fds[2])
 	int	fd;
 
 	fd = get_entry_fd(fds, root->left);
-	set_exit_fd(root->left, root->right->type, fds);
+	set_exit_fd(root->left, root->type, fds);
 	if (fd == -1 || fds[1] == -1)
 		return ;
 	if (ft_strcmp(root->left->left->tab_str[0], "export") != 0
@@ -147,9 +148,9 @@ void	child_cmd(int fds[2], t_minicoque *data, t_btree *root)
 	int	fd;
 
 	fd = get_entry_fd(fds, root->left);
-	set_exit_fd(root->left, root->right->type, fds);
-	if (ft_strcmp(root->left->tab_str[0], "export") != 0
-		|| root->right->tab_str[1] == NULL)
-		ft_execute(data, root, fds, fd);
+	set_exit_fd(root->left, root->type, fds);
+	if (ft_strcmp(root->left->left->tab_str[0], "export") != 0
+		|| root->left->right->tab_str[1] == NULL)
+		ft_execute(data, root->left, fds, fd);
 	ft_close_fd(fd, FALSE);
 }

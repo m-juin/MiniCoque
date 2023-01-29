@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 16:01:20 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/27 16:11:11 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	ft_read_tree(t_minicoque *data, t_btree *root, int fds[2])
 		return ;
 	while (root->type == PIPE)
 	{
-		child_cmd(fds, data, root->left);
+		child_cmd(fds, data, root);
 		root = root->right;
 	}
 	last_exec(data, root, fds);
