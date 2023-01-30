@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_exec_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 16:11:11 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/30 10:47:09 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,51 +51,18 @@ void	ft_check_error(t_btree *root)
 	}
 }
 
-static int	countcmd(t_btree *tree)
-{
-	int	count;
-
-	count = 0;
-	while (tree->type == PIPE)
-	{
-		count++;
-		tree = tree->right;
-	}
-	count++;
-	return (count);
-}
-
-static int *ft_setcur(t_btree *root)
+static void	ft_wait_pids(int *curprocess)
 {
 	int	pos;
-	int	size;
-	int	*curprocess;
+	int	exit_status;
 
-	pos = 0;
-	size = countcmd(root) + 1;
-	curprocess = malloc(size * sizeof(int));
-	if (curprocess == NULL)
-		return (NULL);
-	while(pos < size)
-	{
-		curprocess[pos] = -1;
-		pos++;
-	}
-	return (curprocess);
-}
-
-void	ft_wait_pids(int *curprocess)
-{
-	int	pos;
-	int exit_status;
-	
 	pos = 0;
 	exit_status = 0;
 	while (curprocess[pos] != -1)
 	{
 		waitpid(curprocess[pos], &exit_status, 0);
 		if (WIFEXITED(exit_status))
-       		last_exit(FALSE, WEXITSTATUS(exit_status));
+			last_exit(FALSE, WEXITSTATUS(exit_status));
 		pos++;
 	}
 }
@@ -119,7 +86,7 @@ void	init_tree_exec(t_minicoque *data, t_btree *root)
 	}
 	ft_wait_pids(data->curprocess);
 	ft_check_error(root);
-	while(root->type == PIPE)
+	while (root->type == PIPE)
 		root = root->right;
 	free(data->curprocess);
 }
