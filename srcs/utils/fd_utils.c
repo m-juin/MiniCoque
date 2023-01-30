@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:38:06 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/30 10:47:13 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/30 11:28:08 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,12 @@ int	get_entry_fd(int fds[2], t_btree *curbranch)
 	{
 		ft_close_fd(fds[0], FALSE);
 		new_fd = open(curbranch->tab_str[0], O_RDONLY);
+		if (new_fd == -1)
+		{
+			ft_printf_fd(2, "MiniCoque: %s: No such file or directory\n",
+				curbranch->tab_str[0]);
+			last_exit(FALSE, 1);
+		}
 	}
 	else if (fds[0] >= 0)
 		new_fd = fds[0];
