@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/29 11:23:19 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/30 10:29:05 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	set_exit_fd(t_btree *curbranch, int type, int fds[2])
 	if (curbranch->tab_str[1] != NULL)
 	{
 		ft_close_fd(fds[0], FALSE);
+		pipe(fds);
+		ft_close_fd(fds[1], FALSE);
 		if (curbranch->tab_str[2][0] == 'T')
 			fds[1] = open(curbranch->tab_str[1], O_WRONLY, O_TRUNC);
 		else
