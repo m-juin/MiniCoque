@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/30 11:47:42 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:51:00 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ static char	*redir_heredoc(t_token **token_tab)
 	char	*redir_path;
 
 	redir_nb = heredoc_count(token_tab);
+	if (redir_nb == 0)
+		return (NULL);
 	redir_path = NULL;
 	i = 0;
 	j = 0;
