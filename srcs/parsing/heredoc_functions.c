@@ -6,13 +6,11 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/27 16:38:14 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/30 10:48:11 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
 #include <minicoque.h>
-#include <sys/wait.h>
 
 static char	*init_heredoc_path(int pipe_nb)
 {
@@ -23,9 +21,14 @@ static char	*init_heredoc_path(int pipe_nb)
 	if (!suffix)
 		return (NULL);
 	path = ft_strjoin(".heredoc_", suffix);
-	free(suffix);
 	if (!path)
 		return (NULL);
+	free(suffix);
+	if (access(path, F_OK) == 0)
+	{
+		pipe_nb++;
+		path = init_heredoc_path(pipe_nb);
+	}
 	return (path);
 }
 
@@ -56,31 +59,34 @@ static void	read_heredoc(t_token **token_tab, char *path)
 	i = 0;
 	while (token_tab[i])
 	{
-		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd == -1)
-		{
-			free(path);
-			exit(EXIT_FAILURE);
-		}
 		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
 		{
-			limiter = get_limiter(token_tab[i]->str);
-			if (!limiter)
-				exit(EXIT_FAILURE);
-			tmp = "";
-			while (tmp[0] == '\0' || ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
+			fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd == -1)
 			{
-				ft_putstr_fd(">", 1);
-				if (tmp[0] != '\0')
-					free(tmp);
-				tmp = get_next_line(0);
-				if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
-					ft_putstr_fd(tmp, fd);
+				free(path);
+				exit(EXIT_FAILURE);
 			}
-			free(limiter);
-			free(tmp);
+			if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+			{
+				limiter = get_limiter(token_tab[i]->str);
+				if (!limiter)
+					exit(EXIT_FAILURE);
+				tmp = "";
+				while (tmp[0] == '\0' || ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
+				{
+					ft_putstr_fd(">", 1);
+					if (tmp[0] != '\0')
+						free(tmp);
+					tmp = get_next_line(0);
+					if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
+						ft_putstr_fd(tmp, fd);
+				}
+				free(limiter);
+				free(tmp);
+			}
+			close(fd);
 		}
-		close(fd);
 		i++;
 	}
 	exit(EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/27 16:43:48 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/30 10:47:31 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ char	**redirtab_create(t_token **token_tab)
 {
 	char	**redir_tab;
 
-	redir_tab = malloc(sizeof(char *) * 4);
+	redir_tab = malloc(sizeof(char *) * 5);
 	if (!redir_tab)
 		return (NULL);
 	redir_tab[0] = redir_heredoc(token_tab);
@@ -148,6 +148,10 @@ char	**redirtab_create(t_token **token_tab)
 		redir_tab[2] = get_redir_type(token_tab);
 	else
 		redir_tab[2] = NULL;
-	redir_tab[3] = NULL;
+	if (redir_tab[0] && ft_strncmp(redir_tab[0], ".heredoc_", 9) == 0)
+		redir_tab[3] = ft_strdup("DEL");
+	else
+		redir_tab[3] = ft_strdup("NOT_DEL");
+	redir_tab[4] = NULL;
 	return (redir_tab);
 }
