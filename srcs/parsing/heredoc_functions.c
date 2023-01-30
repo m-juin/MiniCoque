@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/30 10:48:11 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:18:31 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,37 +114,34 @@ static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 	return (path);
 }
 
-static int	got_heredoc(t_token **token_tab)
-{
-	int	i;
-
-	i = 0;
-	while (token_tab[i])
-	{
-		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 void	heredoc(t_token **token_tab)
 {
 	int		i;
 	int		j;
 	int		start;
 	int		pipe_count;
+	int		heredoc_nb;
 
 	if (!token_tab || !token_tab[0])
 		return ;
-	if (got_heredoc(token_tab) == 1)
+	heredoc_nb = heredoc_count(token_tab);
+	if (heredoc_nb == 0)
 		return ;
 	i = 0;
 	j = 1;
 	start = 0;
 	pipe_count = pipe_token_count(token_tab);
 	if (pipe_count == 0)
-		token_tab[i]->str = get_heredoc_path(token_tab, j);
+	{	
+		j = 0;
+		while (token_tab[i] && j < heredoc_nb)
+		{
+			if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+				j++;
+			i++;
+		}
+		token_tab[j - 1]->str = get_heredoc_path(token_tab, j);
+	}
 	while (token_tab[i])
 	{
 		if (token_tab[i]->token_type == PIPE)

@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/30 10:47:31 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:47:42 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static char	*redir_in(t_token **token_tab)
 	return (redir_path);
 }
 
-static int	heredoc_count(t_token **token_tab)
+int	heredoc_count(t_token **token_tab)
 {
 	int	i;
 	int	redir_nb;
@@ -123,13 +123,13 @@ static char	*redir_heredoc(t_token **token_tab)
 	while (token_tab[i] && j < redir_nb)
 	{
 		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
-		{
 			j++;
-			if (get_redirin(token_tab[i], &redir_path) == FALSE)
-				return (redir_path);
-		}
-		i++;
+		if (j < redir_nb)
+			i++;
 	}
+	redir_path = get_redir(token_tab[i]->str);
+	if (!redir_path)
+		return (NULL);
 	return (redir_path);
 }
 

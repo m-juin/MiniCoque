@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/30 10:48:46 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/30 11:27:30 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ char		*quotes_management(char *input, t_env_var *env, int *i);
 /*	redirection_parsing.c	*/
 
 char		**redirtab_create(t_token **token_tab);
+int			heredoc_count(t_token **token_tab);
 
 /*	redirect_parsing_utils.c	*/
 
