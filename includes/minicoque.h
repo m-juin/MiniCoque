@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minicoque.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjuin <mjuin@student.42angouleme.fr>       +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 16:03:43 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/30 10:48:46 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,13 @@ void		free_coque_data(t_minicoque *data);
 
 void		init_tree_exec(t_minicoque *data, t_btree *root);
 
+/*	fd_utils.c	*/
+
+int			*ft_setcur(t_btree *root);
+void		set_exit_fd(t_btree *curbranch, int type, int fds[2]);
+int			get_entry_fd(int fds[2], t_btree *curbranch);
+int			ft_close_fd(int fd, t_bool force);
+
 /*	get_cmd_utils.c	*/
 
 char		**token_to_array(t_token **token);
@@ -144,10 +151,14 @@ int			token_tab_len(t_token **tab, int redir);
 
 /*	exec_utils.c	*/
 
+void		ft_exec(t_btree *branch, t_minicoque *data, int fds[2], int fd);
+void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int fd);
+
+/*	individual_exec_utils.c	*/
+
 void		last_exec(t_minicoque *data, t_btree *root, int fds[2]);
 void		ft_first_exec(t_minicoque *data, t_btree *root, int fds[2]);
 void		child_cmd(int fds[2], t_minicoque *data, t_btree *root);
-void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int fd);
 void		ft_single_exec(t_minicoque *data, t_btree *root, int fds[2]);
 
 /*	param_expansion_functions.c	*/
@@ -167,8 +178,8 @@ int			token_count(char *input);
 
 /*	counting_utils.c	*/
 
-int				pipe_count(char *input, int *i, int *nb);
-int				pipe_token_count(t_token **token_tab);
+int			pipe_count(char *input, int *i, int *nb);
+int			pipe_token_count(t_token **token_tab);
 
 /*	parsing.c	*/
 
@@ -191,14 +202,14 @@ char		**redirtab_create(t_token **token_tab);
 
 /*	redirect_parsing_utils.c	*/
 
-int				redirect_syntax_check(char *input, int *i, char *err_msg);
-int				redir_in_count(t_token **token_count);
-int				redir_out_count(t_token **token_count);
-char			*get_redir(char *str);
-char			*get_redir_type(t_token **token_tab);
+int			redirect_syntax_check(char *input, int *i, char *err_msg);
+int			redir_in_count(t_token **token_count);
+int			redir_out_count(t_token **token_count);
+char		*get_redir(char *str);
+char		*get_redir_type(t_token **token_tab);
 
 /*	heredoc_functions.	*/
 
-void			heredoc(t_token **token_tab);
+void		heredoc(t_token **token_tab);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/27 14:45:43 by gpasquet         ###   ########.fr        #
+#    Updated: 2023/01/30 10:47:54 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ SRC =	srcs/main.c \
 		srcs/utils/exec_utils.c \
 		srcs/utils/tree_creation_utils.c \
 		srcs/utils/tree_exec_utils.c \
+		srcs/utils/individual_exec_utils.c \
+		srcs/utils/fd_utils.c \
 		srcs/utils/tab_utils.c \
 		srcs/utils/get_cmd_utils.c \
 		srcs/utils/token_utils.c \
