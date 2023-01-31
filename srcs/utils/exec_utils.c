@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 11:49:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 15:35:25 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	secure_dup2(int source, int target)
 	}
 }
 
-static t_bool	ft_isforkable(char *function, char *arg)
+t_bool	ft_isforkable(char *function, char *arg)
 {
 	if (ft_strcmp(function, "exit") == 0)
 		return (FALSE);
@@ -33,6 +33,23 @@ static t_bool	ft_isforkable(char *function, char *arg)
 		return (FALSE);
 	return (TRUE);
 }
+
+/*int ft_get_exit(char *path)
+{
+	if (access(path, F_OK) != 0)
+	{
+		ft_printf_fd(2, "%s: command not found\n",
+					path);
+		return (1);
+	}
+	else if (access(path, X_OK) != 0)
+	{
+		ft_printf_fd(2, "MiniCoque: %s: Permission denied\n",
+			path);
+		return (1);
+	}
+	return (0);
+}*/
 
 static int ft_handlefork(t_btree *root, int fds[2], t_minicoque *data, int type)
 {
@@ -49,6 +66,13 @@ static int ft_handlefork(t_btree *root, int fds[2], t_minicoque *data, int type)
 		pid = fork();
 		if (pid == 0)
 		{
+			if (fd == -1 || fds[1] == -1)
+			{
+				/*if (fd != -1)
+					ft_get_exit(root->tab_str[1]);*/
+				fd = ft_close_fd(fd, FALSE);
+				exit (1);
+			}
 			secure_dup2(fd, 0);
 			fds[0] = ft_close_fd(fds[0], FALSE);
 			secure_dup2(fds[1], 1);
@@ -71,6 +95,7 @@ void	ft_exec(t_btree *branch, t_minicoque *data)
 	
 	execve(branch->left->tab_str[0], branch->right->tab_str,
 	env_to_array(data->env_var));
+	last_exit(FALSE, 1);
 }
 
 void	ft_execute(t_minicoque *data, t_btree *root, int fds[2], int type)
@@ -100,6 +125,6 @@ void	ft_execute(t_minicoque *data, t_btree *root, int fds[2], int type)
 	{
 		ft_close_fd(0, TRUE);
 		ft_close_fd(1, TRUE);
-		exit(1);
+		exit(last_exit(TRUE, -1));
 	}
 }

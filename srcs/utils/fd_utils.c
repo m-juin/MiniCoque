@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:38:06 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 11:57:43 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 15:31:52 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	set_exit_fd(t_btree *curbranch, int type, int fds[2], int fd)
 			fds[1] = open(curbranch->tab_str[1], O_WRONLY | O_TRUNC);
 		else
 			fds[1] = open(curbranch->tab_str[1], O_WRONLY | O_APPEND);
+		if (fds[1] == -1)
+		{
+			ft_printf_fd(2, "MiniCoque: %s: Permission denied\n",
+				curbranch->tab_str[1]);
+			last_exit(FALSE, 1);
+		}
 	}
 	else if (type != PIPE)
 		fds[1] = 1;

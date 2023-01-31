@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 10:23:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 14:20:28 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ int			token_tab_len(t_token **tab, int redir);
 
 void		ft_exec(t_btree *branch, t_minicoque *data);
 void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int pipe);
+t_bool		ft_isforkable(char *function, char *arg);
+int 		ft_get_exit(char *path);
 
 /*	individual_exec_utils.c	*/
 
