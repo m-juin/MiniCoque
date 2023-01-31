@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/30 11:51:00 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 10:32:52 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,48 +90,6 @@ static char	*redir_in(t_token **token_tab)
 		}
 		i++;
 	}
-	return (redir_path);
-}
-
-int	heredoc_count(t_token **token_tab)
-{
-	int	i;
-	int	redir_nb;
-
-	redir_nb = 0;
-	i = 0;
-	while (token_tab[i])
-	{
-		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
-			redir_nb++;
-		i++;
-	}
-	return (redir_nb);
-}
-
-static char	*redir_heredoc(t_token **token_tab)
-{
-	int		redir_nb;
-	int		i;
-	int		j;
-	char	*redir_path;
-
-	redir_nb = heredoc_count(token_tab);
-	if (redir_nb == 0)
-		return (NULL);
-	redir_path = NULL;
-	i = 0;
-	j = 0;
-	while (token_tab[i] && j < redir_nb)
-	{
-		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
-			j++;
-		if (j < redir_nb)
-			i++;
-	}
-	redir_path = get_redir(token_tab[i]->str);
-	if (!redir_path)
-		return (NULL);
 	return (redir_path);
 }
 
