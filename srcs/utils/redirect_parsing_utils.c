@@ -6,14 +6,17 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:50:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 17:36:00 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:57:56 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	redirect_syntax_check(char *input, int *i, char *err_msg)
+int	redirect_syntax_check(char *input, int *i)
 {
+	char	*err_msg;
+
+	err_msg = ft_strdup("minicoque: syntax error near unexpected token");
 	if (input[*i] == input[*i + 1] && input[*i] == input[*i + 2])
 	{
 		ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);

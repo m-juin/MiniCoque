@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 15:16:05 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:19:18 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,8 @@ int			token_count(char *input);
 
 int			pipe_count(char *input, int *i, int *nb);
 int			pipe_token_count(t_token **token_tab);
+void		counting_syntax_error(char input);
+int			redirect_count(char *input, int *i, int *nb);
 
 /*	parsing.c	*/
 
@@ -202,7 +204,7 @@ char		**redirtab_create(t_token **token_tab);
 
 /*	redirect_parsing_utils.c	*/
 
-int			redirect_syntax_check(char *input, int *i, char *err_msg);
+int			redirect_syntax_check(char *input, int *i);
 int			redir_in_count(t_token **token_count);
 int			redir_out_count(t_token **token_count);
 char		*get_redir(char *str);

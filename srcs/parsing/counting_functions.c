@@ -6,67 +6,45 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 15:43:42 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:18:45 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	redirect_count(char *input, int *i, int *nb)
-{
-	char	*err_msg;
-	int		j;
-
-	err_msg = ft_strdup("minicoque: syntax error nearunexpected token");
-	if (redirect_syntax_check(input, i, err_msg) == -1)
-		return (-1);
-	(*nb)++;
-	while (typify(input[*i]) == REDIRECT)
-		(*i)++;
-	while (typify(input[*i]) == BLANK)
-		(*i)++;
-	if (!input[*i] || input[*i] == '|' || typify(input[*i]) == REDIRECT)
-	{
-		if (input[*i] == '\0')
-			ft_printf_fd(2, "%s `newline'\n", err_msg, input[*i]);
-		else
-			ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
-		free(err_msg);
-		return (-1);
-	}
-	while (input[*i] && typify(input[*i]) != BLANK && typify(input[*i])
-		!= REDIRECT && input[*i] != '|')
-	{
-		if (typify(input[*i]) == S_QUOTE || typify(input[*i]) == D_QUOTE)
-		{
-			j = *i + 1;
-			while (input[j] && input[j] != '|' && typify(input[j]) != REDIRECT
-				&& input[j] != input[*i])
-				j++;
-			*i = j;
-		}
-		if (input[*i] == '\0')
-			ft_printf_fd(2, "%s `newline'\n", err_msg, input[*i]);
-		if (input[*i] == '|' || typify(input[*i]) == REDIRECT)
-			ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
-		(*i)++;
-	}
-	free(err_msg);
-	return (0);
-}
-
-static void	d_quote_count(char *input, int *i, int *nb)
+static int	d_quote_count(char *input, int *i, int *nb)
 {
 	(*i)++;
 	while (input[*i] && input[*i] != '\"')
 		(*i)++;
+	if (!input[*i])
+	{
+		counting_syntax_error(input[*i]);
+		return (-1);
+	}
 	if (typify(input[*i + 1]) != LITERAL && input[*i + 1] != '\''
 		&& input[*i + 1] != '\"' && input[*i + 1] != '$')
 		(*nb)++;
-	if (!input[*i])
-		return ;
 	else
 		(*i)++;
+	return (0);
+}
+
+static int	s_quote_count(char *input, int *i, int *nb)
+{
+	(*i)++;
+	while (input[*i] && input[*i] != '\'')
+		(*i)++;
+	if (typify(input[*i + 1]) != LITERAL && input[*i + 1] != '\''
+		&& input[*i + 1] != '\"')
+		(*nb)++;
+	if (!input[*i])
+	{
+		counting_syntax_error(input[*i]);
+		return (-1);
+	}	
+	(*i)++;
+	return (0);
 }
 
 static void	dollar_count(char *input, int *i, int *nb)
@@ -78,23 +56,14 @@ static void	dollar_count(char *input, int *i, int *nb)
 		(*nb)++;
 }
 
-static void	token_count_part2(char *input, int *i, int *nb)
+static int	token_count_part2(char *input, int *i, int *nb)
 {
 	if (input[*i] == '\'')
-	{
-		(*i)++;
-		while (input[*i] && input[*i] != '\'')
-			(*i)++;
-		if (typify(input[*i + 1]) != LITERAL && input[*i + 1] != '\''
-			&& input[*i + 1] != '\"')
-			(*nb)++;
-		if (!input[*i])
-			return ;
-		else
-			(*i)++;
-	}
+		if (s_quote_count(input, i, nb) == -1)
+			return (-1);
 	if (input[*i] == '\"')
-		d_quote_count(input, i, nb);
+		if (d_quote_count(input, i, nb) == -1)
+			return (-1);
 	if (typify(input[*i]) == DOLLAR)
 		dollar_count(input, i, nb);
 	else if (typify(input[*i]) == LITERAL)
@@ -105,6 +74,7 @@ static void	token_count_part2(char *input, int *i, int *nb)
 			&& typify(input[*i]) != S_QUOTE)
 			(*nb)++;
 	}
+	return (0);
 }
 
 int	token_count(char *input)
@@ -129,7 +99,8 @@ int	token_count(char *input)
 				return (-1);
 		}
 		else if (input[i])
-			token_count_part2(input, &i, &nb);
+			if (token_count_part2(input, &i, &nb) == -1)
+				return (-1);
 	}
 	return (nb);
 }
