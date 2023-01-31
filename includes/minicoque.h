@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 15:48:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 16:40:16 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,14 @@ void		free_coque_data(t_minicoque *data);
 /*	tree_exec_utils.c	*/
 
 void		init_tree_exec(t_minicoque *data, t_btree *root);
+int			countcmd(t_btree *tree);
 
 /*	fd_utils.c	*/
 
-int			*ft_setcur(t_btree *root);
 void		set_exit_fd(t_btree *curbranch, int type, int fds[2], int fd);
 int			get_entry_fd(int fds[2], t_btree *curbranch);
 int			ft_close_fd(int fd, t_bool force);
+void		secure_dup2(int source, int target);
 
 /*	get_cmd_utils.c	*/
 
@@ -149,17 +150,19 @@ void		pipe_token(t_token **token_tab, int *nb);
 void		redirect_token(t_token *token, char *input, int *i);
 int			token_tab_len(t_token **tab, int redir);
 
+/*	ft_execute.c	*/
+
+void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int pipe);
+
 /*	exec_utils.c	*/
 
-void		ft_exec(t_btree *branch, t_minicoque *data);
-void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int pipe);
+int			*ft_setcur(t_btree *root);
 t_bool		ft_isforkable(char *function, char *arg);
-int 		ft_get_exit(char *path);
 
 /*	individual_exec_utils.c	*/
 
+void		ft_exec(t_btree *branch, t_minicoque *data);
 void		last_exec(t_minicoque *data, t_btree *root, int fds[2]);
-void		ft_first_exec(t_minicoque *data, t_btree *root, int fds[2]);
 void		child_cmd(int fds[2], t_minicoque *data, t_btree *root);
 void		ft_single_exec(t_minicoque *data, t_btree *root, int fds[2]);
 

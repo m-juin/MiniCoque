@@ -6,11 +6,25 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 15:21:14 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 16:30:41 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+int	countcmd(t_btree *tree)
+{
+	int	count;
+
+	count = 0;
+	while (tree->type == PIPE)
+	{
+		count++;
+		tree = tree->right;
+	}
+	count++;
+	return (count);
+}
 
 static void	ft_read_tree(t_minicoque *data, t_btree *root, int fds[2])
 {
@@ -22,33 +36,6 @@ static void	ft_read_tree(t_minicoque *data, t_btree *root, int fds[2])
 		root = root->right;
 	}
 	last_exec(data, root, fds);
-}
-
-void	ft_check_error(t_btree *root)
-{
-	if (root == NULL)
-		return ;
-	while (root->type == PIPE)
-	{
-		if (is_builtin(root->left->right->tab_str[0]) == 0)
-		{
-			if (access(root->left->left->tab_str[0], F_OK) != 0)
-				ft_printf_fd(2, "%s: command not found\n",
-					root->left->right->tab_str[0]);
-			else if (access(root->left->left->tab_str[0], X_OK) != 0)
-				ft_printf_fd(2, "MiniCoque: %s: Permission denied\n",
-					root->left->left->tab_str[0]);
-		}
-		root = root->right;
-	}
-	if (is_builtin(root->right->tab_str[0]) == 0)
-	{
-		if (access(root->left->tab_str[0], F_OK) != 0)
-			ft_printf_fd(2, "%s: command not found\n", root->right->tab_str[0]);
-		else if (access(root->left->tab_str[0], X_OK) != 0)
-			ft_printf_fd(2, "MiniCoque: %s: Permission denied\n",
-				root->left->tab_str[0]);
-	}
 }
 
 static void	ft_wait_pids(int *curprocess)
@@ -80,10 +67,7 @@ void	init_tree_exec(t_minicoque *data, t_btree *root)
 	if (root->type != PIPE)
 		ft_single_exec(data, root, fds);
 	else
-	{
-		ft_first_exec(data, root, fds);
-		ft_read_tree(data, root->right, fds);
-	}
+		ft_read_tree(data, root, fds);
 	ft_wait_pids(data->curprocess);
 	while (root->type == PIPE)
 		root = root->right;

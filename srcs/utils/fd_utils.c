@@ -6,43 +6,19 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:38:06 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 15:31:52 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 16:39:02 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	countcmd(t_btree *tree)
+void	secure_dup2(int source, int target)
 {
-	int	count;
-
-	count = 0;
-	while (tree->type == PIPE)
+	if (source != -1 && source != target)
 	{
-		count++;
-		tree = tree->right;
+		dup2(source, target);
+		ft_close_fd(source, FALSE);
 	}
-	count++;
-	return (count);
-}
-
-int	*ft_setcur(t_btree *root)
-{
-	int	pos;
-	int	size;
-	int	*curprocess;
-
-	pos = 0;
-	size = countcmd(root) + 1;
-	curprocess = malloc(size * sizeof(int));
-	if (curprocess == NULL)
-		return (NULL);
-	while (pos < size)
-	{
-		curprocess[pos] = -1;
-		pos++;
-	}
-	return (curprocess);
 }
 
 void	set_exit_fd(t_btree *curbranch, int type, int fds[2], int fd)
