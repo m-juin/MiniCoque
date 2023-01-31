@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:38:06 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/30 11:28:08 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 11:57:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,19 @@ int	*ft_setcur(t_btree *root)
 	return (curprocess);
 }
 
-void	set_exit_fd(t_btree *curbranch, int type, int fds[2])
+void	set_exit_fd(t_btree *curbranch, int type, int fds[2], int fd)
 {
 	ft_close_fd(fds[1], FALSE);
 	if (curbranch->tab_str[1] != NULL)
 	{
-		ft_close_fd(fds[0], FALSE);
+		if (fd != fds[0])
+			fds[0] = ft_close_fd(fds[0], FALSE);
 		pipe(fds);
-		ft_close_fd(fds[1], FALSE);
+		fds[1] = ft_close_fd(fds[1], FALSE);
 		if (curbranch->tab_str[2][0] == 'T')
-			fds[1] = open(curbranch->tab_str[1], O_WRONLY, O_TRUNC);
+			fds[1] = open(curbranch->tab_str[1], O_WRONLY | O_TRUNC);
 		else
-			fds[1] = open(curbranch->tab_str[1], O_WRONLY, O_APPEND);
+			fds[1] = open(curbranch->tab_str[1], O_WRONLY | O_APPEND);
 	}
 	else if (type != PIPE)
 		fds[1] = 1;
@@ -71,7 +72,7 @@ int	get_entry_fd(int fds[2], t_btree *curbranch)
 
 	if (curbranch->tab_str[0] != NULL)
 	{
-		ft_close_fd(fds[0], FALSE);
+		fds[0] = ft_close_fd(fds[0], FALSE);
 		new_fd = open(curbranch->tab_str[0], O_RDONLY);
 		if (new_fd == -1)
 		{
