@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/30 16:42:45 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 10:07:47 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	heredoc(t_token **token_tab)
 	}
 	else
 	{
+		pipe_count = 0;
 		while (token_tab[j] && token_tab[j]->token_type != PIPE)
 			j++;
 		heredoc_nb = heredoc_count(sub_token_tab(token_tab, 0, j));
@@ -151,12 +152,13 @@ void	heredoc(t_token **token_tab)
 		{
 			if (token_tab[i]->token_type == PIPE)
 			{
+				pipe_count++;
 				i++;
 				j = i;
+				start = i;
 				while (token_tab[j] && token_tab[j]->token_type != PIPE)
 					j++;
-				heredoc_nb = heredoc_count(sub_token_tab(token_tab, start, j));
-				start = i;
+				heredoc_nb = heredoc_count(sub_token_tab(token_tab, start, j - start));
 				j = 0;
 			}
 			if (heredoc_nb > 0)
@@ -165,7 +167,7 @@ void	heredoc(t_token **token_tab)
 					j++;
 				if (j == heredoc_nb)
 				{
-					token_tab[i]->str = get_heredoc_path(token_tab, j);
+					token_tab[i]->str = get_heredoc_path(sub_token_tab(token_tab, start, i - start + 1), pipe_count);
 					j = 0;
 				}
 			}
