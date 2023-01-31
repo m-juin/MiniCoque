@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 09:30:32 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 12:00:45 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/30 16:36:47 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	env(t_env_var *env_data, char **args, int fds[2])
+int	env(t_env_var *env_data, char **args)
 {
 	if (args[1] != NULL)
 	{
@@ -24,9 +24,9 @@ int	env(t_env_var *env_data, char **args, int fds[2])
 	while (env_data != NULL)
 	{
 		if (env_data->declared == 1 && env_data->value != NULL)
-			ft_printf_fd(fds[1], "%s=%s\n", env_data->name, env_data->value);
+			ft_printf_fd(1, "%s=%s\n", env_data->name, env_data->value);
 		else if (env_data->declared == 1)
-			ft_printf_fd(fds[1], "%s=\n", env_data->name);
+			ft_printf_fd(1, "%s=\n", env_data->name);
 		env_data = env_data->next;
 	}
 	last_exit(FALSE, 0);

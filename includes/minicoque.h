@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/30 11:27:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 10:23:58 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ char *const	*env_to_array(t_env_var *env);
 
 /*	echo.c	*/
 
-int			echo(char **args, int fds[2]);
+int			echo(char **args);
 
 /*	env.c	*/
 
-int			env(t_env_var *env_data, char **args, int fds[2]);
+int			env(t_env_var *env_data, char **args);
 
 /*	export.c	*/
 
-int			export(t_env_var *env, char **args, int fds[2]);
+int			export(t_env_var *env, char **args);
 
 /*	unset.c	*/
 
@@ -89,7 +89,7 @@ int			unset(t_env_var *env, char **args);
 
 /*	pwd.c	*/
 
-int			pwd(int fds[2]);
+int			pwd();
 
 /*	cd.c	*/
 
@@ -123,7 +123,7 @@ void		init_tree_exec(t_minicoque *data, t_btree *root);
 /*	fd_utils.c	*/
 
 int			*ft_setcur(t_btree *root);
-void		set_exit_fd(t_btree *curbranch, int type, int fds[2]);
+void		set_exit_fd(t_btree *curbranch, int type, int fds[2], int fd);
 int			get_entry_fd(int fds[2], t_btree *curbranch);
 int			ft_close_fd(int fd, t_bool force);
 
@@ -151,8 +151,8 @@ int			token_tab_len(t_token **tab, int redir);
 
 /*	exec_utils.c	*/
 
-void		ft_exec(t_btree *branch, t_minicoque *data, int fds[2], int fd);
-void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int fd);
+void		ft_exec(t_btree *branch, t_minicoque *data);
+void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int pipe);
 
 /*	individual_exec_utils.c	*/
 
