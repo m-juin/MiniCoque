@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 10:23:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/30 16:37:02 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 16:35:11 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	pwd()
+int	pwd(void)
 {
 	char	*current;
 
