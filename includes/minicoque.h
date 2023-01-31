@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 14:20:28 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/01/31 15:48:58 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int			unset(t_env_var *env, char **args);
 
 /*	pwd.c	*/
 
-int			pwd();
+int			pwd(void);
 
 /*	cd.c	*/
 
@@ -145,7 +145,7 @@ t_token		**lexer(char *av, t_env_var *env);
 
 void		free_token(t_token **token_tab);
 t_token		**init_tokentab(char *input);
-void		pipe_token(t_token **token_tab, int *i, int *nb);
+void		pipe_token(t_token **token_tab, int *nb);
 void		redirect_token(t_token *token, char *input, int *i);
 int			token_tab_len(t_token **tab, int redir);
 
@@ -201,7 +201,6 @@ char		*quotes_management(char *input, t_env_var *env, int *i);
 /*	redirection_parsing.c	*/
 
 char		**redirtab_create(t_token **token_tab);
-int			heredoc_count(t_token **token_tab);
 
 /*	redirect_parsing_utils.c	*/
 
@@ -214,5 +213,18 @@ char		*get_redir_type(t_token **token_tab);
 /*	heredoc_functions.	*/
 
 void		heredoc(t_token **token_tab);
+int			heredoc_count(t_token **token_tab);
+char		*redir_heredoc(t_token **token_tab);
+
+/*	heredoc_fork.c	*/
+
+void		read_heredoc(t_token **token_tab, char *path);
+
+/*	heredoc_utils.c	*/
+
+int			heredoc_count(t_token **token_tab);
+char		*redir_heredoc(t_token **token_tab);
+int			hdoc_pipe_count(t_token **token_tab);
+char		*init_heredoc_path(int pipe_nb);
 
 #endif

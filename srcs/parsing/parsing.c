@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/27 09:21:43 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:07:20 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_btree	*parsing(t_token **token_tab, t_env_var *env)
 	i = 0;
 	while (token_tab[i])
 	{
-		if (token_tab[i]->str[0] == '|')
+		if (token_tab[i]->token_type == PIPE)
 		{
 			parsed_tree->type = PIPE;
 			parsed_tree->left = parsing(sub_token_tab(token_tab, 0, i), env);

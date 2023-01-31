@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 16:54:27 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:43:42 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	redirect_count(char *input, int *i, int *nb)
 {
 	char	*err_msg;
+	int		j;
 
 	err_msg = ft_strdup("minicoque: syntax error nearunexpected token");
 	if (redirect_syntax_check(input, i, err_msg) == -1)
@@ -35,7 +36,21 @@ static int	redirect_count(char *input, int *i, int *nb)
 	}
 	while (input[*i] && typify(input[*i]) != BLANK && typify(input[*i])
 		!= REDIRECT && input[*i] != '|')
-			(*i)++;
+	{
+		if (typify(input[*i]) == S_QUOTE || typify(input[*i]) == D_QUOTE)
+		{
+			j = *i + 1;
+			while (input[j] && input[j] != '|' && typify(input[j]) != REDIRECT
+				&& input[j] != input[*i])
+				j++;
+			*i = j;
+		}
+		if (input[*i] == '\0')
+			ft_printf_fd(2, "%s `newline'\n", err_msg, input[*i]);
+		if (input[*i] == '|' || typify(input[*i]) == REDIRECT)
+			ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
+		(*i)++;
+	}
 	free(err_msg);
 	return (0);
 }
