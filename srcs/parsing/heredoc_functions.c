@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/30 11:18:31 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 10:07:47 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,30 +128,50 @@ void	heredoc(t_token **token_tab)
 	if (heredoc_nb == 0)
 		return ;
 	i = 0;
-	j = 1;
-	start = 0;
+	j = 0;
 	pipe_count = pipe_token_count(token_tab);
 	if (pipe_count == 0)
 	{	
-		j = 0;
 		while (token_tab[i] && j < heredoc_nb)
 		{
 			if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
 				j++;
+			if (j < heredoc_nb)
+				i++;
+		}
+		token_tab[i]->str = get_heredoc_path(token_tab, j);
+	}
+	else
+	{
+		pipe_count = 0;
+		while (token_tab[j] && token_tab[j]->token_type != PIPE)
+			j++;
+		heredoc_nb = heredoc_count(sub_token_tab(token_tab, 0, j));
+		j = 0;
+		while (token_tab[i])
+		{
+			if (token_tab[i]->token_type == PIPE)
+			{
+				pipe_count++;
+				i++;
+				j = i;
+				start = i;
+				while (token_tab[j] && token_tab[j]->token_type != PIPE)
+					j++;
+				heredoc_nb = heredoc_count(sub_token_tab(token_tab, start, j - start));
+				j = 0;
+			}
+			if (heredoc_nb > 0)
+			{
+				if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+					j++;
+				if (j == heredoc_nb)
+				{
+					token_tab[i]->str = get_heredoc_path(sub_token_tab(token_tab, start, i - start + 1), pipe_count);
+					j = 0;
+				}
+			}
 			i++;
 		}
-		token_tab[j - 1]->str = get_heredoc_path(token_tab, j);
-	}
-	while (token_tab[i])
-	{
-		if (token_tab[i]->token_type == PIPE)
-		{
-			token_tab[i]->str = get_heredoc_path(sub_token_tab(token_tab, start, i), j);
-			if (!token_tab[i]->str)
-				return ;
-			j++;
-			start = i;
-		}
-		i++;
 	}
 }
