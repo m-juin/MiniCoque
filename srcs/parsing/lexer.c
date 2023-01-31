@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 12:06:04 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:27:02 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,10 @@ static void	token_join_part2(t_token *token, char *input,
 			literal_token(token, input, i);
 		if (!token || !token->str)
 			free(token);
+		if (typify(token->str[0]) == REDIRECT)
+			token->token_type = REDIRECT;
+		else
+			token->token_type = LITERAL;
 	}
 }
 
@@ -85,13 +89,15 @@ static t_token	**token_join(char *input, t_env_var *env)
 		while (typify(input[i]) == BLANK)
 			i++;
 		if (input[i] == '|')
-			pipe_token(token_tab, &i, &nb);
+			pipe_token(token_tab, &nb);
 		if (typify(input[i]) == REDIRECT)
 			redirect_token(token_tab[nb], input, &i);
 		token_join_part2(token_tab[nb], input, env, &i);
 		if (token_tab[nb] && !token_tab[nb]->str)
 			return (NULL);
 		nb++;
+		if (input[i] == '|')
+			i++;
 	}
 	return (token_tab);
 }
@@ -105,13 +111,6 @@ t_token	**lexer(char *input, t_env_var *env)
 	if (!input)
 		return (NULL);
 	token_tab = token_join(input, env);
-	if (!token_tab)
-		return (NULL);
-	while (token_tab[i])
-	{
-		token_tab[i]->token_type = typify(token_tab[i]->str[0]);
-		i++;
-	}
 	if (!token_tab)
 		return (NULL);
 	return (token_tab);

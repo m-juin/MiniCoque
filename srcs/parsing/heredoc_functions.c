@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 14:17:29 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:04:29 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_nb)
 
 	i = 0;
 	j = 0;
-	if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+	if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
+		== '<' && token_tab[i]->str[1] == '<')
 		j++;
 	if (j == hdoc_nb)
 	{
@@ -86,7 +87,8 @@ static void	no_pipe_heredoc(t_token **token_tab, int heredoc_nb)
 	j = 0;
 	while (token_tab[i] && j < heredoc_nb)
 	{
-		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
+			== '<' && token_tab[i]->str[1] == '<')
 			j++;
 		if (j < heredoc_nb)
 			i++;

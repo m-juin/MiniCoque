@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:30:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 14:17:26 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:05:30 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	heredoc_count(t_token **token_tab)
 	i = 0;
 	while (token_tab[i])
 	{
-		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
+			== '<' && token_tab[i]->str[1] == '<')
 			redir_nb++;
 		i++;
 	}
@@ -43,7 +44,8 @@ char	*redir_heredoc(t_token **token_tab)
 	j = 0;
 	while (token_tab[i] && j < redir_nb)
 	{
-		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
+		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
+			== '<' && token_tab[i]->str[1] == '<')
 			j++;
 		if (j < redir_nb)
 			i++;
