@@ -6,24 +6,51 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 15:00:35 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:02:35 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static char	*get_redirout_path(t_token *token)
+static void	delete_files(t_token **token_tab)
 {
-	char	*redir_path;
+	int		i;
+	char	*path;
+
+	i = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0] == '>')
+		{
+			path = get_redir(token_tab[i]->str);
+			if (access(path, F_OK) == 0)
+				unlink(path);
+		}
+		i++;
+	}
+}
+
+static t_bool	get_redirout_path(t_token **token, int i, char **redir_path)
+{
 	int		fd;
 
-	redir_path = get_redir(token->str);
-	if (access(redir_path, F_OK) != 0)
+	*redir_path = get_redir(token[i]->str);
+	if (access(*redir_path, F_OK) != 0)
 	{
-		fd = open(redir_path, O_CREAT, 0644);
+		fd = open(*redir_path, O_CREAT, 0644);
+		if (fd == -1)
+		{
+			delete_files(token);
+			return (FALSE);
+		}
 		close(fd);
 	}
-	return (redir_path);
+	if (access(*redir_path, W_OK) != 0)
+	{
+		delete_files(token);
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
 static char	*redir_out(t_token **token_tab)
@@ -44,7 +71,8 @@ static char	*redir_out(t_token **token_tab)
 			j++;
 			if (redir_path)
 				free(redir_path);
-			redir_path = get_redirout_path(token_tab[i]);
+			if (get_redirout_path(token_tab, i, &redir_path) == FALSE)
+				return (redir_path);
 		}
 		i++;
 	}
@@ -103,7 +131,10 @@ char	**redirtab_create(t_token **token_tab)
 	redir_tab[0] = redir_heredoc(token_tab);
 	if (!redir_tab[0])
 		redir_tab[0] = redir_in(token_tab);
-	redir_tab[1] = redir_out(token_tab);
+	if (!redir_tab[0] || access(redir_tab[0], F_OK | W_OK) == 0)
+		redir_tab[1] = redir_out(token_tab);
+	else
+		redir_tab[1] = NULL;
 	if (redir_tab[1])
 		redir_tab[2] = get_redir_type(token_tab);
 	else

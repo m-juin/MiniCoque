@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 15:27:02 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 09:12:27 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ static void	token_join_part2(t_token *token, char *input,
 			literal_token(token, input, i);
 		if (!token || !token->str)
 			free(token);
-		if (typify(token->str[0]) == REDIRECT)
-			token->token_type = REDIRECT;
-		else
+		if (token->token_type != REDIRECT)
 			token->token_type = LITERAL;
 	}
 }
