@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 17:20:09 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 15:43:35 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ t_btree		*parsing(t_token **token_tab, t_env_var *var);
 
 t_btree		*init_tree_node(void);
 t_btree		*insert_node(t_token **token_array);
-t_btree		*insert_cmd_node(t_token **array, t_env_var *env);
+t_btree		*insert_cmd_node(char *cmd, t_env_var *env);
 int			is_builtin(char	*str);
 
 /*	quotes_magement_functions.c	*/

@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 15:07:20 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 15:43:15 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static	void	cmd_node_create(t_btree *parsed_tree, t_token **token_tab,
 	parsed_tree->type = COMMAND;
 	parsed_tree->tab_str = redirtab_create(token_tab);
 	parsed_tree->right = insert_node(token_tab);
-	parsed_tree->left = insert_cmd_node(token_tab, env);
+	parsed_tree->left = insert_cmd_node(parsed_tree->right->tab_str[0], env);
 }
 
 t_btree	*parsing(t_token **token_tab, t_env_var *env)
