@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/27 16:53:46 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:31:56 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ char	*get_cmds(char *av, char *const *envp)
 		i++;
 	}
 	d_tab_free(paths);
-	return (av);
+	cmd = ft_strdup(av);
+	return (cmd);
 }
 
 static void	tokenarr_cpy(t_token **src, char **dst, int size)

@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 16:43:29 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 17:18:44 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:15:50 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,19 @@
 int	pipe_count(char *input, int *i, int *nb)
 {
 	char	*err_msg;
+	int		j;
 
 	err_msg = ft_strdup("minicoque: syntax error near unexpected token");
 	if (input[*i + 1] == '|')
+	{
+		ft_printf_fd(2, "%s `|'\n", err_msg);
+		free(err_msg);
+		return (-1);
+	}
+	j = *i - 1;
+	while (j >= 0 && input[j] == BLANK)
+		j--;
+	if (j < 0)
 	{
 		ft_printf_fd(2, "%s `|'\n", err_msg);
 		free(err_msg);
