@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_fork.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 10:51:52 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:43:14 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ static int	open_tmp_file(char *path)
 	return (fd);
 }
 
-static void	prompt_loop(int fd, char *tmp, char *limiter)
+static void	prompt_loop(int fd, char *tmp, char *limiter, t_minicoque *data)
 {
+	int linecount;
+
+	linecount = 0;
 	while (tmp[0] == '\0'
 		|| ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 	{
@@ -51,6 +54,9 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 		if (tmp[0] != '\0')
 			free(tmp);
 		tmp = get_next_line(0);
+		if (tmp == NULL)
+			ft_printf_fd(1, "MiniCoque: warning: here-document at line %u delimited by end-of-file (wanted `EOF')\n", (data->linecount));
+		linecount++;
 		if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 			ft_putstr_fd(tmp, fd);
 	}
@@ -58,7 +64,7 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 	free(tmp);
 }
 
-void	read_heredoc(t_token **token_tab, char *path)
+void	read_heredoc(t_token **token_tab, char *path, t_minicoque *data)
 {
 	int		i;
 	int		fd;
@@ -75,7 +81,7 @@ void	read_heredoc(t_token **token_tab, char *path)
 			if (!limiter)
 				exit(EXIT_FAILURE);
 			tmp = "";
-			prompt_loop(fd, tmp, limiter);
+			prompt_loop(fd, tmp, limiter, data);
 			close(fd);
 		}
 		i++;
