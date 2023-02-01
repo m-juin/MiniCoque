@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/01 14:40:39 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/01 16:30:08 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_minicoque	*init(char **envp)
 		return (NULL);
 	data->env_var = NULL;
 	data->curprocess = NULL;
-	data->linecount = 0;
 	pos = 0;
 	while (envp[pos])
 	{
@@ -68,6 +67,7 @@ int	main(int ac, char **av, char **envp)
 	t_minicoque	*coque_data;
 	t_token		**token_input;
 	t_btree		*parsed_tree;
+	int			ret;
 
 	ac = ac - 1;
 	av[0] = 0;
@@ -86,9 +86,15 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGQUIT, signalhandler);
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
-		coque_data->linecount++;
 		token_input = lexer(readed, coque_data->env_var);
-		heredoc(token_input, coque_data);
+		signal(SIGINT, SIG_IGN);
+		ret = heredoc(token_input);
+		if (ret == -1)
+		{
+			free_token(token_input);
+			token_input = NULL;
+		}
+		signal(SIGINT, signalhandler);
 		parsed_tree = parsing(token_input, coque_data->env_var);
 		if (parsed_tree != NULL)
 			init_tree_exec(coque_data, parsed_tree);

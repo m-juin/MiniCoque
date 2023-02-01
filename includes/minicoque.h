@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/01 14:40:21 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/01 16:27:18 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_minicoque
 {
 	t_env_var	*env_var;
 	pid_t		*curprocess;
-	size_t		linecount;
 }	t_minicoque;
 
 /*	env_clst_utils.c	*/
@@ -218,13 +217,13 @@ char		*get_redir_type(t_token **token_tab);
 
 /*	heredoc_functions.	*/
 
-void		heredoc(t_token **token_tab, t_minicoque *data);
+int			heredoc(t_token **token_tab);
 int			heredoc_count(t_token **token_tab);
 char		*redir_heredoc(t_token **token_tab);
 
 /*	heredoc_fork.c	*/
 
-void		read_heredoc(t_token **token_tab, char *path, t_minicoque *data);
+void		read_heredoc(t_token **token_tab, char *path);
 
 /*	heredoc_utils.c	*/
 

@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/01 14:40:59 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/01 16:35:17 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static char	*get_heredoc_path(t_token **token_tab, int pipe_nb, t_minicoque *data)
+static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 {
 	char	*path;
 	int		pid;
@@ -28,13 +28,16 @@ static char	*get_heredoc_path(t_token **token_tab, int pipe_nb, t_minicoque *dat
 		return (NULL);
 	}
 	if (pid == 0)
-		read_heredoc(token_tab, path, data);
+		read_heredoc(token_tab, path);
 	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		if (WEXITSTATUS(status) == 2)
+			return (NULL);
 	path = ft_strjoin("<< ", path);
 	return (path);
 }
 
-static void	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_nb, t_minicoque *data)
+static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_nb)
 {
 	int	i;
 	int	j;
@@ -47,17 +50,21 @@ static void	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_nb, t_minico
 	if (j == hdoc_nb)
 	{
 		token_tab[i]->str = get_heredoc_path(sub_token_tab
-				(token_tab, 0, i + 1), pipe_count, data);
+				(token_tab, 0, i + 1), pipe_count);
+		if (token_tab[i]->str == NULL)
+			return (-1);
 	j = 0;
 	}
+	return (1);
 }
 
-static void	pipe_heredoc(t_token **token_tab, t_minicoque *data)
+static int	pipe_heredoc(t_token **token_tab)
 {
 	int		pipe_count;
 	int		hdoc_nb;
 	int		i;
-
+	int		ret;
+	
 	i = 0;
 	pipe_count = 0;
 	while (token_tab[i] && token_tab[i]->token_type != PIPE)
@@ -73,15 +80,19 @@ static void	pipe_heredoc(t_token **token_tab, t_minicoque *data)
 			hdoc_nb = hdoc_pipe_count(&token_tab[i]);
 		}
 		if (hdoc_nb > 0)
-			hdoc_pipe(&token_tab[i], pipe_count, hdoc_nb, data);
+			ret = hdoc_pipe(&token_tab[i], pipe_count, hdoc_nb);
+		if (ret == -1)
+			return (-1);
 		i++;
 	}
+	return (0);
 }
 
-static void	no_pipe_heredoc(t_token **token_tab, int heredoc_nb, t_minicoque *data)
+static int 	no_pipe_heredoc(t_token **token_tab, int heredoc_nb)
 {
 	int		i;
 	int		j;
+	char	*path;
 
 	i = 0;
 	j = 0;
@@ -93,22 +104,29 @@ static void	no_pipe_heredoc(t_token **token_tab, int heredoc_nb, t_minicoque *da
 		if (j < heredoc_nb)
 			i++;
 	}
-	token_tab[i]->str = get_heredoc_path(token_tab, j, data);
+	path = get_heredoc_path(token_tab, j);
+	if (path == NULL)
+		return (-1);
+	token_tab[i]->str = path;
+	return (1);
 }
 
-void	heredoc(t_token **token_tab, t_minicoque *data)
+int	heredoc(t_token **token_tab)
 {
-	int		pipe_count;
-	int		heredoc_nb;
-
+	int	pipe_count;
+	int	heredoc_nb;
+	int	ret;
+	
+	ret = 0;
 	if (!token_tab || !token_tab[0])
-		return ;
+		return (0);
 	heredoc_nb = heredoc_count(token_tab);
 	if (heredoc_nb == 0)
-		return ;
+		return (0);
 	pipe_count = pipe_token_count(token_tab);
 	if (pipe_count == 0)
-		no_pipe_heredoc(token_tab, heredoc_nb, data);
+		ret = no_pipe_heredoc(token_tab, heredoc_nb);
 	else
-		pipe_heredoc(token_tab, data);
+		ret = pipe_heredoc(token_tab);
+	return (ret);
 }

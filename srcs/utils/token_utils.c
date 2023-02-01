@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/01 14:21:02 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/01 16:22:32 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	token_tab_len(t_token **tab, int redir)
 
 void	free_token(t_token **token_tab)
 {
-	int	i;
+	int		i;
+	void	*tmp;
 
 	i = 0;
 	while (token_tab[i])
@@ -44,7 +45,9 @@ void	free_token(t_token **token_tab)
 		free(token_tab[i]);
 		i++;
 	}
-	free(token_tab);
+	tmp = token_tab;
+	token_tab = NULL;
+	free(tmp);
 }
 
 t_token	**init_tokentab(char *input)
