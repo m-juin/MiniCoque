@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:41:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/02 11:48:44 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/02 15:06:04 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_exec(t_btree *branch, t_minicoque *data)
 		|| ft_strncmp(branch->left->tab_str[0], "./", 2) == 0))
 	{
 		ft_printf_fd(2, "%s: Is a directory\n", branch->left->tab_str[0]);
-		exit(126);
+		last_exit(FALSE, 126);
 	}
 	else if (branch->left->tab_str[0][0] == '/' ||
 		ft_strncmp(branch->left->tab_str[0], "./", 2) == 0)
@@ -29,7 +29,7 @@ void	ft_exec(t_btree *branch, t_minicoque *data)
 			branch->left->tab_str[0]);
 	else
 		ft_printf_fd(2, "%s: command not found\n", branch->left->tab_str[0]);
-	exit(127);
+	last_exit(FALSE, 127);
 }
 
 static void	deltmp(t_btree *root)
