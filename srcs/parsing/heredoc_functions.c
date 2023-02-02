@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 11:41:25 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/02 15:25:38 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,17 @@ static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 	return (path);
 }
 
-static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_nb)
+static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_values[2], int i)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
 	if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
 		== '<' && token_tab[i]->str[1] == '<')
-		j++;
-	if (j == hdoc_nb)
+		hdoc_values[1]++;
+	if (hdoc_values[1] == hdoc_values[0])
 	{
 		token_tab[i]->str = get_heredoc_path(sub_token_tab
 				(token_tab, 0, i + 1), pipe_count);
 		if (token_tab[i]->str == NULL)
 			return (-1);
-	j = 0;
 	}
 	return (1);
 }
@@ -61,26 +55,28 @@ static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_nb)
 static int	pipe_heredoc(t_token **token_tab)
 {
 	int		pipe_count;
-	int		hdoc_nb;
+	int		hdoc_values[2];
 	int		i;
 	int		ret;
-	
+
 	i = 0;
 	pipe_count = 0;
 	while (token_tab[i] && token_tab[i]->token_type != PIPE)
 		i++;
-	hdoc_nb = heredoc_count(sub_token_tab(token_tab, 0, i));
+	hdoc_values[0] = heredoc_count(sub_token_tab(token_tab, 0, i));
 	i = 0;
+	hdoc_values[1] = 0;
 	while (token_tab[i])
 	{
 		if (token_tab[i]->token_type == PIPE)
 		{
+			hdoc_values[1] = 0;
 			pipe_count++;
 			i++;
-			hdoc_nb = hdoc_pipe_count(&token_tab[i]);
+			hdoc_values[0] = hdoc_pipe_count(&token_tab[i]);
 		}
-		if (hdoc_nb > 0)
-			ret = hdoc_pipe(&token_tab[i], pipe_count, hdoc_nb);
+		if (hdoc_values[0] > 0)
+			ret = hdoc_pipe(token_tab, pipe_count, hdoc_values, i);
 		if (ret == -1)
 			return (-1);
 		i++;
