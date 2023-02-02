@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 14:59:56 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/02 16:21:57 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ static int	open_tmp_file(char *path)
 
 static void	prompt_loop(int fd, char *tmp, char *limiter)
 {
+	int	dupped;
+
+	dupped = dup(0);
 	while (tmp[0] == '\0'
 		|| ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 	{
@@ -48,14 +51,18 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 			free(tmp);
 		tmp = readline(" > ");
 		if (tmp == NULL)
+		{
 			ft_printf_fd(1, "MiniCoque: warning: here-document \
 delimited by end-of-file (wanted `%s')\n", limiter);
+			break;
+		}
 		if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 		{
 			tmp = ft_strjoin(tmp, "\n");
 			ft_putstr_fd(tmp, fd);
 		}
 	}
+	dup2(dupped, 0);
 	free(limiter);
 	free(tmp);
 }
@@ -86,7 +93,6 @@ void	read_heredoc(t_token **token_tab, char *path)
 				exit(EXIT_FAILURE);
 			tmp = "";
 			prompt_loop(fd, tmp, limiter);
-			ft_printf_fd(2, "test\n");
 			close(fd);
 		}
 		i++;

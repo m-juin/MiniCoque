@@ -6,12 +6,11 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 13:33:51 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/26 15:41:41 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/02 15:41:42 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
-
 
 size_t	ft_strlen(const char *s)
 {
