@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 15:25:38 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 16:36:48 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,26 @@ static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 	return (path);
 }
 
+static int	find_prev_pipe(t_token **token_tab, int i)
+{
+	while (i > 0 && token_tab[i]->token_type != PIPE)
+		i--;
+	return (i);
+}
+
 static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_values[2], int i)
 {
+	int	start;
+
+	start = find_prev_pipe(token_tab , i);
 	if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
 		== '<' && token_tab[i]->str[1] == '<')
 		hdoc_values[1]++;
 	if (hdoc_values[1] == hdoc_values[0])
 	{
 		token_tab[i]->str = get_heredoc_path(sub_token_tab
-				(token_tab, 0, i + 1), pipe_count);
+				(token_tab, start, i + 1), pipe_count);
+		hdoc_values[1] = 0;
 		if (token_tab[i]->str == NULL)
 			return (-1);
 	}
@@ -57,9 +68,11 @@ static int	pipe_heredoc(t_token **token_tab)
 	int		pipe_count;
 	int		hdoc_values[2];
 	int		i;
+	int		start;
 	int		ret;
 
 	i = 0;
+	start = i;
 	pipe_count = 0;
 	while (token_tab[i] && token_tab[i]->token_type != PIPE)
 		i++;
