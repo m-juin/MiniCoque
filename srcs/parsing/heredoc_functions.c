@@ -6,11 +6,26 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 17:17:16 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 17:20:03 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+static void delete_tmp(t_token **token_tab)
+{
+	int	pos;
+
+	pos = 0;
+	while(token_tab[pos] != NULL)
+	{
+		printf("tokentab[%i] = %s\n", pos, token_tab[pos]->str);
+		if(ft_strncmp(token_tab[pos]->str, "<< .heredoc_", 12) == 0)
+			if (ft_strncmp(&token_tab[pos]->str[ft_strlen(token_tab[pos]->str) - 4], ".tmp", 4) == 0)
+				unlink(&token_tab[pos]->str[3]);
+		pos++;
+	}
+}
 
 static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 {
@@ -33,8 +48,13 @@ static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 		read_heredoc(token_tab, path);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
+	{
 		if (WEXITSTATUS(status) == 2)
+		{
+			unlink(path);
 			return (NULL);
+		}
+	}
 	path = ft_strjoin("<< ", path);
 	return (path);
 }
@@ -67,7 +87,10 @@ static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_values[2],
 				(token_tab, start, i + 1), pipe_count);
 		hdoc_values[1] = 0;
 		if (token_tab[i]->str == NULL)
+		{
+			delete_tmp(token_tab);
 			return (-1);
+		}
 	}
 	return (1);
 }
