@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 16:21:57 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/02 16:43:24 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ delimited by end-of-file (wanted `%s')\n", limiter);
 		}
 	}
 	dup2(dupped, 0);
+	close(dupped);
 	free(limiter);
 	free(tmp);
 }
@@ -90,12 +91,17 @@ void	read_heredoc(t_token **token_tab, char *path)
 			fd = open_tmp_file(path);
 			limiter = get_limiter(token_tab[i]->str);
 			if (!limiter)
+			{
+				close(0);
+				close(fd);
 				exit(EXIT_FAILURE);
+			}
 			tmp = "";
 			prompt_loop(fd, tmp, limiter);
 			close(fd);
 		}
 		i++;
 	}
+	close(0);
 	exit(EXIT_SUCCESS);
 }
