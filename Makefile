@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/01/31 16:40:38 by mjuin            ###   ########.fr        #
+#    Updated: 2023/02/02 10:31:26 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC =	srcs/main.c \
 		srcs/utils/counting_utils.c \
 		srcs/utils/redirect_parsing_utils.c \
 		srcs/utils/heredoc_utils.c \
+		srcs/utils/error_utils.c \
 		srcs/utils/ft_execute.c \
 		srcs/parsing/lexer.c \
 		srcs/parsing/param_expansion_function.c \

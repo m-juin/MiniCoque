@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/02 11:37:46 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:48:33 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <dirent.h>
 # include "../libft/include/libft.h"
 # include "../libft/include/get_next_line.h"
 
@@ -231,5 +232,9 @@ int			heredoc_count(t_token **token_tab);
 char		*redir_heredoc(t_token **token_tab);
 int			hdoc_pipe_count(t_token **token_tab);
 char		*init_heredoc_path(int pipe_nb);
+
+/*	error_uils.c	*/
+
+int			isfile(const char* name);
 
 #endif
