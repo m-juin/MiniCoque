@@ -6,11 +6,29 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:50:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 16:57:56 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:55:23 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+void	delete_files(t_token **token_tab)
+{
+	int		i;
+	char	*path;
+
+	i = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0] == '>')
+		{
+			path = get_redir(token_tab[i]->str);
+			if (access(path, F_OK) == 0)
+				unlink(path);
+		}
+		i++;
+	}
+}
 
 int	redirect_syntax_check(char *input, int *i)
 {
@@ -30,22 +48,6 @@ int	redirect_syntax_check(char *input, int *i)
 		return (-1);
 	}
 	return (0);
-}
-
-int	redir_in_count( t_token **token_tab)
-{
-	int	i;
-	int	redir_nb;
-
-	redir_nb = 0;
-	i = 0;
-	while (token_tab[i])
-	{
-		if (token_tab[i]->str[0] == '<')
-			redir_nb++;
-		i++;
-	}
-	return (redir_nb);
 }
 
 int	redir_out_count( t_token **token_tab)

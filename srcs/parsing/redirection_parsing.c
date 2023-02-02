@@ -6,34 +6,19 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 13:07:37 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:55:29 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static void	delete_files(t_token **token_tab)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	while (token_tab[i])
-	{
-		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0] == '>')
-		{
-			path = get_redir(token_tab[i]->str);
-			if (access(path, F_OK) == 0)
-				unlink(path);
-		}
-		i++;
-	}
-}
-
-static t_bool	get_redirout(t_token **token, int i, char **redir_path)
+static t_bool	get_redirout(t_token **token, int i, char **redir_path,
+		int redirout_nb)
 {
 	int		fd;
+	int		redirout_tot;
 
+	redirout_tot = redir_out_count(token);
 	*redir_path = get_redir(token[i]->str);
 	if (access(*redir_path, F_OK) != 0)
 	{
@@ -47,38 +32,12 @@ static t_bool	get_redirout(t_token **token, int i, char **redir_path)
 	}
 	if (access(*redir_path, W_OK) != 0)
 	{
-		delete_files(token);
+		redirout_nb = 0;
 		return (FALSE);
 	}
 	return (TRUE);
 }
-/*
-static char	*redir_out(t_token **token_tab)
-{
-	int		redir_nb;
-	int		i;
-	int		j;
-	char	*redir_path;
 
-	redir_nb = redir_out_count(token_tab);
-	redir_path = NULL;
-	i = 0;
-	j = 0;
-	while (token_tab[i] && j < redir_nb)
-	{
-		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0] == '>')
-		{
-			j++;
-			if (redir_path)
-				free(redir_path);
-			if (get_redirout_path(token_tab, i, &redir_path) == FALSE)
-				return (redir_path);
-		}
-		i++;
-	}
-	return (redir_path);
-}
-*/
 static t_bool	get_redirin(t_token *token, char **redir_path)
 {
 	int	fd;
@@ -96,59 +55,66 @@ static t_bool	get_redirin(t_token *token, char **redir_path)
 	}
 	return (TRUE);
 }
-/*
-static char	*redir_in(t_token **token_tab)
-{
-	int		redir_nb;
-	int		i;
-	int		j;
-	char	*redir_path;
 
-	redir_nb = redir_in_count(token_tab);
-	redir_path = NULL;
+static void	redir_in_n_out(t_token **token_tab, char **redir_tab)
+{
+	int		i;
+	int		redirout_nb;
+	t_bool	redir_status;
+
+	redirout_nb = 1;
+	redir_status = TRUE;
 	i = 0;
-	j = 0;
-	while (token_tab[i] && j < redir_nb)
+	while (token_tab[i])
 	{
-		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0] == '<')
+		if (redir_status == TRUE && token_tab[i]->token_type == REDIRECT
+			&& token_tab[i]->str[0] == '<')
+			redir_status = get_redirin(token_tab[i], &redir_tab[0]);
+		if (redir_status == TRUE && token_tab[i]->token_type == REDIRECT
+			&& token_tab[i]->str[0] == '>')
 		{
-			j++;
-			if (get_redirin(token_tab[i], &redir_path) == FALSE)
-				return (redir_path);
+			redir_status = get_redirout(token_tab, i, &redir_tab[1],
+					redirout_nb);
+			redirout_nb++;
 		}
 		i++;
 	}
-	return (redir_path);
 }
-*/
+
+static void	redir_only_out(t_token **token_tab, char **redir_tab)
+{
+	int		i;
+	int		redir_nb;
+	t_bool	redir_status;
+
+	redir_nb = 1;
+	redir_status = TRUE;
+	i = 0;
+	while (token_tab[i])
+	{
+		if (redir_status == TRUE && token_tab[i]->token_type == REDIRECT
+			&& token_tab[i]->str[0] == '>')
+		{
+			redir_status = get_redirout(token_tab, i, &redir_tab[1], redir_nb);
+			redir_nb++;
+		}
+		i++;
+	}
+}
+
 char	**redirtab_create(t_token **token_tab)
 {
 	char	**redir_tab;
-	int		i;
-	t_bool	redirin_status;
-	t_bool	redirout_status;
 
-	redirin_status = TRUE;
-	redirout_status = TRUE;
 	redir_tab = malloc(sizeof(char *) * 5);
 	if (!redir_tab)
 		return (NULL);
+	redir_tab[1] = NULL;
 	redir_tab[0] = redir_heredoc(token_tab);
 	if (redir_tab[0])
-		redirin_status = FALSE;
-/*	if (!redir_tab[0] || access(redir_tab[0], F_OK | W_OK) == 0)
-		redir_tab[1] = redir_out(token_tab);
+		redir_only_out(token_tab, redir_tab);
 	else
-		redir_tab[1] = NULL;
-*/	i = 0;
-	while (token_tab[i])
-	{
-		if (redirin_status == TRUE && token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0] == '<')
-			redirin_status = get_redirin(token_tab[i], &redir_tab[0]);
-		if (redirin_status == TRUE && token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0] == '>')
-			redirout_status = get_redirout(token_tab, i, &redir_tab[1]);
-		i++;
-	}
+		redir_in_n_out(token_tab, redir_tab);
 	if (redir_tab[1])
 		redir_tab[2] = get_redir_type(token_tab);
 	else

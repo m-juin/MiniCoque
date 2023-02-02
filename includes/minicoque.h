@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/02 11:48:33 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:55:50 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,8 @@ char		**redirtab_create(t_token **token_tab);
 
 /*	redirect_parsing_utils.c	*/
 
+void		delete_files(t_token **token_tab);
 int			redirect_syntax_check(char *input, int *i);
-int			redir_in_count(t_token **token_count);
 int			redir_out_count(t_token **token_count);
 char		*get_redir(char *str);
 char		*get_redir_type(t_token **token_tab);
