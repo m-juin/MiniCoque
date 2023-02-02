@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/01 13:02:35 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:47:59 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ static char	*redir_in(t_token **token_tab)
 	int		j;
 	char	*redir_path;
 
-	redir_nb = redir_in_count(token_tab);
 	redir_path = NULL;
 	i = 0;
 	j = 0;
@@ -124,6 +123,7 @@ static char	*redir_in(t_token **token_tab)
 char	**redirtab_create(t_token **token_tab)
 {
 	char	**redir_tab;
+	int		i;
 
 	redir_tab = malloc(sizeof(char *) * 5);
 	if (!redir_tab)
@@ -135,7 +135,16 @@ char	**redirtab_create(t_token **token_tab)
 		redir_tab[1] = redir_out(token_tab);
 	else
 		redir_tab[1] = NULL;
-	if (redir_tab[1])
+/*	i = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->str[0] == '<')
+			redir_tab[0] = get_redirin()
+		if (token_tab[i]->str[0] == '>')
+			redir_tab[1] = get_redirout();
+		i++;
+	}
+*/	if (redir_tab[1])
 		redir_tab[2] = get_redir_type(token_tab);
 	else
 		redir_tab[2] = NULL;

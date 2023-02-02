@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/01 14:27:29 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:37:15 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,7 @@ static t_token	**token_join(char *input, t_env_var *env)
 		while (typify(input[i]) == BLANK)
 			i++;
 		if (input[i] == '|')
-		{
-			pipe_token(token_tab, &nb);
-			while (typify(input[i]) == BLANK || input[i] == '|')
-				i++;
-		}
+			pipe_token(token_tab, &nb, input, &i);
 		if (typify(input[i]) == REDIRECT)
 			redirect_token(token_tab[nb], input, &i);
 		token_join_part2(token_tab[nb], input, env, &i);
