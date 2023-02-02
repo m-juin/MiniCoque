@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/01 09:05:23 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 16:50:33 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	d_quote_count(char *input, int *i, int *nb)
 {
+	if (!input)
+		return (-1);
 	(*i)++;
 	while (input[*i] && input[*i] != '\"')
 		(*i)++;
@@ -31,6 +33,8 @@ static int	d_quote_count(char *input, int *i, int *nb)
 
 static int	s_quote_count(char *input, int *i, int *nb)
 {
+	if (!input)
+		return (-1);
 	(*i)++;
 	while (input[*i] && input[*i] != '\'')
 		(*i)++;
@@ -48,6 +52,8 @@ static int	s_quote_count(char *input, int *i, int *nb)
 
 static void	dollar_count(char *input, int *i, int *nb)
 {
+	if (!input)
+		return ;
 	(*i)++;
 	while (input[*i] && typify(input[*i]) == LITERAL)
 		(*i)++;
@@ -57,6 +63,13 @@ static void	dollar_count(char *input, int *i, int *nb)
 
 static int	token_count_part2(char *input, int *i, int *nb)
 {
+	if (!input)
+		return (-1);
+	else if (input[*i] && typify(input[*i]) == REDIRECT)
+	{
+		if (redirect_count(input, i, nb) == -1)
+			return (-1);
+	}
 	if (input[*i] == '\'')
 		if (s_quote_count(input, i, nb) == -1)
 			return (-1);
@@ -81,6 +94,8 @@ int	token_count(char *input)
 	int		nb;
 	int		i;
 
+	if (!input)
+		return (-1);
 	i = 0;
 	nb = 0;
 	while (input[i])
@@ -90,11 +105,6 @@ int	token_count(char *input)
 		if (input[i] && input[i] == '|')
 		{
 			if (pipe_count(input, &i, &nb) == -1)
-				return (-1);
-		}
-		else if (input[i] && typify(input[i]) == REDIRECT)
-		{
-			if (redirect_count(input, &i, &nb) == -1)
 				return (-1);
 		}
 		else if (input[i])
