@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/01 14:43:14 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/01 15:52:19 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ static int	open_tmp_file(char *path)
 	return (fd);
 }
 
-static void	prompt_loop(int fd, char *tmp, char *limiter, t_minicoque *data)
+static void	prompt_loop(int fd, char *tmp, char *limiter)
 {
-	int linecount;
+	char *sublimiter;
 
-	linecount = 0;
+	sublimiter = ft_substr(limiter, 0, ft_strlen(limiter) - 1);
 	while (tmp[0] == '\0'
 		|| ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 	{
@@ -55,16 +55,22 @@ static void	prompt_loop(int fd, char *tmp, char *limiter, t_minicoque *data)
 			free(tmp);
 		tmp = get_next_line(0);
 		if (tmp == NULL)
-			ft_printf_fd(1, "MiniCoque: warning: here-document at line %u delimited by end-of-file (wanted `EOF')\n", (data->linecount));
-		linecount++;
+			ft_printf_fd(1, "MiniCoque: warning: here-document delimited by end-of-file (wanted `%s')\n", sublimiter);
 		if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 			ft_putstr_fd(tmp, fd);
 	}
+	free(sublimiter);
 	free(limiter);
 	free(tmp);
 }
 
-void	read_heredoc(t_token **token_tab, char *path, t_minicoque *data)
+void	hsighandler()
+{
+	ft_putstr_fd("\n", 1);
+	exit(2);
+}
+
+void	read_heredoc(t_token **token_tab, char *path)
 {
 	int		i;
 	int		fd;
@@ -72,6 +78,7 @@ void	read_heredoc(t_token **token_tab, char *path, t_minicoque *data)
 	char	*limiter;
 
 	i = 0;
+	signal(SIGINT, hsighandler);
 	while (token_tab[i])
 	{
 		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
@@ -81,7 +88,7 @@ void	read_heredoc(t_token **token_tab, char *path, t_minicoque *data)
 			if (!limiter)
 				exit(EXIT_FAILURE);
 			tmp = "";
-			prompt_loop(fd, tmp, limiter, data);
+			prompt_loop(fd, tmp, limiter);
 			close(fd);
 		}
 		i++;
