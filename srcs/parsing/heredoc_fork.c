@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 10:09:18 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:38:29 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 			free(tmp);
 		tmp = readline(" > ");
 		if (tmp == NULL)
-			ft_printf_fd(1,
-				"MiniCoque: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+			ft_printf_fd(1, "MiniCoque: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
 		if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 		{
 			tmp = ft_strjoin(tmp, "\n");
@@ -60,8 +59,9 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 	free(tmp);
 }
 
-void	hsighandler(void)
+void	hsighandler(int sig)
 {
+	sig = sig - 1;
 	ft_putstr_fd("\n", 1);
 	exit(2);
 }
@@ -85,6 +85,7 @@ void	read_heredoc(t_token **token_tab, char *path)
 				exit(EXIT_FAILURE);
 			tmp = "";
 			prompt_loop(fd, tmp, limiter);
+			ft_printf_fd(2, "test\n");
 			close(fd);
 		}
 		i++;
