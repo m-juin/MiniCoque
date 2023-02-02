@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 11:52:23 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:59:56 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 			free(tmp);
 		tmp = readline(" > ");
 		if (tmp == NULL)
-			ft_printf_fd(1, "MiniCoque: warning: here-document\
-				delimited by end-of-file (wanted `%s')\n", limiter);
+			ft_printf_fd(1, "MiniCoque: warning: here-document \
+delimited by end-of-file (wanted `%s')\n", limiter);
 		if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 		{
 			tmp = ft_strjoin(tmp, "\n");
