@@ -6,7 +6,7 @@
 #    By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                  +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/28 13:38:40 by gpasquet          #+#    #+#              #
-#    Updated: 2022/12/16 10:54:21 by gpasquet         ###   ########.fr        #
+#    Updated: 2023/02/03 15:01:43 by gpasquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRCS	=	./src/string/ft_split.c			\
 			./src/string/ft_strlcat.c		\
 			./src/string/ft_strlcpy.c		\
 			./src/string/ft_strjoin.c		\
+			./src/string/ft_strjoin_f.c		\
 			./src/string/ft_str_mega_join.c \
 			./src/string/ft_substr.c		\
 			./src/string/ft_strnstr.c		\

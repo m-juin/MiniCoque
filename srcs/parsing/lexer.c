@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 10:12:49 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:02:44 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static void	literal_token(t_token *token, char *input, int *i)
 	while (input[*i] && typify(input[*i]) == LITERAL)
 		(*i)++;
 	tmp = ft_substr(input, start, *i - start);
-	token->str = ft_strjoin(token->str, tmp);
+	token->str = ft_strjoin_f(token->str, tmp);
+	free(tmp);
 }
 
 static void	token_join_part2(t_token *token, char *input,
@@ -97,13 +98,13 @@ static t_token	**token_join(char *input, t_env_var *env)
 		return (NULL);
 	nb = 0;
 	i = 0;
-	while (input[i])
+	while (input[i] && nb < token_tab_len(token_tab, 0))
 	{
 		while (typify(input[i]) == BLANK)
 			i++;
-		if (input[i] == '|')
+		if (input[i] != '\0' && input[i] == '|')
 			pipe_token(token_tab, &nb, input, &i);
-		if (typify(input[i]) == REDIRECT)
+		if (input[i] != '\0' && typify(input[i]) == REDIRECT)
 			redirect_token(token_tab[nb], input, &i);
 		token_join_part2(token_tab[nb], input, env, &i);
 		if (!token_tab[nb] && !token_tab[nb]->str)

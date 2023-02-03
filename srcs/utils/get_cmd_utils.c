@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/02 09:42:47 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:04:53 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	**get_paths(char *const *envp)
 		i++;
 	}
 	paths[i] = 0;
-	d_tab_free(splitted_envp);
+	free(splitted_envp);
 	return (paths);
 }
 

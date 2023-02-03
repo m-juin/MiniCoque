@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 11:15:05 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:56:58 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(int ac, char **av, char **envp)
 		ret = heredoc(token_input);
 		if (ret == -1)
 		{
-			free_token(token_input);
+			token_input = free_token(token_input);
 			token_input = NULL;
 		}
 		signal(SIGINT, signalhandler);

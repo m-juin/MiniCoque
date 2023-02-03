@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 11:53:03 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:56:34 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ t_token		**lexer(char *av, t_env_var *env);
 
 /*	token_utils.c	*/
 
-void		free_token(t_token **token_tab);
+void		*free_token(t_token **token_tab);
 t_token		**init_tokentab(char *input);
 void		pipe_token(t_token **token_tab, int *nb, char *input, int *i);
 void		redirect_token(t_token *token, char *input, int *i);

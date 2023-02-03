@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 12:51:33 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/20 10:21:46 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 15:01:23 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char			*ft_strdup(const char *s);
 char			*ft_strndup(const char *str, size_t n);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_strjoin_f(char *s1, char const *s2);
 char			*ft_str_mega_join(const char *str, ...);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));

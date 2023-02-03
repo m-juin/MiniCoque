@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 10:21:54 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:56:21 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ t_btree	*parsing(t_token **token_tab, t_env_var *env)
 	}
 	if (!token_tab[i])
 		cmd_node_create(&parsed_tree, token_tab, env);
-	free_token(token_tab);
+	token_tab = free_token(token_tab);
 	return (parsed_tree);
 }
