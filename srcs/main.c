@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 13:56:58 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:26:32 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,6 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGINT, signalhandler);
 		coque_data->root = parsing(token_input, coque_data->env_var);
 		if (coque_data->root != NULL)
-		{
 			init_tree_exec(coque_data, coque_data->root);
-			free_tree(coque_data->root);
-			s_free(coque_data->prompt);
-		}
 	}
 }
