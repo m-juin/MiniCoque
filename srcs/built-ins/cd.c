@@ -6,17 +6,14 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/24 16:01:05 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 15:50:06 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-int	cd(t_env_var *env, char **args)
+static t_bool	error_handle(char **args)
 {
-	int			ret;
-	t_env_var	*tmp;
-
 	if (args[1] == NULL || args[2] != NULL)
 	{
 		if (args[1] == NULL)
@@ -24,8 +21,18 @@ int	cd(t_env_var *env, char **args)
 		else
 			ft_printf_fd(2, "cd : too many arguments\n");
 		last_exit(FALSE, 1);
-		return (1);
+		return (FALSE);
 	}
+	return (TRUE);
+}
+
+int	cd(t_env_var *env, char **args)
+{
+	int			ret;
+	t_env_var	*tmp;
+
+	if (error_handle(args) == FALSE)
+		return (1);
 	ret = chdir(args[1]);
 	if (ret == -1)
 		ft_printf_fd(2, "cd: %s: No such file or directory\n", args[1]);
@@ -35,6 +42,8 @@ int	cd(t_env_var *env, char **args)
 		if (tmp == NULL)
 			return (ret);
 		replace_value(get_env(env, "OLDPWD"), tmp->value);
+		free(tmp->value);
+		tmp->value = NULL;
 		getcwd(tmp->value, PATH_MAX);
 	}
 	last_exit(FALSE, ret * -1);
