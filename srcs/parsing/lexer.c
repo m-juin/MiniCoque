@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 11:37:15 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 10:12:49 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 {
 	char	*tmp;
 
+	if (!token || !input)
+		return ;
 	while (input[*i] == '$')
 	{
 		(*i)++;
 		tmp = doll_management(&input[*i], env);
+		if (!tmp)
+			return ;
 		if (input[*i] == '?')
 			(*i)++;
 		else
@@ -28,6 +32,11 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 			(*i)++;
 		}
 		token->str = ft_strjoin(token->str, tmp);
+		if (!token->str)
+		{
+			free(token);
+			return ;
+		}
 		free(tmp);
 	}
 }
@@ -37,6 +46,8 @@ static void	literal_token(t_token *token, char *input, int *i)
 	char	*tmp;
 	int		start;
 
+	if (!token || !input)
+		return ;
 	start = *i;
 	while (input[*i] && typify(input[*i]) == LITERAL)
 		(*i)++;
@@ -50,6 +61,8 @@ static void	token_join_part2(t_token *token, char *input,
 	int		start;
 	char	*tmp;
 
+	if (!token || !input)
+		return ;
 	start = *i;
 	while (input[*i] && (typify(input[*i]) == LITERAL || input[*i] == '\''
 			|| input[*i] == '\"' || input[*i] == '$'))
@@ -77,6 +90,8 @@ static t_token	**token_join(char *input, t_env_var *env)
 	int		i;
 	int		nb;
 
+	if (!input || !env)
+		return (NULL);
 	token_tab = init_tokentab(input);
 	if (!token_tab)
 		return (NULL);
@@ -91,7 +106,7 @@ static t_token	**token_join(char *input, t_env_var *env)
 		if (typify(input[i]) == REDIRECT)
 			redirect_token(token_tab[nb], input, &i);
 		token_join_part2(token_tab[nb], input, env, &i);
-		if (token_tab[nb] && !token_tab[nb]->str)
+		if (!token_tab[nb] && !token_tab[nb]->str)
 			return (NULL);
 		nb++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:37:39 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 11:51:43 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 10:21:54 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static	void	cmd_node_create(t_btree **parsed_tree, t_token **token_tab,
 {
 	t_btree	*cmd_node;
 
+	if (!parsed_tree || !token_tab)
+		return ;
 	cmd_node = *parsed_tree;
 	cmd_node->type = COMMAND;
 	cmd_node->tab_str = redirtab_create(token_tab);
@@ -32,9 +34,11 @@ t_btree	*parsing(t_token **token_tab, t_env_var *env)
 	t_btree	*parsed_tree;
 	int		i;
 
-	if (!token_tab)
+	if (!token_tab || !env)
 		return (NULL);
 	parsed_tree = init_tree_node();
+	if (!parsed_tree)
+		return (NULL);
 	i = 0;
 	while (token_tab[i])
 	{

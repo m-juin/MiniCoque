@@ -6,26 +6,20 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:10:41 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/25 13:25:26 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 10:19:02 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-char	*doll_management(char *input, t_env_var *env)
+static char	*doll_expansion(char *input, t_env_var *env)
 {
 	int			i;
-	int			error_code;
 	t_env_var	*var;
 
+	if (!input || !env)
+		return (NULL);
 	i = 0;
-	if (input[i] == '?')
-	{
-		error_code = last_exit(TRUE, 0);
-		return (ft_itoa(error_code));
-	}
-	if (typify(input[i]) != LITERAL)
-		return (ft_strdup("$"));
 	while (input[i])
 	{
 		if (typify(input[i]) != typify(input[i + 1]))
@@ -39,4 +33,24 @@ char	*doll_management(char *input, t_env_var *env)
 		return (ft_strdup(var->value));
 	else
 		return (ft_strdup(""));
+}
+
+char	*doll_management(char *input, t_env_var *env)
+{
+	int			error_code;
+	char		*expanded_param;
+
+	if (!input || !env)
+		return (NULL);
+	expanded_param = NULL;
+	if (input[0] == '?')
+	{
+		error_code = last_exit(TRUE, 0);
+		return (ft_itoa(error_code));
+	}
+	if (typify(input[0]) != LITERAL)
+		expanded_param = ft_strdup("$");
+	else
+		expanded_param = doll_expansion(input, env);
+	return (expanded_param);
 }

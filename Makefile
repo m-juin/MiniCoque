@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/02 10:31:26 by mjuin            ###   ########.fr        #
+#    Updated: 2023/02/03 11:42:36 by gpasquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRC =	srcs/main.c \
 		srcs/parsing/quotes_management_functions.c \
 		srcs/parsing/redirection_parsing.c \
 		srcs/parsing/heredoc_functions.c \
+		srcs/parsing/heredoc_pipe_functions.c \
 		srcs/parsing/heredoc_fork.c
 
 LIBFT = libft/libft.a

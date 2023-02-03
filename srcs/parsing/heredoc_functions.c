@@ -6,32 +6,35 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 17:20:03 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 11:43:02 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static void delete_tmp(t_token **token_tab)
+static char	*wait_hdoc(char *path, int pid)
 {
-	int	pos;
+	int		status;
 
-	pos = 0;
-	while(token_tab[pos] != NULL)
+	waitpid(pid, &status, 0);
+	if (!path)
+		return (NULL);
+	if (WIFEXITED(status))
 	{
-		printf("tokentab[%i] = %s\n", pos, token_tab[pos]->str);
-		if(ft_strncmp(token_tab[pos]->str, "<< .heredoc_", 12) == 0)
-			if (ft_strncmp(&token_tab[pos]->str[ft_strlen(token_tab[pos]->str) - 4], ".tmp", 4) == 0)
-				unlink(&token_tab[pos]->str[3]);
-		pos++;
+		if (WEXITSTATUS(status) == 2)
+		{
+			unlink(path);
+			return (NULL);
+		}
 	}
+	path = ft_strjoin("<< ", path);
+	return (path);
 }
 
-static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
+char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 {
 	char	*path;
 	int		pid;
-	int		status;
 
 	if (!token_tab)
 		return (NULL);
@@ -46,91 +49,8 @@ static char	*get_heredoc_path(t_token **token_tab, int pipe_nb)
 	}
 	if (pid == 0)
 		read_heredoc(token_tab, path);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status) == 2)
-		{
-			unlink(path);
-			return (NULL);
-		}
-	}
-	path = ft_strjoin("<< ", path);
+	path = wait_hdoc(path, pid);
 	return (path);
-}
-
-static int	find_prev_pipe(t_token **token_tab, int i)
-{
-	if (!token_tab)
-		return (-1);
-	while (i > 0 && token_tab[i]->token_type != PIPE)
-		i--;
-	return (i);
-}
-
-static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_values[2],
-		int i)
-{
-	int	start;
-
-	if (!token_tab)
-		return (-1);
-	start = find_prev_pipe(token_tab, i);
-	if (start == -1)
-		return (-1);
-	if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
-		== '<' && token_tab[i]->str[1] == '<')
-		hdoc_values[1]++;
-	if (hdoc_values[1] == hdoc_values[0])
-	{
-		token_tab[i]->str = get_heredoc_path(sub_token_tab
-				(token_tab, start, i + 1), pipe_count);
-		hdoc_values[1] = 0;
-		if (token_tab[i]->str == NULL)
-		{
-			delete_tmp(token_tab);
-			return (-1);
-		}
-	}
-	return (1);
-}
-
-static int	pipe_heredoc(t_token **token_tab)
-{
-	int		pipe_count;
-	int		hdoc_values[2];
-	int		i;
-	int		start;
-	int		ret;
-
-	if (!token_tab)
-		return (-1);
-	i = 0;
-	start = i;
-	pipe_count = 0;
-	while (token_tab[i] && token_tab[i]->token_type != PIPE)
-		i++;
-	hdoc_values[0] = heredoc_count(sub_token_tab(token_tab, 0, i));
-	if (hdoc_values[0] == -1)
-		return (-1);
-	i = 0;
-	hdoc_values[1] = 0;
-	while (token_tab[i])
-	{
-		if (token_tab[i]->token_type == PIPE)
-		{
-			hdoc_values[1] = 0;
-			pipe_count++;
-			i++;
-			hdoc_values[0] = hdoc_pipe_count(&token_tab[i]);
-		}
-		if (hdoc_values[0] > 0)
-			ret = hdoc_pipe(token_tab, pipe_count, hdoc_values, i);
-		if (ret == -1)
-			return (-1);
-		i++;
-	}
-	return (0);
 }
 
 static int	no_pipe_heredoc(t_token **token_tab, int heredoc_nb)

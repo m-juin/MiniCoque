@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 16:43:24 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 11:19:56 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 		{
 			ft_printf_fd(1, "MiniCoque: warning: here-document \
 delimited by end-of-file (wanted `%s')\n", limiter);
-			break;
+			break ;
 		}
 		if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
 		{
@@ -75,31 +75,35 @@ void	hsighandler(int sig)
 	exit(2);
 }
 
+static void	prompt_prepare(char *path, t_token *token)
+{
+	char	*limiter;
+	char	*tmp;
+	int		fd;
+
+	fd = open_tmp_file(path);
+	limiter = get_limiter(token->str);
+	if (!limiter)
+	{
+		close(0);
+		close(fd);
+		exit(EXIT_FAILURE);
+	}
+	tmp = "";
+	prompt_loop(fd, tmp, limiter);
+	close(fd);
+}
+
 void	read_heredoc(t_token **token_tab, char *path)
 {
 	int		i;
-	int		fd;
-	char	*tmp;
-	char	*limiter;
 
 	i = 0;
 	signal(SIGINT, hsighandler);
 	while (token_tab[i])
 	{
 		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
-		{
-			fd = open_tmp_file(path);
-			limiter = get_limiter(token_tab[i]->str);
-			if (!limiter)
-			{
-				close(0);
-				close(fd);
-				exit(EXIT_FAILURE);
-			}
-			tmp = "";
-			prompt_loop(fd, tmp, limiter);
-			close(fd);
-		}
+			prompt_prepare(path, token_tab[i]);
 		i++;
 	}
 	close(0);
