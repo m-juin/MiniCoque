@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 10:16:31 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/02 11:50:18 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:50:46 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	isfile(const char *name)
 {
 	DIR	*directory;
 
+	if (name == NULL)
+		return (-1);
 	directory = opendir(name);
 	if (directory != NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:38:06 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 16:39:02 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:43:14 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	secure_dup2(int source, int target)
 
 void	set_exit_fd(t_btree *curbranch, int type, int fds[2], int fd)
 {
+	if (curbranch == NULL)
+		return ;
 	ft_close_fd(fds[1], FALSE);
 	if (curbranch->tab_str[1] != NULL)
 	{
@@ -52,6 +54,8 @@ int	get_entry_fd(int fds[2], t_btree *curbranch)
 {
 	int	new_fd;
 
+	if (curbranch == NULL)
+		return (-1);
 	if (curbranch->tab_str[0] != NULL)
 	{
 		fds[0] = ft_close_fd(fds[0], FALSE);

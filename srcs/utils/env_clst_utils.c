@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:39:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/23 15:12:54 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:35:28 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char *const	*env_to_array(t_env_var *env)
 	size_t	size;
 	size_t	pos;
 
+	if (env == NULL)
+		return (NULL);
 	size = get_env_size(env);
 	if (size == 0)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 11:06:23 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:45:08 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	free_coque_data(t_minicoque *data)
 {
 	t_env_var	*tmp;
 
+	if (data == NULL)
+		return ;
 	while (data->env_var != NULL)
 	{
 		tmp = data->env_var->next;
@@ -55,6 +57,8 @@ void	free_tree(t_btree *root)
 	int	pos;
 
 	pos = 0;
+	if (root == NULL)
+		return ;
 	if (root->left != NULL)
 		free_tree(root->left);
 	if (root->right != NULL)

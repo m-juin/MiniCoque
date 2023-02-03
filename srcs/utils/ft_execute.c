@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:36:00 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 11:17:07 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 15:19:36 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	ft_handle_parent(int pid, t_minicoque *data, int fd)
 {
 	int	pos;
 
+	if (data == NULL)
+		return ;
 	pos = 0;
 	while (data->curprocess[pos] != -1)
 		pos++;
@@ -40,6 +42,8 @@ static int	handlefork(t_btree *root, int fds[2], t_minicoque *data, int type)
 	int	fd;
 	int	pid;
 
+	if (root == NULL || data == NULL)
+		return (-1);
 	if (ft_isforkable(root->left->tab_str[0], root->right->tab_str[1]) == FALSE)
 		return (1);
 	else
@@ -62,6 +66,8 @@ static int	handlefork(t_btree *root, int fds[2], t_minicoque *data, int type)
 
 static void	choose_exec(t_minicoque *data, t_btree *root)
 {
+	if (root == NULL || data == NULL)
+		return ;
 	if (ft_strcmp(root->left->tab_str[0], "exit") == 0)
 		ft_exit(root->right->tab_str, data);
 	else if (ft_strcmp(root->left->tab_str[0], "echo") == 0)
@@ -84,7 +90,9 @@ void	ft_execute(t_minicoque *data, t_btree *root, int fds[2], int type)
 {
 	int	handled;
 	int exit_code;
-	
+
+	if (root == NULL || data == NULL)
+		return ;
 	handled = handlefork(root, fds, data, type);
 	if (handled == -1)
 		return ;

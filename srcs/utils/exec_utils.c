@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 16:38:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:38:51 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	*ft_setcur(t_btree *root)
 	int	*curprocess;
 
 	pos = 0;
+	if (root == NULL)
+		return (NULL);
 	size = countcmd(root) + 1;
 	curprocess = malloc(size * sizeof(int));
 	if (curprocess == NULL)
@@ -33,6 +35,8 @@ int	*ft_setcur(t_btree *root)
 
 t_bool	ft_isforkable(char *function, char *arg)
 {
+	if (function == NULL)
+		return (FALSE);
 	if (ft_strcmp(function, "exit") == 0)
 		return (FALSE);
 	else if (ft_strcmp(function, "cd") == 0)
