@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:41:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 15:21:30 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 15:23:23 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ void	ft_single_exec(t_minicoque *data, t_btree *root, int fds[2])
 	fds[0] = ft_close_fd(fds[0], FALSE);
 	fds[1] = ft_close_fd(fds[1], FALSE);
 	deltmp(root);
-	free_tree(data->root);
-	s_free(data->prompt);
-	s_free(data->curprocess);
 }
 
 void	last_exec(t_minicoque *data, t_btree *root, int fds[2])
@@ -58,9 +55,6 @@ void	last_exec(t_minicoque *data, t_btree *root, int fds[2])
 	fds[0] = ft_close_fd(fds[0], FALSE);
 	fds[1] = ft_close_fd(fds[1], FALSE);
 	deltmp(root);
-	free_tree(data->root);
-	s_free(data->prompt);
-	s_free(data->curprocess);
 }
 
 void	child_cmd(int fds[2], t_minicoque *data, t_btree *root)
