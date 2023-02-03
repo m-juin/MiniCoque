@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 11:41:12 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 11:06:23 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,38 @@ void	free_coque_data(t_minicoque *data)
 		s_free(data->env_var);
 		data->env_var = tmp;
 	}
+	s_free(data->curprocess);
+	s_free(data->prompt);
 	s_free(data);
+}
+
+void	free_tree(t_btree *root)
+{
+	int	pos;
+
+	pos = 0;
+	if (root->left != NULL)
+		free_tree(root->left);
+	if (root->right != NULL)
+		free_tree(root->right);
+	if (root->tab_str == NULL)
+		return ;
+	while ((root->type == COMMAND && pos < 4)
+		|| (root->type != COMMAND && root->tab_str[pos] != NULL))
+	{
+		if (root->tab_str[pos] != NULL)
+			free(root->tab_str[pos]);
+		root->tab_str[pos] = NULL;
+		pos++;
+	}
+	if (root->tab_str != NULL)
+		free(root->tab_str);
+	free(root);
+}
+
+void	ft_global_free(t_minicoque *data)
+{
+	if (data->root != NULL)
+		free_tree(data->root);
+	free_coque_data(data);
 }

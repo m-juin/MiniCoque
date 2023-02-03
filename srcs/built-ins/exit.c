@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:18:38 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/25 13:38:14 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 10:41:00 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	ft_exit(char **args, t_minicoque *data)
 	}
 	if (tmp == -1)
 		tmp = ft_atoll(args[1]) % 256;
-	free_coque_data(data);
-	d_tab_free(args);
+	ft_global_free(data);
 	exit(tmp);
 }
