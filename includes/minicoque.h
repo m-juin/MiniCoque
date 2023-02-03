@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/02 14:55:50 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 11:01:47 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef struct s_minicoque
 {
 	t_env_var	*env_var;
 	pid_t		*curprocess;
+	t_btree		*root;
+	char		*prompt;
 }	t_minicoque;
 
 /*	env_clst_utils.c	*/
@@ -116,6 +118,8 @@ int			last_exit(t_bool get, int error);
 void		d_tab_free(char **elem);
 void		s_free(void *elem);
 void		free_coque_data(t_minicoque *data);
+void		free_tree(t_btree *root);
+void		ft_global_free(t_minicoque *data);
 
 /*	tree_exec_utils.c	*/
 

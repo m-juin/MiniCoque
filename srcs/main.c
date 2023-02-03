@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/02 09:44:56 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 11:15:05 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@ t_minicoque	*init(char **envp)
 	t_minicoque	*data;
 	int			pos;
 
-	data = malloc((1 * sizeof(data)) + (1 * sizeof(pid_t *)));
+	data = malloc((1 * sizeof(t_minicoque)));
 	if (data == NULL)
 		return (NULL);
 	data->env_var = NULL;
 	data->curprocess = NULL;
+	data->root = NULL;
+	data->prompt = NULL;
 	pos = 0;
 	while (envp[pos])
 	{
@@ -63,10 +65,8 @@ static char	*get_prompt(void)
 int	main(int ac, char **av, char **envp)
 {
 	char		*readed;
-	char		*prompt;
 	t_minicoque	*coque_data;
 	t_token		**token_input;
-	t_btree		*parsed_tree;
 	int			ret;
 
 	ac = ac - 1;
@@ -75,14 +75,11 @@ int	main(int ac, char **av, char **envp)
 	coque_data = init(envp);
 	while (1)
 	{
-		prompt = get_prompt();
+		coque_data->prompt = get_prompt();
 		signal(SIGQUIT, SIG_IGN);
-		readed = readline(prompt);
+		readed = readline(coque_data->prompt);
 		if (readed == NULL)
-		{
-			s_free(prompt);
 			ft_exit(0, coque_data);
-		}
 		signal(SIGQUIT, signalhandler);
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
@@ -95,9 +92,12 @@ int	main(int ac, char **av, char **envp)
 			token_input = NULL;
 		}
 		signal(SIGINT, signalhandler);
-		parsed_tree = parsing(token_input, coque_data->env_var);
-		if (parsed_tree != NULL)
-			init_tree_exec(coque_data, parsed_tree);
-		s_free(prompt);
+		coque_data->root = parsing(token_input, coque_data->env_var);
+		if (coque_data->root != NULL)
+		{
+			init_tree_exec(coque_data, coque_data->root);
+			free_tree(coque_data->root);
+			s_free(coque_data->prompt);
+		}
 	}
 }
