@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 13:45:08 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 15:31:05 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	d_tab_free(char **elem)
 		s_free(elem[pos]);
 		pos++;
 	}
-	free(elem[pos]);
+	free(elem);
 }
 
 void	free_coque_data(t_minicoque *data)

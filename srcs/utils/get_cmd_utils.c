@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 14:04:53 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:37:37 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	**get_paths(char *const *envp)
 	i = 0;
 	while (splitted_envp[i])
 	{
-		paths[i] = ft_strjoin(splitted_envp[i], "/");
+		paths[i] = ft_strjoin_f(splitted_envp[i], "/");
 		i++;
 	}
 	paths[i] = 0;
@@ -61,6 +61,7 @@ char	*get_cmds(char *av, char *const *envp)
 	int		i;
 
 	paths = get_paths(envp);
+	d_tab_free((char **)envp);
 	i = 0;
 	while (paths[i])
 	{
