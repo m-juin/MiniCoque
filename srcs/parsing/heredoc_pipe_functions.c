@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 11:38:55 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 11:42:13 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:39:13 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int	hdoc_pipe(t_token **token_tab, int pipe_count, int hdoc_values[2],
 		hdoc_values[1]++;
 	if (hdoc_values[1] == hdoc_values[0])
 	{
+		free(token_tab[i]->str);
 		token_tab[i]->str = get_heredoc_path(sub_token_tab
 				(token_tab, start, i + 1), pipe_count);
 		hdoc_values[1] = 0;

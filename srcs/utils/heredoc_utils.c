@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:30:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/01/31 15:05:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:21:34 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*init_heredoc_path(int pipe_nb)
 	char	*path;
 	char	*suffix;
 
-	suffix = ft_strjoin(ft_itoa(pipe_nb), ".tmp");
+	suffix = ft_strjoin_f(ft_itoa(pipe_nb), ".tmp");
 	if (!suffix)
 		return (NULL);
 	path = ft_strjoin(".heredoc_", suffix);
@@ -82,6 +82,7 @@ char	*init_heredoc_path(int pipe_nb)
 	free(suffix);
 	if (access(path, F_OK) == 0)
 	{
+		free(path);
 		pipe_nb++;
 		path = init_heredoc_path(pipe_nb);
 	}

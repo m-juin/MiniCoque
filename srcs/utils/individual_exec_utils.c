@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:41:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 15:23:23 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/03 16:13:59 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	ft_exec(t_btree *branch, t_minicoque *data)
 {
-	execve(branch->left->tab_str[0], branch->right->tab_str,
-		env_to_array(data->env_var));
+	char *const	*env;
+
+	env = env_to_array(data->env_var);
+	execve(branch->left->tab_str[0], branch->right->tab_str, env);
+	d_tab_free((char **)env);
 	ft_close_fd(0, TRUE);
 	ft_close_fd(1, TRUE);
 	if (isfile(branch->left->tab_str[0]) == 0
@@ -31,6 +34,7 @@ void	ft_exec(t_btree *branch, t_minicoque *data)
 			branch->left->tab_str[0]);
 	else
 		ft_printf_fd(2, "%s: command not found\n", branch->left->tab_str[0]);
+	ft_global_free(data);
 	exit(127);
 }
 

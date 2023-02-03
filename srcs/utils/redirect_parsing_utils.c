@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:50:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 14:55:23 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:01:51 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	redirect_syntax_check(char *input, int *i)
 		free(err_msg);
 		return (-1);
 	}
+	free(err_msg);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 13:56:46 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:04:08 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	redirect_token(t_token *token, char *input, int *i)
 		(*i)++;
 	while (typify(input[*i]) == BLANK)
 		(*i)++;
+	free(token->str);
 	token->str = ft_substr(input, start, *i - start);
 	token->token_type = REDIRECT;
 }
