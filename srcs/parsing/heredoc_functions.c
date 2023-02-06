@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 11:40:07 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:11:15 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,15 @@ static char	*wait_hdoc(char *path, int pid)
 	return (path);
 }
 
-char	*get_heredoc_path(t_token **token_tab, int tab_lims[2], int pipe_nb, t_minicoque *data)
+char	*get_heredoc_path(t_token **token_tab, int tab_lims[2],
+		t_minicoque *data)
 {
 	char	*path;
 	int		pid;
 
 	if (!token_tab)
 		return (NULL);
-	path = init_heredoc_path(pipe_nb);
+	path = init_heredoc_path(0);
 	if (!path)
 		return (NULL);
 	pid = fork();
@@ -56,15 +57,11 @@ char	*get_heredoc_path(t_token **token_tab, int tab_lims[2], int pipe_nb, t_mini
 	return (path);
 }
 
-static int	no_pipe_heredoc(t_token **token_tab, int heredoc_nb, t_minicoque *data)
+static int	get_last_hdoc_nb(t_token **token_tab, int heredoc_nb)
 {
 	int		i;
 	int		j;
-	int		tab_lims[2];
-	char	*path;
 
-	if (!token_tab)
-		return (-1);
 	i = 0;
 	j = 0;
 	while (token_tab[i] && j < heredoc_nb)
@@ -75,13 +72,26 @@ static int	no_pipe_heredoc(t_token **token_tab, int heredoc_nb, t_minicoque *dat
 		if (j < heredoc_nb)
 			i++;
 	}
+	return (i);
+}
+
+static int	no_pipe_heredoc(t_token **token_tab, int heredoc_nb,
+		t_minicoque *data)
+{
+	int		hdoc_index;
+	int		tab_lims[2];
+	char	*path;
+
+	if (!token_tab || !data)
+		return (-1);
+	hdoc_index = get_last_hdoc_nb(token_tab, heredoc_nb);
 	tab_lims[0] = 0;
 	tab_lims[1] = token_tab_len(token_tab, 0);
-	path = get_heredoc_path(token_tab, tab_lims, j, data);
+	path = get_heredoc_path(token_tab, tab_lims, data);
 	if (path == NULL)
 		return (-1);
-	free(token_tab[i]->str);
-	token_tab[i]->str = ft_strdup(path);
+	free(token_tab[hdoc_index]->str);
+	token_tab[hdoc_index]->str = ft_strdup(path);
 	free(path);
 	return (1);
 }

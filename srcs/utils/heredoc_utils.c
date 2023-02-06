@@ -6,11 +6,28 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:30:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 10:50:01 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:28:46 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+void	delete_tmp(t_token **token_tab)
+{
+	int	pos;
+
+	if (!token_tab)
+		return ;
+	pos = 0;
+	while (token_tab[pos] != NULL)
+	{
+		if (ft_strncmp(token_tab[pos]->str, "<< .heredoc_", 12) == 0)
+			if (ft_strncmp(&token_tab[pos]->str[ft_strlen(token_tab[pos]->str)
+						- 4], ".tmp", 4) == 0)
+				unlink(&token_tab[pos]->str[3]);
+		pos++;
+	}
+}
 
 int	heredoc_count(t_token **token_tab)
 {
@@ -78,7 +95,7 @@ char	*init_heredoc_path(int pipe_nb)
 	char	*path;
 	char	*suffix;
 
-	suffix = ft_strjoin_f(ft_itoa(pipe_nb), ".tmp");
+	suffix = ft_strjoin_f(ft_itoa(pipe_nb), ".tmp", 1);
 	if (!suffix)
 		return (NULL);
 	path = ft_strjoin(".heredoc_", suffix);

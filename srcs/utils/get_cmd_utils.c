@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 15:37:37 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:27:35 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	**get_paths(char *const *envp)
 	i = 0;
 	while (splitted_envp[i])
 	{
-		paths[i] = ft_strjoin_f(splitted_envp[i], "/");
+		paths[i] = ft_strjoin_f(splitted_envp[i], "/", 1);
 		i++;
 	}
 	paths[i] = 0;
