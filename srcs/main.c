@@ -6,25 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 15:26:32 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 11:55:20 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-void	signalhandler(int sig)
-{
-	if (sig == SIGQUIT)
-	{
-		ft_printf_fd(2, "Quit (core dumped)\n");
-		return ;
-	}
-	printf("\n");
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-t_minicoque	*init(char **envp)
+static t_minicoque	*create_data(char **envp)
 {
 	t_minicoque	*data;
 	int			pos;
@@ -62,17 +50,53 @@ static char	*get_prompt(void)
 	return (prompt);
 }
 
+static t_btree	*parse(t_env_var *env, char *read)
+{
+	t_token	**token_input;
+	int		ret;
+	t_btree	*tree;
+
+	token_input = lexer(read, env);
+	signal(SIGINT, SIG_IGN);
+	ret = heredoc(token_input);
+	if (ret == -1)
+	{
+		token_input = free_token(token_input);
+		token_input = NULL;
+	}
+	signal(SIGINT, signalhandler);
+	tree = parsing(token_input, env);
+	return (tree);
+}
+
+static t_minicoque	*init(int ac, char **envp)
+{
+	t_minicoque	*data;
+
+	if (ac > 2)
+	{
+		ft_printf_fd(2, "Too much argument for minishell\n");
+		return (NULL);
+	}
+	signal(SIGINT, signalhandler);
+	data = create_data(envp);
+	if (data == NULL)
+	{
+		ft_printf_fd(2, "Error on base data creation\n");
+		return (NULL);
+	}
+	return (data);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*readed;
 	t_minicoque	*coque_data;
-	t_token		**token_input;
-	int			ret;
 
-	ac = ac - 1;
-	av[0] = 0;
-	signal(SIGINT, signalhandler);
-	coque_data = init(envp);
+	(void)av;
+	coque_data = init(ac, envp);
+	if (coque_data == NULL)
+		exit(1);
 	while (1)
 	{
 		coque_data->prompt = get_prompt();
@@ -83,16 +107,7 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGQUIT, signalhandler);
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
-		token_input = lexer(readed, coque_data->env_var);
-		signal(SIGINT, SIG_IGN);
-		ret = heredoc(token_input);
-		if (ret == -1)
-		{
-			token_input = free_token(token_input);
-			token_input = NULL;
-		}
-		signal(SIGINT, signalhandler);
-		coque_data->root = parsing(token_input, coque_data->env_var);
+		coque_data->root = parse(coque_data->env_var, readed);
 		if (coque_data->root != NULL)
 			init_tree_exec(coque_data, coque_data->root);
 	}

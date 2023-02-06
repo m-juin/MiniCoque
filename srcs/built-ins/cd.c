@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 10:18:29 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:23:46 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	cd(t_env_var *env, char **args)
 {
 	int			ret;
 	t_env_var	*tmp;
-	
+
 	if (error_handle(args) == FALSE)
 		return (1);
 	ret = chdir(args[1]);
