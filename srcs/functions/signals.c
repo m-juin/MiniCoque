@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:29:30 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 11:31:45 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/06 13:31:03 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	signalhandler(int sig)
 		return ;
 	}
 	printf("\n");
+	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
