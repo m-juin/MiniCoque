@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 15:08:43 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/06 15:33:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	s_free(void *elem)
 {
 	if (elem != NULL)
+	{
 		free(elem);
+		elem = NULL;
+	}
 }
 
 void	d_tab_free(char **elem)
@@ -28,9 +31,11 @@ void	d_tab_free(char **elem)
 	while (elem[pos] != NULL)
 	{
 		s_free(elem[pos]);
+		elem[pos] = NULL;
 		pos++;
 	}
 	free(elem);
+	elem = NULL;
 }
 
 void	free_coque_data(t_minicoque *data)
@@ -48,9 +53,14 @@ void	free_coque_data(t_minicoque *data)
 		data->env_var = tmp;
 	}
 	if (data->curprocess != NULL)
+	{
 		s_free(data->curprocess);
+		data->curprocess = NULL;
+	}
 	s_free(data->prompt);
+	data->prompt = NULL;
 	s_free(data);
+	data = NULL;
 }
 
 void	free_tree(t_btree *root)
@@ -85,6 +95,10 @@ void	free_tree(t_btree *root)
 void	ft_global_free(t_minicoque *data)
 {
 	if (data->root != NULL)
+	{
 		free_tree(data->root);
+		data->root = NULL;
+	}
 	free_coque_data(data);
+	data = NULL;
 }
