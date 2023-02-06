@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 11:49:28 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:20:36 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*get_limiter(char *token)
 	i = 0;
 	while (typify(token[i]) == BLANK || token[i] == '<')
 		i++;
-	limiter = (ft_substr(token, i, ft_strlen(token) - i));
+	limiter = ft_substr(token, i, ft_strlen(token) - i);
 	if (!limiter)
 		return (NULL);
 	return (limiter);
@@ -66,13 +66,6 @@ delimited by end-of-file (wanted `%s')\n", limiter);
 	close(dupped);
 	free(limiter);
 	free(tmp);
-}
-
-void	hsighandler(int sig)
-{
-	sig = sig - 1;
-	ft_putstr_fd("\n", 1);
-	exit(2);
 }
 
 static void	prompt_prepare(char *path, t_token **token, int i)

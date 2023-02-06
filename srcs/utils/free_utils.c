@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 11:06:05 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:15:00 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	free_tree(t_btree *root)
 	if (root->right != NULL)
 		free_tree(root->right);
 	if (root->tab_str == NULL)
+	{
+		free(root);
 		return ;
+	}
 	while ((root->type == COMMAND && pos < 4)
 		|| (root->type != COMMAND && root->tab_str[pos] != NULL))
 	{

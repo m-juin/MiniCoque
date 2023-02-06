@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 11:41:51 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:18:11 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,11 @@ void		last_exec(t_minicoque *data, t_btree *root, int fds[2]);
 void		child_cmd(int fds[2], t_minicoque *data, t_btree *root);
 void		ft_single_exec(t_minicoque *data, t_btree *root, int fds[2]);
 
+/*	signals.c	*/
+
+void		signalhandler(int sig);
+void		hsighandler(int sig);
+
 /*	param_expansion_functions.c	*/
 
 char		*doll_management(char *input, t_env_var *env);
@@ -244,6 +249,6 @@ char		*init_heredoc_path(int pipe_nb);
 
 /*	error_uils.c	*/
 
-int			isfile(const char* name);
+int			isfile(const char *name);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:36:00 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 15:19:36 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:23:40 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	choose_exec(t_minicoque *data, t_btree *root)
 void	ft_execute(t_minicoque *data, t_btree *root, int fds[2], int type)
 {
 	int	handled;
-	int exit_code;
+	int	exit_code;
 
 	if (root == NULL || data == NULL)
 		return ;
