@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:42:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/30 16:35:41 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/06 10:55:02 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,39 @@ static t_bool	check_newline(char *arg)
 		return (TRUE);
 }
 
-int	echo(char **args)
+static void	print_loop(char **args)
 {
-	int	pos;
-	int	newline;
+	size_t	pos;
+	t_bool	check;
 
-	if (args[1] == NULL)
-	{
-		ft_printf_fd(1, "\n");
-		last_exit(FALSE, 0);
-		return (0);
-	}
-	newline = check_newline(args[1]);
-	if (newline == FALSE)
-		pos = 2;
-	else
-		pos = 1;
+	check = TRUE;
+	pos = 1;
 	while (args[pos])
 	{
-		ft_printf_fd(1, "%s", args[pos]);
+		if (check == FALSE || check_newline(args[pos]) == TRUE)
+		{
+			check = FALSE;
+			ft_printf_fd(1, "%s", args[pos]);
+			if (args[pos + 1] != NULL)
+				ft_printf_fd(1, " ");
+		}
 		pos++;
-		if (args[pos] != NULL)
-			ft_printf_fd(1, " ");
 	}
-	if (newline == TRUE)
-		ft_printf_fd (1, "\n");
+}
+
+int	echo(char **args)
+{
+	t_bool	new_line;
+
+	if (args[1] == NULL)
+		ft_printf_fd(1, "\n");
+	else
+	{
+		new_line = check_newline(args[1]);
+		print_loop(args);
+		if (new_line == TRUE)
+			ft_printf_fd (1, "\n");
+	}
 	last_exit(FALSE, 0);
 	return (0);
 }
