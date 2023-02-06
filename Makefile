@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/06 11:34:20 by mjuin            ###   ########.fr        #
+#    Updated: 2023/02/06 16:17:48 by gpasquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC =	srcs/main.c \
 		srcs/utils/redirect_parsing_utils.c \
 		srcs/utils/heredoc_utils.c \
 		srcs/utils/error_utils.c \
+		srcs/utils/quotes_parsing_utils.c \
 		srcs/functions/ft_execute.c \
 		srcs/functions/signals.c \
 		srcs/parsing/lexer.c \

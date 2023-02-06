@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 14:10:54 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:16:14 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,10 @@ int			is_builtin(char	*str);
 
 char		*quotes_management(char *input, t_env_var *env, int *i);
 
+/*	quoted_parsing_utils.c	*/
+
+char		*quoted_var(char *input, int *i, int *start, t_env_var *env);
+
 /*	redirection_parsing.c	*/
 
 char		**redirtab_create(t_token **token_tab);
@@ -230,11 +234,13 @@ char		*get_redir_type(t_token **token_tab);
 int			heredoc(t_token **token_tab, t_minicoque *data);
 int			heredoc_count(t_token **token_tab);
 char		*redir_heredoc(t_token **token_tab);
-char		*get_heredoc_path(t_token **token_tab, int tab_lims[2], t_minicoque *data);
+char		*get_heredoc_path(t_token **token_tab, int tab_lims[2],
+				t_minicoque *data);
 
 /*	heredoc_fork.c	*/
 
-void		read_heredoc(t_token **token_tab, int tab_lins[2], char *path, t_minicoque *data);
+void		read_heredoc(t_token **token_tab, int tab_lins[2], char *path,
+				t_minicoque *data);
 
 /*	heredoc_pipe_functions.c	*/
 

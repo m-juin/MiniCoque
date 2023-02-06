@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 15:50:25 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:14:11 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,33 +29,6 @@ static char	*simple_q(char *input, int *i)
 		return (NULL);
 	}
 	s = ft_substr(input, start, *i - start);
-	return (s);
-}
-
-static char	*quoted_var(char *input, int *i, int *start, t_env_var *env)
-{
-	char		*s;
-	char		*tmp;
-	int			start_param;
-	t_env_var	*var;
-
-	if (!input || !env)
-		return (NULL);
-	s = ft_substr(input, *start, *i - *start);
-	if (!s)
-		return (NULL);
-	(*i)++;
-	start_param = *i;
-	while (input[*i] && (typify(input[*i]) != BLANK && input[*i] != '|'
-			&& input[*i] != '\"' && input[*i] != '\''
-			&& input[*i] != '$'))
-		(*i)++;
-	tmp = ft_substr(input, start_param, *i - start_param);
-	var = get_env(env, tmp);
-	free(tmp);
-	if (var)
-		s = ft_strjoin_f(s, var->value, 1);
-	*start = *i;
 	return (s);
 }
 
@@ -86,6 +59,20 @@ static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 	return (s);
 }
 
+static char	*finish_double_q(char *s, char *input, int *i, int start)
+{
+	if (!s)
+		s = ft_substr(input, start, *i - start);
+	else
+	{
+		if (s[0] != '\0')
+			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 0);
+		else
+			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 2);
+	}
+	return (s);
+}
+
 static char	*double_q(char *input, int *i, t_env_var *env)
 {
 	char		*s;
@@ -107,15 +94,7 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 		ft_printf_fd(2, "minicoque: syntax error near unexpected `''\n");
 		return (NULL);
 	}
-	if (!s)
-		s = ft_substr(input, start, *i - start);
-	else
-	{
-		if (s[0] != '\0')
-			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 0);
-		else
-			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 2);
-	}
+	s = finish_double_q(s, input, i, start);
 	return (s);
 }
 
