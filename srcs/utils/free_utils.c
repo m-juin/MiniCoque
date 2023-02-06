@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 13:15:00 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:16:35 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	free_coque_data(t_minicoque *data)
 		s_free(data->env_var);
 		data->env_var = tmp;
 	}
-	if (!data->curprocess)
+	if (data->curprocess != NULL)
 		s_free(data->curprocess);
 	s_free(data->prompt);
 	s_free(data);
