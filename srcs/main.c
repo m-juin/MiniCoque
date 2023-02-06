@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 15:26:32 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 10:27:55 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(readed);
 		token_input = lexer(readed, coque_data->env_var);
 		signal(SIGINT, SIG_IGN);
-		ret = heredoc(token_input);
+		ret = heredoc(token_input, coque_data);
 		if (ret == -1)
 		{
 			token_input = free_token(token_input);

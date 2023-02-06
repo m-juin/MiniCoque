@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 16:04:08 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 10:31:06 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ t_token	**init_tokentab(char *input)
 
 void	pipe_token(t_token **token_tab, int *nb, char *input, int *i)
 {
+	if (!token_tab || !input)
+		return ;
+	free(token_tab[*nb]->str);
 	token_tab[*nb]->str = ft_strdup("|");
 	token_tab[*nb]->token_type = PIPE;
 	(*nb)++;

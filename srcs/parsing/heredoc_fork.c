@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 16:37:28 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 11:49:28 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,19 @@ void	hsighandler(int sig)
 	exit(2);
 }
 
-static void	prompt_prepare(char *path, t_token *token)
+static void	prompt_prepare(char *path, t_token **token, int i)
 {
 	char	*limiter;
 	char	*tmp;
 	int		fd;
 
 	fd = open_tmp_file(path);
-	limiter = get_limiter(token->str);
+	limiter = get_limiter(token[i]->str);
 	if (!limiter)
 	{
 		close(0);
 		close(fd);
+		free_token(token);
 		exit(EXIT_FAILURE);
 	}
 	tmp = "";
@@ -94,18 +95,18 @@ static void	prompt_prepare(char *path, t_token *token)
 	close(fd);
 }
 
-void	read_heredoc(t_token **token_tab, char *path)
+void	read_heredoc(t_token **token_tab, int tab_lims[2], char *path, t_minicoque *data)
 {
-	int		i;
-
-	i = 0;
 	signal(SIGINT, hsighandler);
-	while (token_tab[i])
+	while (token_tab[tab_lims[0]] && tab_lims[0] <= tab_lims[1])
 	{
-		if (token_tab[i]->str[0] == '<' && token_tab[i]->str[1] == '<')
-			prompt_prepare(path, token_tab[i]);
-		i++;
+		if (token_tab[tab_lims[0]]->str[0] == '<' && token_tab[tab_lims[0]]->str[1] == '<')
+			prompt_prepare(path, token_tab, tab_lims[0]);
+		tab_lims[0]++;
 	}
+	free_coque_data(data);
+	free(path);
+	free_token(token_tab);
 	close(0);
 	exit(EXIT_SUCCESS);
 }

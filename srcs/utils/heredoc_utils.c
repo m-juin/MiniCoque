@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:30:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 16:21:34 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 10:50:01 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	heredoc_count(t_token **token_tab)
 	int	i;
 	int	redir_nb;
 
+	if (!token_tab)
+		return (-1);
 	redir_nb = 0;
 	i = 0;
 	while (token_tab[i])
@@ -58,13 +60,16 @@ char	*redir_heredoc(t_token **token_tab)
 
 int	hdoc_pipe_count(t_token **token_tab)
 {
-	int	i;
-	int	hdoc_nb;
+	int		i;
+	int		hdoc_nb;
+	t_token	**sub_tab;
 
 	i = 0;
 	while (token_tab[i] && token_tab[i]->token_type != PIPE)
 		i++;
-	hdoc_nb = heredoc_count(sub_token_tab(token_tab, 0, i));
+	sub_tab = sub_token_tab(token_tab, 0, i);
+	hdoc_nb = heredoc_count(sub_tab);
+	free_token(sub_tab);
 	return (hdoc_nb);
 }
 
