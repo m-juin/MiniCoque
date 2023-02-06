@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 14:31:35 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:07:47 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static char	*simple_q(char *input, int *i)
 static char	*quoted_var(char *input, int *i, int *start, t_env_var *env)
 {
 	char		*s;
+	char		*tmp;
 	int			start_param;
 	t_env_var	*var;
 
@@ -49,9 +50,11 @@ static char	*quoted_var(char *input, int *i, int *start, t_env_var *env)
 			&& input[*i] != '\"' && input[*i] != '\''
 			&& input[*i] != '$'))
 		(*i)++;
-	var = get_env(env, ft_substr(input, start_param, *i - start_param));
+	tmp = ft_substr(input, start_param, *i - start_param);
+	var = get_env(env, tmp);
+	free(tmp);
 	if (var)
-		s = ft_strjoin(s, var->value);
+		s = ft_strjoin_f(s, var->value, 1);
 	*start = *i;
 	return (s);
 }
@@ -63,19 +66,19 @@ static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 	if (!input || !env)
 		return (NULL);
 	s = "";
-	s = ft_strjoin(s, ft_substr(input, *start, *i - *start));
+	s = ft_strjoin_f(s, ft_substr(input, *start, *i - *start), 2);
 	if (input[*i + 1] == '?')
 	{
-		s = ft_strjoin(s, ft_itoa(last_exit(TRUE, 0)));
+		s = ft_strjoin_f(s, ft_itoa(last_exit(TRUE, 0)), 0);
 		(*i) += 2;
 		*start = *i;
 	}
 	else if (input[*i + 1] == '$')
-		s = ft_strjoin(s, ft_strdup("$$"));
+		s = ft_strjoin_f(s, ft_strdup("$$"), 0);
 	else if (typify(input[*i + 1]) == LITERAL)
 	{	
 		*start = *i;
-		s = ft_strjoin_f(s, quoted_var(input, i, start, env), 2);
+		s = ft_strjoin_f(s, quoted_var(input, i, start, env), 0);
 	}
 	*start = *i;
 	if (input[*i] != '\"')
@@ -107,7 +110,7 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	if (!s)
 		s = ft_substr(input, start, *i - start);
 	else
-		s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 2);
+		s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 0);
 	return (s);
 }
 
