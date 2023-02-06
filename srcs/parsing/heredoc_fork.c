@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 13:20:36 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:38:45 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,14 @@ static void	prompt_prepare(char *path, t_token **token, int i)
 	close(fd);
 }
 
-void	read_heredoc(t_token **token_tab, int tab_lims[2], char *path, t_minicoque *data)
+void	read_heredoc(t_token **token_tab, int tab_lims[2], char *path,
+		t_minicoque *data)
 {
 	signal(SIGINT, hsighandler);
 	while (token_tab[tab_lims[0]] && tab_lims[0] <= tab_lims[1])
 	{
-		if (token_tab[tab_lims[0]]->str[0] == '<' && token_tab[tab_lims[0]]->str[1] == '<')
+		if (token_tab[tab_lims[0]]->str[0] == '<'
+			&& token_tab[tab_lims[0]]->str[1] == '<')
 			prompt_prepare(path, token_tab, tab_lims[0]);
 		tab_lims[0]++;
 	}

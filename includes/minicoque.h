@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 13:18:11 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:10:54 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ char		*get_redir_type(t_token **token_tab);
 int			heredoc(t_token **token_tab, t_minicoque *data);
 int			heredoc_count(t_token **token_tab);
 char		*redir_heredoc(t_token **token_tab);
-char		*get_heredoc_path(t_token **token_tab, int tab_lims[2], int pipe_nb, t_minicoque *data);
+char		*get_heredoc_path(t_token **token_tab, int tab_lims[2], t_minicoque *data);
 
 /*	heredoc_fork.c	*/
 
@@ -246,6 +246,7 @@ int			heredoc_count(t_token **token_tab);
 char		*redir_heredoc(t_token **token_tab);
 int			hdoc_pipe_count(t_token **token_tab);
 char		*init_heredoc_path(int pipe_nb);
+void		delete_tmp(t_token **token_tab);
 
 /*	error_uils.c	*/
 

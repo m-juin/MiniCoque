@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 15:02:44 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:30:55 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static void	literal_token(t_token *token, char *input, int *i)
 	while (input[*i] && typify(input[*i]) == LITERAL)
 		(*i)++;
 	tmp = ft_substr(input, start, *i - start);
-	token->str = ft_strjoin_f(token->str, tmp);
-	free(tmp);
+	token->str = ft_strjoin_f(token->str, tmp, 0);
 }
 
 static void	token_join_part2(t_token *token, char *input,
@@ -71,8 +70,7 @@ static void	token_join_part2(t_token *token, char *input,
 		if (input[*i] == '\'' || input[*i] == '\"')
 		{
 			tmp = quotes_management(input, env, i);
-			token->str = ft_strjoin(token->str, tmp);
-			free(tmp);
+			token->str = ft_strjoin_f(token->str, tmp, 0);
 		}
 		if (input[*i] == '$')
 			dollar_token(token, input, env, i);

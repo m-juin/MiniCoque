@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 10:58:24 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:31:35 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 	else if (typify(input[*i + 1]) == LITERAL)
 	{	
 		*start = *i;
-		s = ft_strjoin(s, quoted_var(input, i, start, env));
+		s = ft_strjoin_f(s, quoted_var(input, i, start, env), 2);
 	}
 	*start = *i;
 	if (input[*i] != '\"')
@@ -107,7 +107,7 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	if (!s)
 		s = ft_substr(input, start, *i - start);
 	else
-		s = ft_strjoin(s, ft_substr(input, start, *i - start));
+		s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 2);
 	return (s);
 }
 
