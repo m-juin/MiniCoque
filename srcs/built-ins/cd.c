@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 11:23:46 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/06 16:08:38 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,12 @@ int	cd(t_env_var *env, char **args)
 		return (1);
 	ret = chdir(args[1]);
 	if (ret == -1)
-		ft_printf_fd(2, "cd: %s: No such file or directory\n", args[1]);
+	{
+		if (errno == 13)
+			ft_printf_fd(2, "cd: %s: Permission denied\n", args[1]);
+		else
+			ft_printf_fd(2, "cd: %s: No such file or directory\n", args[1]);
+	}
 	else
 	{
 		tmp = get_env(env, "PWD");
