@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 15:16:29 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/06 16:09:15 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,6 @@ int	main(int ac, char **av, char **envp)
 		if (coque_data->root != NULL)
 			init_tree_exec(coque_data, coque_data->root);
 		else
-			s_free(coque_data->prompt);	
+			s_free(coque_data->prompt);
 	}
 }
