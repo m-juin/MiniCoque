@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/02 16:50:33 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:02:46 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ static int	s_quote_count(char *input, int *i, int *nb)
 	(*i)++;
 	while (input[*i] && input[*i] != '\'')
 		(*i)++;
-	if (typify(input[*i + 1]) != LITERAL && input[*i + 1] != '\''
-		&& input[*i + 1] != '\"')
-		(*nb)++;
 	if (!input[*i])
 	{
 		counting_syntax_error(input[*i]);
 		return (-1);
 	}	
+	if (input[*i + 1] && (typify(input[*i + 1]) != LITERAL && input[*i + 1] != '\''
+		&& input[*i + 1] != '\"'))
+		(*nb)++;
 	(*i)++;
 	return (0);
 }

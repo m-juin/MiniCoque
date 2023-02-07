@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:30:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 14:41:18 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/07 16:43:23 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,9 @@ char	*init_heredoc_path(int pipe_nb)
 	suffix = ft_strjoin_f(ft_itoa(pipe_nb), ".tmp", 1);
 	if (!suffix)
 		return (NULL);
-	path = ft_strjoin(".heredoc_", suffix);
+	path = ft_strjoin_f(".heredoc_", suffix, 2);
 	if (!path)
 		return (NULL);
-	free(suffix);
 	if (access(path, F_OK) == 0)
 	{
 		free(path);

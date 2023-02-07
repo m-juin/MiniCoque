@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/07 14:42:34 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/07 17:22:11 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_heredoc
 {
 	int			fds[2];
 	char		*limiter;
+	char		*hdoc_path;
 	t_token		**tokentab;
 }	t_heredoc;
 

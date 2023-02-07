@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:29:30 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/07 14:26:36 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/07 17:23:26 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	hsighandler(int sig)
 	ft_close_fd(g_heredoc_data->fds[1], FALSE);
 	free_token(g_heredoc_data->tokentab);
 	free(g_heredoc_data->limiter);
+	free(g_heredoc_data->hdoc_path);
 	ft_putstr_fd("\n", 1);
 	free(g_heredoc_data);
 	exit(2);

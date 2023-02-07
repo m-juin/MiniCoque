@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 14:41:11 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/07 17:22:45 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	prompt_prepare(char *path, t_token **token, int i)
 	int		fd;
 
 	fd = open_tmp_file(path);
-	free(path);
+//	free(path);
 	limiter = get_limiter(token[i]->str);
 	if (!limiter)
 	{
@@ -84,6 +84,7 @@ static void	prompt_prepare(char *path, t_token **token, int i)
 	g_heredoc_data->fds[0] = fd;
 	g_heredoc_data->limiter = limiter;
 	g_heredoc_data->tokentab = token;
+	g_heredoc_data->hdoc_path = path;
 	prompt_loop(fd, tmp, limiter);
 	close(fd);
 }
@@ -100,6 +101,7 @@ void	read_heredoc(t_token **token_tab, int tab_lims[2], char *path,
 			prompt_prepare(path, token_tab, tab_lims[0]);
 		tab_lims[0]++;
 	}
+	s_free(path);
 	free_token(token_tab);
 	close(0);
 	exit(EXIT_SUCCESS);
