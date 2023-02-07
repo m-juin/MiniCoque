@@ -6,17 +6,20 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:36:00 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 11:23:40 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/07 09:59:13 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static void	ft_init_fork(int fds[2], int fd)
+static void	ft_init_fork(int fds[2], int fd, t_minicoque *data)
 {
 	if (fd == -1 || fds[1] == -1)
 	{
+		fds[0] = ft_close_fd(fds[0], FALSE);
 		fd = ft_close_fd(fd, FALSE);
+		fds[1] = ft_close_fd(fds[1], FALSE);
+		ft_global_free(data);
 		exit (1);
 	}
 	secure_dup2(fd, 0);
@@ -53,7 +56,7 @@ static int	handlefork(t_btree *root, int fds[2], t_minicoque *data, int type)
 		pid = fork();
 		if (pid == 0)
 		{
-			ft_init_fork(fds, fd);
+			ft_init_fork(fds, fd, data);
 			return (2);
 		}
 		else
