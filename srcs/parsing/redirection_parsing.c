@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 11:01:50 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/07 09:57:02 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static t_bool	get_redirout(t_token **token, int i, char **redir_path,
 	if (!token || !redir_path)
 		return (FALSE);
 	redirout_tot = redir_out_count(token);
+	if (*redir_path)
+		free(*redir_path);
 	*redir_path = get_redir(token[i]->str);
 	if (access(*redir_path, F_OK) != 0)
 	{
@@ -46,6 +48,8 @@ static t_bool	get_redirin(t_token *token, char **redir_path)
 
 	if (!token || !redir_path)
 		return (FALSE);
+	if (*redir_path)
+		free(*redir_path);
 	*redir_path = get_redir(token->str);
 	if (access(*redir_path, W_OK) != 0)
 	{	
