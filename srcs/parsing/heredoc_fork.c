@@ -6,25 +6,11 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 13:38:45 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:41:11 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
-
-static char	*get_limiter(char *token)
-{
-	int		i;
-	char	*limiter;
-
-	i = 0;
-	while (typify(token[i]) == BLANK || token[i] == '<')
-		i++;
-	limiter = ft_substr(token, i, ft_strlen(token) - i);
-	if (!limiter)
-		return (NULL);
-	return (limiter);
-}
 
 static int	open_tmp_file(char *path)
 {
@@ -39,13 +25,23 @@ static int	open_tmp_file(char *path)
 	return (fd);
 }
 
+static void	end_prompt_loop(int dup, char *limiter, char *tmp)
+{
+	dup2(dup, 0);
+	close(dup);
+	free(limiter);
+	free(tmp);
+	free(g_heredoc_data);
+}
+
 static void	prompt_loop(int fd, char *tmp, char *limiter)
 {
 	int	dupped;
 
 	dupped = dup(0);
-	while (tmp[0] == '\0'
-		|| ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
+	g_heredoc_data->fds[1] = dupped;
+	while ((tmp[0] == '\0'
+			|| ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0))
 	{
 		if (tmp[0] != '\0')
 			free(tmp);
@@ -62,10 +58,7 @@ delimited by end-of-file (wanted `%s')\n", limiter);
 			ft_putstr_fd(tmp, fd);
 		}
 	}
-	dup2(dupped, 0);
-	close(dupped);
-	free(limiter);
-	free(tmp);
+	end_prompt_loop(dupped, limiter, tmp);
 }
 
 static void	prompt_prepare(char *path, t_token **token, int i)
@@ -75,6 +68,7 @@ static void	prompt_prepare(char *path, t_token **token, int i)
 	int		fd;
 
 	fd = open_tmp_file(path);
+	free(path);
 	limiter = get_limiter(token[i]->str);
 	if (!limiter)
 	{
@@ -84,6 +78,12 @@ static void	prompt_prepare(char *path, t_token **token, int i)
 		exit(EXIT_FAILURE);
 	}
 	tmp = "";
+	g_heredoc_data = malloc(1 * sizeof(t_heredoc));
+	if (g_heredoc_data == NULL)
+		return ;
+	g_heredoc_data->fds[0] = fd;
+	g_heredoc_data->limiter = limiter;
+	g_heredoc_data->tokentab = token;
 	prompt_loop(fd, tmp, limiter);
 	close(fd);
 }
@@ -92,6 +92,7 @@ void	read_heredoc(t_token **token_tab, int tab_lims[2], char *path,
 		t_minicoque *data)
 {
 	signal(SIGINT, hsighandler);
+	free_coque_data(data);
 	while (token_tab[tab_lims[0]] && tab_lims[0] <= tab_lims[1])
 	{
 		if (token_tab[tab_lims[0]]->str[0] == '<'
@@ -99,8 +100,6 @@ void	read_heredoc(t_token **token_tab, int tab_lims[2], char *path,
 			prompt_prepare(path, token_tab, tab_lims[0]);
 		tab_lims[0]++;
 	}
-	free_coque_data(data);
-	free(path);
 	free_token(token_tab);
 	close(0);
 	exit(EXIT_SUCCESS);

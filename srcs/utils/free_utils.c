@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:47:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 15:33:43 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/07 12:58:57 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	free_coque_data(t_minicoque *data)
 		s_free(data->curprocess);
 		data->curprocess = NULL;
 	}
-	s_free(data->prompt);
-	data->prompt = NULL;
 	s_free(data);
 	data = NULL;
 }

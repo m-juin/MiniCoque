@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   counting_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 16:43:29 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 11:48:51 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:30:56 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,23 @@ int	redirect_count(char *input, int *i, int *nb)
 	if (redirect_count_loop(input, i) == -1)
 		return (-1);
 	return (0);
+}
+
+int	heredoc_count(t_token **token_tab)
+{
+	int	i;
+	int	redir_nb;
+
+	if (!token_tab)
+		return (-1);
+	redir_nb = 0;
+	i = 0;
+	while (token_tab[i])
+	{
+		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
+			== '<' && token_tab[i]->str[1] == '<')
+			redir_nb++;
+		i++;
+	}
+	return (redir_nb);
 }

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 16:16:14 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:42:34 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,15 @@ typedef struct s_minicoque
 	t_btree		*root;
 	char		*prompt;
 }	t_minicoque;
+
+typedef struct s_heredoc
+{
+	int			fds[2];
+	char		*limiter;
+	t_token		**tokentab;
+}	t_heredoc;
+
+extern t_heredoc	*g_heredoc_data;
 
 /*	env_clst_utils.c	*/
 
@@ -197,6 +206,7 @@ int			pipe_count(char *input, int *i, int *nb);
 int			pipe_token_count(t_token **token_tab);
 void		counting_syntax_error(char input);
 int			redirect_count(char *input, int *i, int *nb);
+int			heredoc_count(t_token **token_tab);
 
 /*	parsing.c	*/
 
@@ -232,7 +242,6 @@ char		*get_redir_type(t_token **token_tab);
 /*	heredoc_functions.	*/
 
 int			heredoc(t_token **token_tab, t_minicoque *data);
-int			heredoc_count(t_token **token_tab);
 char		*redir_heredoc(t_token **token_tab);
 char		*get_heredoc_path(t_token **token_tab, int tab_lims[2],
 				t_minicoque *data);
@@ -248,11 +257,11 @@ int			pipe_heredoc(t_token **token_tab, t_minicoque *data);
 
 /*	heredoc_utils.c	*/
 
-int			heredoc_count(t_token **token_tab);
 char		*redir_heredoc(t_token **token_tab);
 int			hdoc_pipe_count(t_token **token_tab);
 char		*init_heredoc_path(int pipe_nb);
 void		delete_tmp(t_token **token_tab);
+char		*get_limiter(char *token);
 
 /*	error_uils.c	*/
 

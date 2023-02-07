@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 15:34:12 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/07 12:58:19 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void	init_tree_exec(t_minicoque *data, t_btree *root)
 	ft_wait_pids(data->curprocess);
 	free_tree(data->root);
 	data->root = NULL;
-	s_free(data->prompt);
-	data->prompt = NULL;
 	s_free(data->curprocess);
 	data->curprocess = NULL;
 	data->root = NULL;

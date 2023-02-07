@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 14:11:15 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:23:12 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static char	*wait_hdoc(char *path, int pid)
 {
 	int		status;
-	char	*tmp;
 
 	waitpid(pid, &status, 0);
 	if (!path)
@@ -25,12 +24,11 @@ static char	*wait_hdoc(char *path, int pid)
 		if (WEXITSTATUS(status) == 2)
 		{
 			unlink(path);
+			free(path);
 			return (NULL);
 		}
 	}
-	tmp = path;
-	path = ft_strjoin("<< ", path);
-	free(tmp);
+	path = ft_strjoin_f("<< ", path, 2);
 	return (path);
 }
 
