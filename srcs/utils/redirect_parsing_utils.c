@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:50:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/03 16:01:51 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/07 10:15:46 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	delete_files(t_token **token_tab)
 			path = get_redir(token_tab[i]->str);
 			if (access(path, F_OK) == 0)
 				unlink(path);
+			free(path);
 		}
 		i++;
 	}
