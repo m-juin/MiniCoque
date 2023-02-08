@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 12:48:55 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:19:39 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,17 @@ static char	**get_splitted_envp(char *const *envp)
 	char	**splitted_envp;
 
 	i = 0;
+	splitted_envp = NULL;
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
+		{
+			splitted_envp = ft_split(envp[i] + 5, ':');
+			return (splitted_envp);
+		}
 		i++;
 	}
-	splitted_envp = ft_split(envp[i] + 5, ':');
+	ft_printf_fd(2, "minicoque: variable PATH not define\n");
 	return (splitted_envp);
 }
 
@@ -62,6 +66,8 @@ char	*get_cmds(char *av, char *const *envp)
 
 	paths = get_paths(envp);
 	d_tab_free((char **)envp);
+	if (!paths)
+		return (NULL);
 	i = 0;
 	while (paths[i])
 	{

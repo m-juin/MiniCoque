@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:09:41 by gpasquet          #+#    #+#             */
-/*   Updated: 2022/11/03 17:14:23 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:11:54 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	ft_word_count(const char *s, char c)
 	int	word_count;
 
 	i = 0;
+	if (!s)
+		return (-1);
 	word_count = 0;
 	while (s[i])
 	{
@@ -82,7 +84,7 @@ static void	ft_tab_browsing(char **s_tab, const char *s, char c)
 			tab_ind++;
 		}			
 		while (s[i] != '\0' && s[i] == c)
-					i++;
+			i++;
 	}
 	s_tab[tab_ind] = 0;
 }
@@ -92,13 +94,15 @@ char	**ft_split(const char *s, char c)
 	char	**s_tab;
 	int		word_count;
 
-	if (s == 0)
+	if (!s)
 	{	
 		s_tab = malloc(sizeof(char *));
 		s_tab[0] = 0;
 		return (s_tab);
 	}
 	word_count = ft_word_count(s, c);
+	if (word_count == -1)
+		return (NULL);
 	s_tab = malloc(sizeof(char *) * (word_count + 1));
 	if (!s_tab)
 		return (0);
