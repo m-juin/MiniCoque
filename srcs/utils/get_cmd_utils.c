@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 15:19:39 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:23:03 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	**get_splitted_envp(char *const *envp)
 		}
 		i++;
 	}
-	ft_printf_fd(2, "minicoque: variable PATH not define\n");
+	ft_printf_fd(2, "minicoque: environment variable PATH not define\n");
 	return (splitted_envp);
 }
 
