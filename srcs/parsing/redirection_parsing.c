@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 09:57:02 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 09:44:43 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,6 @@ static t_bool	get_redirout(t_token **token, int i, char **redir_path,
 	return (TRUE);
 }
 
-static t_bool	get_redirin(t_token *token, char **redir_path)
-{
-	int	fd;
-
-	if (!token || !redir_path)
-		return (FALSE);
-	if (*redir_path)
-		free(*redir_path);
-	*redir_path = get_redir(token->str);
-	if (access(*redir_path, W_OK) != 0)
-	{	
-		if (token->str[1] == '>')
-		{
-			fd = open(*redir_path, O_CREAT, 0644);
-			close(fd);
-		}
-		else
-			return (FALSE);
-	}
-	return (TRUE);
-}
-
 static void	redir_in_n_out(t_token **token_tab, char **redir_tab)
 {
 	int		i;
@@ -95,9 +73,13 @@ static void	redir_only_out(t_token **token_tab, char **redir_tab)
 {
 	int		i;
 	int		redir_nb;
+	int		err;
 	t_bool	redir_status;
 
 	if (!token_tab || !redir_tab)
+		return ;
+	err = open_redir_in(token_tab);
+	if (err == -1)
 		return ;
 	redir_nb = 1;
 	redir_status = TRUE;
