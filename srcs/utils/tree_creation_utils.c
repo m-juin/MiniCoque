@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/01 15:44:22 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 12:55:47 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,15 @@ t_btree	*insert_cmd_node(char *cmd, t_env_var *env)
 		free(new_node);
 		return (NULL);
 	}
-	if (cmd[0] == '\0' || is_builtin(cmd) == 1)
+	new_node->type = PATH;
+	if (!cmd)
+		new_node->tab_str[0] = NULL;
+	else if (cmd[0] == '\0' || is_builtin(cmd) == 1)
 		new_node->tab_str[0] = ft_strdup(cmd);
 	else if (cmd[0] == '/' || (cmd[0] == '.' && cmd[0] == '/'))
 		new_node->tab_str[0] = ft_strdup(cmd);
 	else
 		new_node->tab_str[0] = get_cmds(cmd, env_to_array(env));
 	new_node->tab_str[1] = NULL;
-	new_node->type = PATH;
 	return (new_node);
 }

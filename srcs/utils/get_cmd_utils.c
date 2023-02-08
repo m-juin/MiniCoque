@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 11:03:22 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 12:48:55 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ char	**token_to_array(t_token **token)
 	if (token == NULL)
 		return (NULL);
 	size = token_tab_len(token, 1);
-	if (size == 0)
-		return (NULL);
 	array = malloc((size + 1) * sizeof(char *));
 	if (array == NULL)
 		return (NULL);
