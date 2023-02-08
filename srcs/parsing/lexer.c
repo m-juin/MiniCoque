@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 11:39:18 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 13:14:22 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,13 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 			while (input[*i] && typify(input[*i]) == LITERAL)
 			(*i)++;
 		}
-		if (!tmp || tmp[0] == '\0')
+		if (!tmp)
 			return ;
+		if (tmp[0] == '\0')
+		{
+			free(tmp);
+			return ;
+		}
 		replace_token_str(token, tmp);
 	}
 }
