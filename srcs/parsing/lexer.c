@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 11:16:17 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:39:18 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 		}
 		if (!tmp || tmp[0] == '\0')
 			return ;
-		if (token->str)
-			token->str = ft_strjoin_f(token->str, tmp, 0);
-		else
-			token->str = tmp;
+		replace_token_str(token, tmp);
 	}
 }
 
@@ -49,10 +46,7 @@ static void	literal_token(t_token *token, char *input, int *i)
 	while (input[*i] && typify(input[*i]) == LITERAL)
 		(*i)++;
 	tmp = ft_substr(input, start, *i - start);
-	if (token->str)
-		token->str = ft_strjoin_f(token->str, tmp, 0);
-	else
-		token->str = tmp;
+	replace_token_str(token, tmp);
 }
 
 static void	token_join_part2(t_token *token, char *input,
@@ -71,12 +65,7 @@ static void	token_join_part2(t_token *token, char *input,
 		{
 			tmp = quotes_management(input, env, i);
 			if (tmp)
-			{
-				if (token->str)
-					token->str = ft_strjoin_f(token->str, tmp, 0);
-				else
-					token->str = tmp;
-			}
+				replace_token_str(token, tmp);
 		}
 		if (input[*i] == '$')
 			dollar_token(token, input, env, i);

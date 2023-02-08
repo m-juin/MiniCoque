@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/08 10:33:37 by mjuin            ###   ########.fr        #
+#    Updated: 2023/02/08 11:40:47 by gpasquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC =	srcs/main.c \
 		srcs/utils/tab_utils.c \
 		srcs/utils/get_cmd_utils.c \
 		srcs/utils/token_utils.c \
+		srcs/utils/lexing_utils.c \
 		srcs/utils/parsing_utils.c \
 		srcs/utils/counting_utils.c \
 		srcs/utils/redirect_parsing_utils.c \
