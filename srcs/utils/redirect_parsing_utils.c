@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:50:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 10:15:46 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 13:53:45 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,20 @@ int	redirect_syntax_check(char *input, int *i)
 	char	*err_msg;
 
 	err_msg = ft_strdup("minicoque: syntax error near unexpected token");
-	if (input[*i] == input[*i + 1] && input[*i] == input[*i + 2])
+	if (typify(input[*i + 1]) == REDIRECT)
 	{
-		ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
-		free(err_msg);
-		return (-1);
-	}
-	if (input[*i] == '>' && input[*i + 1] == '<')
-	{
-		ft_printf_fd(2, "%s`%c'\n", err_msg, input[*i]);
-		free(err_msg);
-		return (-1);
+		if (typify(input[*i + 2]) == REDIRECT)
+		{
+			ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
+			free(err_msg);
+			return (-1);
+		}
+		if (input[*i] == '>' && input[*i + 1] == '<')
+		{
+			ft_printf_fd(2, "%s`%c'\n", err_msg, input[*i]);
+			free(err_msg);
+			return (-1);
+		}
 	}
 	free(err_msg);
 	return (0);
