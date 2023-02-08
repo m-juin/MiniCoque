@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 11:40:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:30:09 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ void		hsighandler(int sig);
 
 /*	param_expansion_functions.c	*/
 
+void		get_to_var_end(char *input, int *i);
 char		*doll_management(char *input, t_env_var *env);
 
 /*	parsing_utils.c	*/

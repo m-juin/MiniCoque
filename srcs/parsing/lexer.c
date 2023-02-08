@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 13:14:22 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:29:32 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,22 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 
 	if (!token || !input)
 		return ;
-	while (input[*i] == '$')
-	{
-		(*i)++;
+	(*i)++;
+	if ((input[*i] == '\'' || input[*i] == '\"'))
+		return ;
+	else if (input[*i] == '\0')
+		tmp = ft_strdup("$");
+	else
 		tmp = doll_management(&input[*i], env);
-		if (input[*i] == '?')
-			(*i)++;
-		else
-		{
-			while (input[*i] && typify(input[*i]) == LITERAL)
-			(*i)++;
-		}
-		if (!tmp)
-			return ;
-		if (tmp[0] == '\0')
-		{
-			free(tmp);
-			return ;
-		}
-		replace_token_str(token, tmp);
+	get_to_var_end(input, i);
+	if (!tmp)
+		return ;
+	if (tmp[0] == '\0')
+	{
+		free(tmp);
+		return ;
 	}
+	replace_token_str(token, tmp);
 }
 
 static void	literal_token(t_token *token, char *input, int *i)
@@ -55,7 +51,7 @@ static void	literal_token(t_token *token, char *input, int *i)
 }
 
 static void	token_join_part2(t_token *token, char *input,
-			t_env_var *env, int *i)
+		t_env_var *env, int *i)
 {
 	int		start;
 	char	*tmp;
