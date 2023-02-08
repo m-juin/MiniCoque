@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/07 11:49:56 by gpasquet         ###   ########.fr        #
+#    Updated: 2023/02/08 10:29:24 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,9 @@ SRC =	srcs/main.c \
 		srcs/utils/error_utils.c \
 		srcs/utils/quotes_parsing_utils.c \
 		srcs/utils/pipe_counting_utils.c \
-		srcs/functions/ft_execute.c \
+		srcs/utils/ft_executes_utils.c \
+		srcs/functions/ft_single_execute.c \
+		srcs/functions/ft_multiple_execute.c \
 		srcs/functions/signals.c \
 		srcs/parsing/lexer.c \
 		srcs/parsing/param_expansion_function.c \

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/07 17:22:11 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:22:55 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,19 @@ void		pipe_token(t_token **token_tab, int *nb, char *input, int *i);
 void		redirect_token(t_token *token, char *input, int *i);
 int			token_tab_len(t_token **tab, int redir);
 
-/*	ft_execute.c	*/
+/*	ft_executes_utils.c	*/
 
-void		ft_execute(t_minicoque *data, t_btree *root, int fds[2], int pipe);
+void		ft_init_fork(int fds[2], int fd, t_minicoque *data);
+void		ft_handle_parent(int pid, t_minicoque *data, int fd);
+void		choose_exec(t_minicoque *data, t_btree *root);
+
+/*	ft_mutiple_exec.c	*/
+
+void	ft_mult_execute(t_minicoque *data, t_btree *root, int fds[2], int type);
+
+/*	ft_single_exec.c	*/
+
+void		ft_solo_exec(t_minicoque *data, t_btree *root, int fds[2], int type);
 
 /*	exec_utils.c	*/
 

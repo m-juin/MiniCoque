@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/07 12:58:19 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 10:02:32 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	countcmd(t_btree *tree)
 	int	count;
 
 	count = 0;
+	if (tree == NULL || (tree->type != 2 && tree->tab_str == NULL))
+		return (0);
 	while (tree->type == PIPE)
 	{
 		count++;
