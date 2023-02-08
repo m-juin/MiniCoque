@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 11:49:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:50:37 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	check_bef_aft_pipe(int i, char *input, char *err_msg)
 	j = i;
 	while (input[j] && (typify(input[j]) != BLANK && typify(input[j]) != PIPE))
 		j++;
-	if (input[j] == '\0')
+	if (input[j] == '\0' || input[j] == '|')
 	{
 		ft_printf_fd(2, "%s `|'\n", err_msg);
 		free(err_msg);
