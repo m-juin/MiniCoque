@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 10:16:02 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 10:17:13 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 13:07:20 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void	choose_exec(t_minicoque *data, t_btree *root)
 {
 	if (root == NULL || data == NULL)
 		return ;
-	if (ft_strcmp(root->left->tab_str[0], "exit") == 0)
+	if (root->left->tab_str[0] == NULL)
+		ft_exec(root, data);
+	else if (ft_strcmp(root->left->tab_str[0], "exit") == 0)
 		ft_exit(root->right->tab_str, data);
 	else if (ft_strcmp(root->left->tab_str[0], "echo") == 0)
 		echo(root->right->tab_str);
