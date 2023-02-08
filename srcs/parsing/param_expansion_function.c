@@ -6,11 +6,22 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:10:41 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 14:58:50 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:29:26 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+void	get_to_var_end(char *input, int *i)
+{
+	if (input[*i] == '?')
+		(*i)++;
+	else
+	{
+		while (input[*i] && typify(input[*i]) == LITERAL)
+			(*i)++;
+	}
+}
 
 static char	*doll_expansion(char *input, t_env_var *env)
 {
@@ -53,7 +64,8 @@ char	*doll_management(char *input, t_env_var *env)
 		error_code = last_exit(TRUE, 0);
 		return (ft_itoa(error_code));
 	}
-	if (typify(input[0]) != LITERAL)
+	if (typify(input[0]) == BLANK || typify(input[0])
+		== REDIRECT || input[0] == '|')
 		expanded_param = ft_strdup("$");
 	else
 		expanded_param = doll_expansion(input, env);
