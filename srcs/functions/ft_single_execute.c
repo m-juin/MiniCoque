@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 10:14:43 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 11:05:34 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 13:42:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,21 @@ static int	solo_hfork(t_btree *root, int fds[2], t_minicoque *data, int type)
 
 	if (root == NULL || data == NULL)
 		return (-1);
-	if (ft_isforkable(root->left->tab_str[0], root->right->tab_str[1]) == FALSE)
-		return (1);
+	if (root->left->tab_str[0] != NULL)
+		if (ft_isforkable(root->left->tab_str[0], root->right->tab_str[1]) == FALSE)
+			return (1);
+	fd = get_entry_fd(fds, root);
+	set_exit_fd(root, type, fds, fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		ft_init_fork(fds, fd, data);
+		return (2);
+	}
 	else
 	{
-		fd = get_entry_fd(fds, root);
-		set_exit_fd(root, type, fds, fd);
-		pid = fork();
-		if (pid == 0)
-		{
-			ft_init_fork(fds, fd, data);
-			return (2);
-		}
-		else
-		{
-			ft_handle_parent(pid, data, fd);
-			return (-1);
-		}
+		ft_handle_parent(pid, data, fd);
+		return (-1);
 	}
 }
 

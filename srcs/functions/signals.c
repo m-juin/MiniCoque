@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:29:30 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/07 17:23:26 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 13:24:43 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	signalhandler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	last_exit(FALSE, 130);
 }
 
 void	hsighandler(int sig)

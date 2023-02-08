@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/03 13:38:51 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 13:34:26 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	*ft_setcur(t_btree *root)
 t_bool	ft_isforkable(char *function, char *arg)
 {
 	if (function == NULL)
-		return (FALSE);
+		return (TRUE);
 	if (ft_strcmp(function, "exit") == 0)
 		return (FALSE);
 	else if (ft_strcmp(function, "cd") == 0)
