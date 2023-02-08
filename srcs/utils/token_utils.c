@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 10:31:06 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:11:04 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,26 @@ int	token_tab_len(t_token **tab, int redir)
 	len = 0;
 	while (tab[i])
 	{
-		if (redir == 0)
+		if (redir == 0 && tab[i]->str)
 			len++;
 		else
 		{
-			if (tab[i]->token_type != REDIRECT)
+			if (tab[i]->token_type != REDIRECT && tab[i]->str)
 				len++;
 		}
 		i++;
 	}
 	return (len);
+}
+
+int	token_empty_tab_len(t_token **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
 }
 
 void	*free_token(t_token **token_tab)
@@ -72,7 +82,7 @@ t_token	**init_tokentab(char *input)
 			token_tab = free_token(token_tab);
 			return (NULL);
 		}
-		token_tab[i]->str = ft_strdup("");
+		token_tab[i]->str = NULL;
 		i++;
 	}
 	token_tab[i] = NULL;

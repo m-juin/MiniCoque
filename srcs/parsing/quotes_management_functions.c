@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 16:14:11 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:20:00 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 	*start = *i;
 	if (input[*i] != '\"')
 		(*i)++;
+	if (s[0] == '\0')
+	{
+		free(s);
+		s = NULL;
+	}
 	return (s);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:54:10 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 10:03:40 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:44:29 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	s_quote_count(char *input, int *i, int *nb)
 		counting_syntax_error(input[*i]);
 		return (-1);
 	}	
-	if (input[*i + 1] && (typify(input[*i + 1]) != LITERAL
+	if (!input[*i + 1]  || (typify(input[*i + 1]) != LITERAL
 			&& input[*i + 1] != '\'' && input[*i + 1] != '\"'))
 		(*nb)++;
 	(*i)++;
@@ -65,7 +65,7 @@ static int	token_count_part2(char *input, int *i, int *nb)
 {
 	if (!input)
 		return (-1);
-	else if (input[*i] && typify(input[*i]) == REDIRECT)
+	if (input[*i] && typify(input[*i]) == REDIRECT)
 	{
 		if (redirect_count(input, i, nb) == -1)
 			return (-1);

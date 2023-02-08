@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 15:20:28 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:16:17 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 	{
 		(*i)++;
 		tmp = doll_management(&input[*i], env);
-		if (!tmp)
-			return ;
 		if (input[*i] == '?')
 			(*i)++;
 		else
@@ -31,12 +29,12 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 			while (input[*i] && typify(input[*i]) == LITERAL)
 			(*i)++;
 		}
-		token->str = ft_strjoin_f(token->str, tmp, 0);
-		if (!token->str)
-		{
-			free(token);
+		if (!tmp || tmp[0] == '\0')
 			return ;
-		}
+		if (token->str)
+			token->str = ft_strjoin_f(token->str, tmp, 0);
+		else
+			token->str = tmp;
 	}
 }
 
@@ -51,7 +49,10 @@ static void	literal_token(t_token *token, char *input, int *i)
 	while (input[*i] && typify(input[*i]) == LITERAL)
 		(*i)++;
 	tmp = ft_substr(input, start, *i - start);
-	token->str = ft_strjoin_f(token->str, tmp, 0);
+	if (token->str)
+		token->str = ft_strjoin_f(token->str, tmp, 0);
+	else
+		token->str = tmp;
 }
 
 static void	token_join_part2(t_token *token, char *input,
@@ -69,13 +70,19 @@ static void	token_join_part2(t_token *token, char *input,
 		if (input[*i] == '\'' || input[*i] == '\"')
 		{
 			tmp = quotes_management(input, env, i);
-			token->str = ft_strjoin_f(token->str, tmp, 0);
+			if (tmp)
+			{
+				if (token->str)
+					token->str = ft_strjoin_f(token->str, tmp, 0);
+				else
+					token->str = tmp;
+			}
 		}
 		if (input[*i] == '$')
 			dollar_token(token, input, env, i);
 		if (typify(input[*i]) == LITERAL)
 			literal_token(token, input, i);
-		if (!token || !token->str)
+		if (!token)
 			free(token);
 		if (token->token_type != REDIRECT)
 			token->token_type = LITERAL;
@@ -95,7 +102,7 @@ static t_token	**token_join(char *input, t_env_var *env)
 		return (NULL);
 	nb = 0;
 	i = 0;
-	while (input[i] && nb < token_tab_len(token_tab, 0))
+	while (input[i] && nb < token_empty_tab_len(token_tab))
 	{
 		while (typify(input[i]) == BLANK)
 			i++;
