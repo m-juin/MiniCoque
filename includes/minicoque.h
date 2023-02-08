@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 10:34:38 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:07:21 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,11 +173,13 @@ void		choose_exec(t_minicoque *data, t_btree *root);
 
 /*	ft_mutiple_exec.c	*/
 
-void	ft_mult_execute(t_minicoque *data, t_btree *root, int fds[2], int type);
+void		ft_mult_execute(t_minicoque *data, t_btree *root,
+				int fds[2], int type);
 
 /*	ft_single_exec.c	*/
 
-void		ft_solo_exec(t_minicoque *data, t_btree *root, int fds[2], int type);
+void		ft_solo_exec(t_minicoque *data, t_btree *root,
+				int fds[2], int type);
 
 /*	exec_utils.c	*/
 

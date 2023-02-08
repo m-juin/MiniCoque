@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:36:00 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 10:20:36 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:05:50 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	multiple_handlefork(t_btree *root, int fds[2], t_minicoque *data, int type)
+static int	mult_hfork(t_btree *root, int fds[2], t_minicoque *data, int type)
 {
 	int	fd;
 	int	pid;
@@ -44,7 +44,7 @@ void	ft_mult_execute(t_minicoque *data, t_btree *root, int fds[2], int type)
 
 	if (root == NULL || data == NULL)
 		return ;
-	handled = multiple_handlefork(root, fds, data, type);
+	handled = mult_hfork(root, fds, data, type);
 	if (handled == -1)
 		return ;
 	choose_exec(data, root);

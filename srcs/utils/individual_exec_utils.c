@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:41:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 10:29:11 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:06:05 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ void	ft_single_exec(t_minicoque *data, t_btree *root, int fds[2])
 
 void	last_exec(t_minicoque *data, t_btree *root, int fds[2])
 {
-	/*if (ft_isforkable(root->left->tab_str[0], root->right->tab_str[1]) == TRUE)*/
-		ft_mult_execute(data, root, fds, root->type);
+	ft_mult_execute(data, root, fds, root->type);
 	fds[0] = ft_close_fd(fds[0], FALSE);
 	fds[1] = ft_close_fd(fds[1], FALSE);
 	deltmp(root);
@@ -63,8 +62,6 @@ void	last_exec(t_minicoque *data, t_btree *root, int fds[2])
 
 void	child_cmd(int fds[2], t_minicoque *data, t_btree *root)
 {
-	/*if (ft_isforkable(root->left->left->tab_str[0],
-			root->left->right->tab_str[1]) != FALSE)*/
 	ft_mult_execute(data, root->left, fds, root->type);
 	deltmp(root->left);
 }

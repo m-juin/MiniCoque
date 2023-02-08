@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 10:14:43 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 10:28:41 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:05:34 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static int	single_handlefork(t_btree *root, int fds[2], t_minicoque *data, int type)
+static int	solo_hfork(t_btree *root, int fds[2], t_minicoque *data, int type)
 {
 	int	fd;
 	int	pid;
@@ -46,7 +46,7 @@ void	ft_solo_exec(t_minicoque *data, t_btree *root, int fds[2], int type)
 
 	if (root == NULL || data == NULL)
 		return ;
-	handled = single_handlefork(root, fds, data, type);
+	handled = solo_hfork(root, fds, data, type);
 	if (handled == -1)
 		return ;
 	choose_exec(data, root);
