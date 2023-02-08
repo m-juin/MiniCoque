@@ -3,6 +3,7 @@
 *.so
 *.out
 *.swp
+*.tmp
 .vscode/
 MiniCoque
 minishell_tester
