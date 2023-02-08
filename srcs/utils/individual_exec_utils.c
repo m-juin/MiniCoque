@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:41:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 11:06:05 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 12:07:55 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	ft_exec(t_btree *branch, t_minicoque *data)
 	char *const	*env;
 
 	env = env_to_array(data->env_var);
-	execve(branch->left->tab_str[0], branch->right->tab_str, env);
+	if (branch->left->tab_str != NULL)
+		execve(branch->left->tab_str[0], branch->right->tab_str, env);
 	d_tab_free((char **)env);
 	ft_close_fd(0, TRUE);
 	ft_close_fd(1, TRUE);
