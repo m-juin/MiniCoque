@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 11:40:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:55:17 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ void		ft_solo_exec(t_minicoque *data, t_btree *root,
 
 int			*ft_setcur(t_btree *root);
 t_bool		ft_isforkable(char *function, char *arg);
+int			print_error(t_btree *branch);
 
 /*	individual_exec_utils.c	*/
 

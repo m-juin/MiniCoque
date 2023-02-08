@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:41:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 13:13:01 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 14:55:48 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,20 @@
 void	ft_exec(t_btree *branch, t_minicoque *data)
 {
 	char *const	*env;
-
+	int			ret;
+	
+	ret = 0;
 	if (branch->left->tab_str[0] != NULL)
 	{
 		env = env_to_array(data->env_var);
 		execve(branch->left->tab_str[0], branch->right->tab_str, env);
 		d_tab_free((char **)env);
-		if (isfile(branch->left->tab_str[0]) == 0
-			&& (branch->left->tab_str[0][0] == '/'
-			|| ft_strncmp(branch->left->tab_str[0], "./", 2) == 0))
-		{
-			ft_printf_fd(2, "%s: Is a directory\n", branch->left->tab_str[0]);
-			exit(126);
-		}
-		else if (branch->left->tab_str[0][0] == '/' ||
-			ft_strncmp(branch->left->tab_str[0], "./", 2) == 0)
-			ft_printf_fd(2, "%s: No such file or directory\n",
-				branch->left->tab_str[0]);
-		else
-			ft_printf_fd(2, "%s: command not found\n", branch->left->tab_str[0]);
+		ret = print_error(branch);
 	}
 	ft_close_fd(0, TRUE);
 	ft_close_fd(1, TRUE);
 	ft_global_free(data);
-	exit(127);
+	exit(ret);
 }
 
 static void	deltmp(t_btree *root)
