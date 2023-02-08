@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 10:41:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 14:55:48 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 15:56:09 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_exec(t_btree *branch, t_minicoque *data)
 {
 	char *const	*env;
 	int			ret;
-	
+
 	ret = 0;
 	if (branch->left->tab_str[0] != NULL)
 	{

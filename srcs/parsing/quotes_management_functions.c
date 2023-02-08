@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 11:37:59 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:54:27 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	while (input[*i] && input[*i] != '\"')
 	{	
 		if (input[*i] == '$')
-			s = ft_strjoin(s, double_q_part2(input, i, &start, env));
+			s = ft_strjoin_f(s, double_q_part2(input, i, &start, env), 2);
 		else
 			(*i)++;
 	}

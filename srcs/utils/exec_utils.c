@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 14:54:28 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 15:55:56 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ t_bool	ft_isforkable(char *function, char *arg)
 int	print_error(t_btree *branch)
 {
 	if (isfile(branch->left->tab_str[0]) == 0
-			&& (branch->left->tab_str[0][0] == '/'
-			|| ft_strncmp(branch->left->tab_str[0], "./", 2) == 0))
+		&& (branch->left->tab_str[0][0] == '/'
+		|| ft_strncmp(branch->left->tab_str[0], "./", 2) == 0))
 	{
 		ft_printf_fd(2, "%s: Is a directory\n", branch->left->tab_str[0]);
 		return (126);

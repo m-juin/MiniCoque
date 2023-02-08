@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:38:54 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 11:39:50 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:52:53 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	replace_token_str(t_token *token, char *tmp)
 	if (token->str)
 		token->str = ft_strjoin_f(token->str, tmp, 0);
 	else
-		token->str = tmp;
+	{
+		token->str = ft_strdup(tmp);
+		free(tmp);
+	}
 }
 
 void	pipe_token(t_token **token_tab, int *nb, char *input, int *i)
