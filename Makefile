@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/08 10:29:24 by mjuin            ###   ########.fr        #
+#    Updated: 2023/02/08 10:33:37 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRC =	srcs/main.c \
 		srcs/parsing/parsing.c \
 		srcs/parsing/quotes_management_functions.c \
 		srcs/parsing/redirection_parsing.c \
+		srcs/parsing/redirin_functions.c \
 		srcs/parsing/heredoc_functions.c \
 		srcs/parsing/heredoc_pipe_functions.c \
 		srcs/parsing/heredoc_fork.c

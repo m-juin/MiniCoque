@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 10:22:55 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/08 10:34:38 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,11 @@ int			redirect_syntax_check(char *input, int *i);
 int			redir_out_count(t_token **token_count);
 char		*get_redir(char *str);
 char		*get_redir_type(t_token **token_tab);
+
+/*	redirin_functions	*/
+
+t_bool		get_redirin(t_token *token, char **redir_path);
+int			open_redir_in(t_token **token_tab);
 
 /*	heredoc_functions.	*/
 

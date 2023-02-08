@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 17:22:45 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:03:22 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static void	prompt_prepare(char *path, t_token **token, int i)
 	int		fd;
 
 	fd = open_tmp_file(path);
-//	free(path);
 	limiter = get_limiter(token[i]->str);
 	if (!limiter)
 	{
