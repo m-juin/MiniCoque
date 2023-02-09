@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/08 11:40:47 by gpasquet         ###   ########.fr        #
+#    Updated: 2023/02/09 10:32:15 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,9 @@ SRC =	srcs/main.c \
 		srcs/built-ins/pwd.c \
 		srcs/built-ins/cd.c \
 		srcs/utils/t_env_utils.c \
-		srcs/utils/env_last_exit.c \
-		srcs/utils/env_clst_utils.c \
 		srcs/utils/free_utils.c \
 		srcs/utils/exec_utils.c \
 		srcs/utils/tree_creation_utils.c \
-		srcs/utils/tree_exec_utils.c \
-		srcs/utils/individual_exec_utils.c \
 		srcs/utils/fd_utils.c \
 		srcs/utils/tab_utils.c \
 		srcs/utils/get_cmd_utils.c \
@@ -41,13 +37,17 @@ SRC =	srcs/main.c \
 		srcs/utils/counting_utils.c \
 		srcs/utils/redirect_parsing_utils.c \
 		srcs/utils/heredoc_utils.c \
-		srcs/utils/error_utils.c \
 		srcs/utils/quotes_parsing_utils.c \
 		srcs/utils/pipe_counting_utils.c \
 		srcs/utils/ft_executes_utils.c \
+		srcs/functions/ft_isfile.c \
+		srcs/functions/tree_exec.c \
+		srcs/functions/ft_t_env.c \
+		srcs/functions/env_last_exit.c \
 		srcs/functions/ft_single_execute.c \
 		srcs/functions/ft_multiple_execute.c \
 		srcs/functions/signals.c \
+		srcs/functions/individual_exec.c \
 		srcs/parsing/lexer.c \
 		srcs/parsing/param_expansion_function.c \
 		srcs/parsing/counting_functions.c \

@@ -6,13 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:21:23 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 15:57:20 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/09 10:11:16 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-void	remove_elem(t_env_var *lst, t_env_var *elem)
+static void	remove_elem(t_env_var *lst, t_env_var *elem)
 {
 	t_env_var	*tmp;
 
