@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:29:30 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 14:09:06 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/09 15:50:38 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	signalhandler(int sig)
 	if (sig == SIGQUIT)
 	{
 		ft_printf_fd(2, "Quit (core dumped)\n");
+		last_exit(FALSE, 131);
 		return ;
 	}
 	printf("\n");
@@ -38,5 +39,5 @@ void	hsighandler(int sig)
 	free(g_heredoc_data->hdoc_path);
 	ft_putstr_fd("\n", 1);
 	free(g_heredoc_data);
-	exit(2);
+	exit(130);
 }
