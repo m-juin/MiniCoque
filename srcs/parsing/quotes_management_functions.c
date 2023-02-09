@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 15:54:27 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:03:17 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,32 @@ static char	*simple_q(char *input, int *i)
 	return (s);
 }
 
+static char	*quoted_var_management(char *input, int *i, int *start,
+	t_env_var *env)
+{
+	char	*s;
+
+	s = "";
+	if (input[*i + 1] == '?')
+	{
+		s = ft_strjoin_f(s, ft_itoa(last_exit(TRUE, 0)), 2);
+		(*i) += 2;
+	}
+	else if (input[*i + 1] == '$' && typify(input[*i + 1]) != LITERAL)
+	{	
+		s = ft_strjoin_f(s, ft_strdup("$$"), 2);
+		(*i) += 2;
+	}
+	else if (typify(input[*i + 1]) == LITERAL)
+	{	
+		*start = *i;
+		s = ft_strjoin_f(s, get_quoted_var(input, i, start, env), 2);
+	}
+	else
+		s = ft_strdup("");
+	return (s);
+}
+
 static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 {
 	char	*s;
@@ -40,36 +66,11 @@ static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 		return (NULL);
 	s = "";
 	s = ft_strjoin_f(s, ft_substr(input, *start, *i - *start), 2);
-	if (input[*i + 1] == '?')
-	{
-		s = ft_strjoin_f(s, ft_itoa(last_exit(TRUE, 0)), 0);
-		(*i) += 2;
-		*start = *i;
-	}
-	else if (input[*i + 1] == '$')
-		s = ft_strjoin_f(s, ft_strdup("$$"), 0);
-	else if (typify(input[*i + 1]) == LITERAL)
-	{	
-		*start = *i;
-		s = ft_strjoin_f(s, quoted_var(input, i, start, env), 0);
-	}
+	s = ft_strjoin_f(s, quoted_var_management(input, i, start, env), 2);
 	*start = *i;
-	if (input[*i] != '\"')
+	if ((input[*i] != '\"' && input[*i] != '$') || (input[*i] == '$'
+			&& typify(input[*i + 1]) != LITERAL && input[*i + 1] != '$'))
 		(*i)++;
-	return (s);
-}
-
-static char	*finish_double_q(char *s, char *input, int *i, int start)
-{
-	if (!s)
-		s = ft_substr(input, start, *i - start);
-	else
-	{
-		if (s[0] != '\0')
-			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 0);
-		else
-			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 2);
-	}
 	return (s);
 }
 

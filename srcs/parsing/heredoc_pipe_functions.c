@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 11:38:55 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/06 14:10:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/09 16:46:53 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	pipe_heredoc(t_token **token_tab, t_minicoque *data)
 {
 	int		hdoc_values[2];
 	int		i;
+	int		ret;
 	t_token	**sub_tab;
 
 	if (!token_tab)
@@ -106,6 +107,6 @@ int	pipe_heredoc(t_token **token_tab, t_minicoque *data)
 	free_token(sub_tab);
 	if (hdoc_values[0] == -1)
 		return (-1);
-	hdoc_pipe_process(token_tab, hdoc_values, data);
-	return (0);
+	ret = hdoc_pipe_process(token_tab, hdoc_values, data);
+	return (ret);
 }

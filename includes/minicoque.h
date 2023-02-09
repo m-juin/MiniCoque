@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 14:57:19 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/09 16:57:08 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,13 +239,14 @@ t_btree		*insert_node(t_token **token_array);
 t_btree		*insert_cmd_node(char *cmd, t_env_var *env);
 int			is_builtin(char	*str);
 
-/*	quotes_magement_functions.c	*/
+/*	quotes_management_functions.c	*/
 
 char		*quotes_management(char *input, t_env_var *env, int *i);
 
 /*	quoted_parsing_utils.c	*/
 
-char		*quoted_var(char *input, int *i, int *start, t_env_var *env);
+char		*get_quoted_var(char *input, int *i, int *start, t_env_var *env);
+char		*finish_double_q(char *s, char *input, int *i, int start);
 
 /*	redirection_parsing.c	*/
 
