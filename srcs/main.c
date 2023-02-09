@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/07 14:26:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/09 17:40:27 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*get_prompt(void)
 	return (prompt);
 }
 
-static t_btree	*parse(t_env_var *env, char *read, t_minicoque *data)
+static t_btree	*parse(t_env_var *env, char *read)
 {
 	t_token	**token_input;
 	int		ret;
@@ -58,7 +58,7 @@ static t_btree	*parse(t_env_var *env, char *read, t_minicoque *data)
 
 	token_input = lexer(read, env);
 	signal(SIGINT, SIG_IGN);
-	ret = heredoc(token_input, data);
+	ret = heredoc(token_input);
 	if (ret == -1)
 	{
 		token_input = free_token(token_input);
@@ -108,7 +108,7 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGQUIT, signalhandler);
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
-		coque_data->root = parse(coque_data->env_var, readed, coque_data);
+		coque_data->root = parse(coque_data->env_var, readed);
 		if (coque_data->root != NULL)
 			init_tree_exec(coque_data, coque_data->root);
 	}

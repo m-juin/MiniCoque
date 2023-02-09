@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 17:14:00 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:39:43 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,17 +293,15 @@ int			open_redir_in(t_token **token_tab);
 
 /*	heredoc_functions.c	*/
 
-int			heredoc(t_token **token_tab, t_minicoque *data);
-char		*get_heredoc_path(t_token **token_tab, int tab_lims[2],
-				t_minicoque *data);
+int			heredoc(t_token **token_tab);
+char		*get_heredoc_path(t_token **token_tab, int tab_lims[2]);
 
 /*	heredoc_fork.c	*/
 
-void		read_heredoc(t_token **token_tab, int tab_lins[2], char *path,
-				t_minicoque *data);
+int			read_heredoc(t_token **token_tab, int tab_lins[2], char *path);
 
 /*	heredoc_pipe_functions.c	*/
 
-int			pipe_heredoc(t_token **token_tab, t_minicoque *data);
+int			pipe_heredoc(t_token **token_tab);
 
 #endif
