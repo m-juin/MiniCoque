@@ -6,36 +6,11 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:00:50 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/18 16:17:01 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/09 10:14:49 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
-
-t_env_var	*create_env(char *path)
-{
-	int			pos;
-	t_env_var	*new;
-
-	new = malloc(sizeof(t_env_var));
-	if (new == NULL)
-		return (NULL);
-	new->next = NULL;
-	new->declared = 1;
-	new->value = NULL;
-	pos = ft_strfindchr(path, '=');
-	if (pos == 0)
-	{
-		new->name = ft_strndup(path, -1);
-		new->declared = -1;
-	}
-	else
-	{
-		new->name = ft_strndup(path, pos);
-		new->value = ft_strndup(&path[pos + 1], -1);
-	}
-	return (new);
-}
 
 static int	get_new_index(t_env_var *lst, char *new_name)
 {
@@ -70,31 +45,6 @@ void	replace_value(t_env_var *env, char *path)
 	env->declared = 1;
 }
 
-t_env_var	*get_env(t_env_var *lst, char *path)
-{
-	int		pos;
-	char	*name;
-
-	pos = 0;
-	name = NULL;
-	while (path[pos] && path[pos] != '=')
-		pos++;
-	if (path[pos] == '\0')
-		name = ft_strndup(path, -1);
-	else
-		name = ft_strndup(path, pos);
-	while (lst != NULL)
-	{
-		if (ft_strcmp(lst->name, name) == 0)
-			break ;
-		lst = lst->next;
-	}
-	free(name);
-	if (lst != NULL)
-		return (lst);
-	return (NULL);
-}
-
 void	ft_env_add_back(t_env_var **lst, t_env_var *new)
 {
 	t_env_var	*tmp;
@@ -117,4 +67,42 @@ void	ft_env_add_back(t_env_var **lst, t_env_var *new)
 		(*lst) = (*lst)->next;
 	}
 	(*lst) = tmp;
+}
+
+int	get_env_size(t_env_var *env)
+{
+	size_t	size;
+
+	size = 0;
+	while (env != NULL)
+	{
+		size++;
+		env = env->next;
+	}
+	return (size);
+}
+
+char *const	*env_to_array(t_env_var *env)
+{
+	char	**array;
+	size_t	size;
+	size_t	pos;
+
+	if (env == NULL)
+		return (NULL);
+	size = get_env_size(env);
+	if (size == 0)
+		return (NULL);
+	array = malloc((size + 1) * sizeof(char *));
+	if (array == NULL)
+		return (NULL);
+	pos = 0;
+	while (env != NULL)
+	{
+		array[pos] = ft_str_mega_join("%s=%s", env->name, env->value);
+		env = env->next;
+		pos++;
+	}
+	array[pos] = NULL;
+	return (array);
 }
