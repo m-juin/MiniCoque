@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 10:03:22 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/09 16:29:17 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 	dupped = dup(0);
 	g_heredoc_data->fds[1] = dupped;
 	while ((tmp[0] == '\0'
-			|| ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0))
+			|| ft_strncmp(tmp, limiter, ft_strlen(tmp)) != 0))
 	{
 		if (tmp[0] != '\0')
 			free(tmp);
@@ -52,7 +52,7 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 delimited by end-of-file (wanted `%s')\n", limiter);
 			break ;
 		}
-		if (ft_strncmp(tmp, limiter, ft_strlen(limiter)) != 0)
+		if (ft_strncmp(tmp, limiter, ft_strlen(tmp)) != 0)
 		{
 			tmp = ft_strjoin(tmp, "\n");
 			ft_putstr_fd(tmp, fd);
