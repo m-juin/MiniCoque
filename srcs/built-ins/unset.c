@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:21:23 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 17:24:19 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 09:52:57 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static int	get_error(char *path)
 	if (ft_isalpha(path[pos]) == 0 && path[pos] != '_')
 	{
 		ft_printf_fd(2, "export: `%s\': not a valid identifier\n", path);
-		return (-1);
+		return (1);
 	}
 	while (path[pos] && (ft_isalnum(path[pos]) == 1 || path[pos] == '_'))
 		pos++;
 	if (path[pos] == '\0')
 	{
-		return (1);
+		return (0);
 	}
 	ft_printf_fd(2, "export: `%s\': not a valid identifier\n", path);
-	return (-1);
+	return (1);
 }
 
 static void change_index(t_env_var *env, int index)
