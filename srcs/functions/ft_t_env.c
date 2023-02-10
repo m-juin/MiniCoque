@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 09:42:54 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 09:43:48 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/09 17:13:40 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ t_env_var	*create_env(char *path)
 	}
 	else
 	{
-		new->name = ft_strndup(path, pos);
+		if (path[pos - 1] == '+')
+			new->name = ft_strndup(path, pos - 1);
+		else
+			new->name = ft_strndup(path, pos);
 		new->value = ft_strndup(&path[pos + 1], -1);
 	}
 	return (new);
@@ -48,6 +51,8 @@ t_env_var	*get_env(t_env_var *lst, char *path)
 		pos++;
 	if (path[pos] == '\0')
 		name = ft_strndup(path, -1);
+	else if (path[pos - 1] == '+' && path[pos] == '=')
+		name = ft_strndup(path, pos - 1);
 	else
 		name = ft_strndup(path, pos);
 	while (lst != NULL)

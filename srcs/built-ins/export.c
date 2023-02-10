@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/30 16:36:01 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/09 16:50:26 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,13 @@ static int	check_validity(char *path)
 	size_t	pos;
 
 	pos = 0;
-	if (ft_isalpha(path[pos]) == 0)
+	if (ft_isalpha(path[pos]) == 0 && path[pos] != '_')
 		return (-1);
-	while (path[pos] && ft_isalnum(path[pos]) == 1)
+	while (path[pos] && (ft_isalnum(path[pos]) == 1 || path[pos] == '_'))
 		pos++;
-	if (path[pos] == '\0' || path[pos] == '=' )
+	if (path[pos] == '+' && path[pos + 1] == '=')
+		return (1);
+	else if (path[pos] == '=' || path[pos] == '\0')
 		return (1);
 	return (-1);
 }
@@ -96,9 +98,13 @@ int	export(t_env_var *env, char **args)
 		return (0);
 	}
 	posx = 1;
+	ret = 0;
 	while (args[posx])
 	{
-		ret = handle_arg(env, args[posx]);
+		if (ret == 0)
+			ret = handle_arg(env, args[posx]);
+		else
+			handle_arg(env, args[posx]);
 		posx++;
 	}
 	last_exit(FALSE, ret);

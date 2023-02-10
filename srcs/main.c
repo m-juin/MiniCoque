@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 17:40:27 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 10:06:29 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_minicoque	*create_data(char **envp)
 		ft_env_add_back(&data->env_var, create_env(envp[pos]));
 		pos++;
 	}
-	replace_value(get_env(data->env_var, "_"), "]");
+	replace_value(get_env(data->env_var, "_"), "_=]");
 	return (data);
 }
 
@@ -105,10 +105,10 @@ int	main(int ac, char **av, char **envp)
 		s_free(coque_data->prompt);
 		if (readed == NULL)
 			ft_exit(0, coque_data);
-		signal(SIGQUIT, signalhandler);
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
 		coque_data->root = parse(coque_data->env_var, readed);
+		signal(SIGQUIT, signalhandler);
 		if (coque_data->root != NULL)
 			init_tree_exec(coque_data, coque_data->root);
 	}

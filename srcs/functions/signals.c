@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:29:30 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 17:44:52 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 10:06:53 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	signalhandler(int sig)
 	if (sig == SIGQUIT)
 	{
 		ft_printf_fd(2, "Quit (core dumped)\n");
+		last_exit(FALSE, 131);
 		return ;
 	}
 	printf("\n");
