@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 11:40:54 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 12:53:25 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	end_prompt_loop(int dup, char *limiter, char *tmp)
 	free(tmp);
 }
 
-static int	hdoc_signals(int dupped, char *limiter, char *tmp)
+static int	hdoc_signals(int dupped, char *limiter, char *tmp, int fd)
 {
 	int			err;
 	struct stat	statbuf;
@@ -28,6 +28,7 @@ static int	hdoc_signals(int dupped, char *limiter, char *tmp)
 	err = fstat(0, &statbuf);
 	if (err == -1)
 	{
+		close(fd);
 		end_prompt_loop(dupped, limiter, tmp);
 		return (-1);
 	}
@@ -49,7 +50,7 @@ static int	prompt_loop(int fd, char *tmp, char *limiter)
 		tmp = readline(" > ");
 		if (tmp == NULL)
 		{
-			if (hdoc_signals(dupped, limiter, tmp) == -1)
+			if (hdoc_signals(dupped, limiter, tmp, fd) == -1)
 				return (-1);
 			break ;
 		}
