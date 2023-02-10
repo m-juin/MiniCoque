@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/09 17:40:43 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 11:40:54 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,25 @@ static void	end_prompt_loop(int dup, char *limiter, char *tmp)
 	free(tmp);
 }
 
-static void	prompt_loop(int fd, char *tmp, char *limiter)
+static int	hdoc_signals(int dupped, char *limiter, char *tmp)
 {
-	int	dupped;
+	int			err;
+	struct stat	statbuf;
+
+	err = fstat(0, &statbuf);
+	if (err == -1)
+	{
+		end_prompt_loop(dupped, limiter, tmp);
+		return (-1);
+	}
+	ft_printf_fd(1, "MiniCoque: warning: here-document \
+			delimited by end-of-file (wanted `%s')\n", limiter);
+	return (0);
+}
+
+static int	prompt_loop(int fd, char *tmp, char *limiter)
+{
+	int			dupped;
 
 	dupped = dup(0);
 	while ((tmp[0] == '\0'
@@ -33,8 +49,8 @@ static void	prompt_loop(int fd, char *tmp, char *limiter)
 		tmp = readline(" > ");
 		if (tmp == NULL)
 		{
-			ft_printf_fd(1, "MiniCoque: warning: here-document \
-delimited by end-of-file (wanted `%s')\n", limiter);
+			if (hdoc_signals(dupped, limiter, tmp) == -1)
+				return (-1);
 			break ;
 		}
 		if (ft_strncmp(tmp, limiter, ft_strlen(tmp)) != 0)
@@ -44,6 +60,7 @@ delimited by end-of-file (wanted `%s')\n", limiter);
 		}
 	}
 	end_prompt_loop(dupped, limiter, tmp);
+	return (0);
 }
 
 static int	prompt_prepare(char *path, t_token **token, int i)
@@ -51,6 +68,7 @@ static int	prompt_prepare(char *path, t_token **token, int i)
 	char	*limiter;
 	char	*tmp;
 	int		fd;
+	int		err;
 
 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
@@ -65,7 +83,9 @@ static int	prompt_prepare(char *path, t_token **token, int i)
 		return (-1);
 	}
 	tmp = "";
-	prompt_loop(fd, tmp, limiter);
+	err = prompt_loop(fd, tmp, limiter);
+	if (err == -1)
+		return (-1);
 	close(fd);
 	return (0);
 }
@@ -74,12 +94,15 @@ int	read_heredoc(t_token **token_tab, int tab_lims[2], char *path)
 {
 	int	ret;
 
+	ret = 0;
 	signal(SIGINT, hsighandler);
 	while (token_tab[tab_lims[0]] && tab_lims[0] <= tab_lims[1])
 	{
 		if (token_tab[tab_lims[0]]->str[0] == '<'
 			&& token_tab[tab_lims[0]]->str[1] == '<')
 			ret = prompt_prepare(path, token_tab, tab_lims[0]);
+		if (ret == -1)
+			return (ret);
 		tab_lims[0]++;
 	}
 	return (ret);

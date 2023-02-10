@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:21:23 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 09:52:57 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:41:08 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	get_error(char *path)
 	return (1);
 }
 
-static void change_index(t_env_var *env, int index)
+static void	change_index(t_env_var *env, int index)
 {
 	while (env != NULL)
 	{
