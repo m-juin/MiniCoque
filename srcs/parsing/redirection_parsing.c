@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/09 16:25:25 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:18:40 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_bool	get_redirout(t_token **token, int i, char **redir_path,
 		fd = open(*redir_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		delete_files(token);
+		delete_files(sub_token_tab(token, i, token_tab_len(token, 0) - i));
 		return (FALSE);
 	}
 	close(fd);
