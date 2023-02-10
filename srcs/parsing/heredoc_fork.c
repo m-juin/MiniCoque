@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 13:42:59 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 14:07:53 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	prompt_loop(int fd, char *limiter)
 				return (-1);
 			break ;
 		}
-		if (ft_strncmp(tmp, limiter, ft_strlen(tmp)) != 0)
+		if (ft_strcmp(tmp, limiter) != 0)
 		{
 			tmp = ft_strjoin(tmp, "\n");
 			ft_putstr_fd(tmp, fd);
