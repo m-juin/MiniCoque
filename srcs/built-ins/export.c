@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:22:49 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 16:50:26 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:03:22 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	export(t_env_var *env, char **args)
 	if (args[1] == NULL)
 	{
 		print_export(env, 1);
-		last_exit(FALSE, 0);
+		g_exit_code = 0;
 		return (0);
 	}
 	posx = 1;
@@ -107,6 +107,6 @@ int	export(t_env_var *env, char **args)
 			handle_arg(env, args[posx]);
 		posx++;
 	}
-	last_exit(FALSE, ret);
+	g_exit_code = ret;
 	return (ret);
 }

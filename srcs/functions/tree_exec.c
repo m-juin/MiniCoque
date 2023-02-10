@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tree_exec_utils.c                                  :+:      :+:    :+:   */
+/*   tree_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:18:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 12:04:40 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:05:46 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	ft_wait_pids(int *curprocess)
 	{
 		waitpid(curprocess[pos], &exit_status, 0);
 		if (WIFEXITED(exit_status))
-			last_exit(FALSE, WEXITSTATUS(exit_status));
+			g_exit_code = WEXITSTATUS(exit_status);
 		pos++;
 	}
 }

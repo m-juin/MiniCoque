@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 17:39:43 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 11:15:08 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,7 @@ typedef struct s_minicoque
 	char		*prompt;
 }	t_minicoque;
 
-typedef struct s_heredoc
-{
-	int			fds[2];
-	char		*limiter;
-	char		*hdoc_path;
-	t_token		**tokentab;
-}	t_heredoc;
-
-extern t_heredoc	*g_heredoc_data;
+extern int	g_exit_code;
 
 /*	echo.c	*/
 
@@ -239,10 +231,6 @@ int			countcmd(t_btree *tree);
 
 t_env_var	*create_env(char *path);
 t_env_var	*get_env(t_env_var *lst, char *path);
-
-/*	env_last_exit	*/
-
-int			last_exit(t_bool get, int error);
 
 /*	ft_single_exec.c	*/
 

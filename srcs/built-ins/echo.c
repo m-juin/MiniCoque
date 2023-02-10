@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:42:45 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 10:55:02 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:01:22 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ int	echo(char **args)
 		if (new_line == TRUE)
 			ft_printf_fd (1, "\n");
 	}
-	last_exit(FALSE, 0);
+	g_exit_code = 0;
 	return (0);
 }

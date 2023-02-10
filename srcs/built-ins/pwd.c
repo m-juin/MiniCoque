@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 10:23:46 by mjuin             #+#    #+#             */
-/*   Updated: 2023/01/31 16:35:11 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:03:31 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ int	pwd(void)
 	getcwd(current, PATH_MAX);
 	ft_printf_fd(1, "%s\n", current);
 	free(current);
-	last_exit(FALSE, 0);
+	g_exit_code = 0;
 	return (0);
 }

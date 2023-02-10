@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_management_functions.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/09 17:03:17 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 11:15:41 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*quoted_var_management(char *input, int *i, int *start,
 	s = "";
 	if (input[*i + 1] == '?')
 	{
-		s = ft_strjoin_f(s, ft_itoa(last_exit(TRUE, 0)), 2);
+		s = ft_strjoin_f(s, ft_itoa(g_exit_code), 2);
 		(*i) += 2;
 	}
 	else if (input[*i + 1] == '$' && typify(input[*i + 1]) != LITERAL)

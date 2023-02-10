@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:21:23 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 09:52:57 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:03:40 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ static int	get_error(char *path)
 	while (path[pos] && (ft_isalnum(path[pos]) == 1 || path[pos] == '_'))
 		pos++;
 	if (path[pos] == '\0')
-	{
 		return (0);
-	}
 	ft_printf_fd(2, "export: `%s\': not a valid identifier\n", path);
 	return (1);
 }
@@ -79,6 +77,6 @@ int	unset(t_env_var *env, char **args)
 		}
 		pos++;
 	}
-	last_exit(FALSE, ret);
+	g_exit_code = ret;
 	return (ret);
 }

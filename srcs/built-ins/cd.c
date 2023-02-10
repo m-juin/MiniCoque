@@ -6,11 +6,21 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/06 16:08:38 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:00:59 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+static void	print_exec_error(char *arg)
+{
+	if (errno == EACCES)
+		ft_printf_fd(2, "cd: %s: Permission denied\n", arg);
+	else if (errno == ENOTDIR)
+		ft_printf_fd(2, "cd: %s: Not a directory\n", arg);
+	else
+		ft_printf_fd(2, "cd: %s: No such file or directory\n", arg);
+}
 
 static t_bool	error_handle(char **args)
 {
@@ -20,7 +30,7 @@ static t_bool	error_handle(char **args)
 			ft_printf_fd(2, "cd need a parameter\n");
 		else
 			ft_printf_fd(2, "cd : too many arguments\n");
-		last_exit(FALSE, 1);
+		g_exit_code = 1;
 		return (FALSE);
 	}
 	return (TRUE);
@@ -35,12 +45,7 @@ int	cd(t_env_var *env, char **args)
 		return (1);
 	ret = chdir(args[1]);
 	if (ret == -1)
-	{
-		if (errno == 13)
-			ft_printf_fd(2, "cd: %s: Permission denied\n", args[1]);
-		else
-			ft_printf_fd(2, "cd: %s: No such file or directory\n", args[1]);
-	}
+		print_exec_error(args[1]);
 	else
 	{
 		tmp = get_env(env, "PWD");
@@ -51,6 +56,6 @@ int	cd(t_env_var *env, char **args)
 		tmp->value = NULL;
 		tmp->value = getcwd(tmp->value, PATH_MAX);
 	}
-	last_exit(FALSE, ret * -1);
+	g_exit_code = ret * -1;
 	return (ret * -1);
 }

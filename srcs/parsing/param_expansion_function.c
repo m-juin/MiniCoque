@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   param_expansion_function.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:10:41 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 14:29:26 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 11:13:21 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*doll_management(char *input, t_env_var *env)
 	expanded_param = NULL;
 	if (input[0] == '?')
 	{
-		error_code = last_exit(TRUE, 0);
+		error_code = g_exit_code;
 		return (ft_itoa(error_code));
 	}
 	if (typify(input[0]) == BLANK || typify(input[0])

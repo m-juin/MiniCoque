@@ -6,11 +6,13 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 10:06:29 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 10:59:49 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+int	g_exit_code;
 
 static t_minicoque	*create_data(char **envp)
 {
@@ -85,6 +87,7 @@ static t_minicoque	*init(int ac, char **envp)
 		ft_printf_fd(2, "Error on base data creation\n");
 		return (NULL);
 	}
+	g_exit_code = 0;
 	return (data);
 }
 

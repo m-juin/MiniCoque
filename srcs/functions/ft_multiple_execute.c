@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:36:00 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 11:05:50 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:04:23 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_mult_execute(t_minicoque *data, t_btree *root, int fds[2], int type)
 	{
 		ft_close_fd(0, TRUE);
 		ft_close_fd(1, TRUE);
-		exit_code = last_exit(TRUE, -1);
+		exit_code = g_exit_code;
 		ft_global_free(data);
 		exit(exit_code);
 	}

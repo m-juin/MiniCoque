@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/09 10:32:15 by mjuin            ###   ########.fr        #
+#    Updated: 2023/02/10 11:14:45 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,6 @@ SRC =	srcs/main.c \
 		srcs/functions/ft_isfile.c \
 		srcs/functions/tree_exec.c \
 		srcs/functions/ft_t_env.c \
-		srcs/functions/env_last_exit.c \
 		srcs/functions/ft_single_execute.c \
 		srcs/functions/ft_multiple_execute.c \
 		srcs/functions/signals.c \
