@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 11:24:29 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 13:14:47 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*get_heredoc_path(t_token **token_tab, int tab_lims[2])
 		free(path);
 		return (NULL);
 	}
-	path = ft_strjoin_f("<< ", path, 2);
 	return (path);
 }
 
@@ -42,8 +41,7 @@ static int	get_last_hdoc_nb(t_token **token_tab, int heredoc_nb)
 	j = 0;
 	while (token_tab[i] && j < heredoc_nb)
 	{
-		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
-			== '<' && token_tab[i]->str[1] == '<')
+		if (token_tab[i]->token_type == HEREDOC)
 			j++;
 		if (j < heredoc_nb)
 			i++;

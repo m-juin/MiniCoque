@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:06:37 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 15:47:50 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 13:26:24 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ static void	tokenarr_cpy(t_token **src, char **dst, int size)
 	j = 0;
 	while (src[i] != NULL && j < size)
 	{
-		if (src[i]->str && src[i]->token_type != REDIRECT)
+		if (src[i]->str && (src[i]->token_type != REDIRECT || src[i]->token_type
+				!= HEREDOC))
 		{
 			dst[j] = strndup(src[i]->str, -1);
 			j++;

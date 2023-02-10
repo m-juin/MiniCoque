@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:38:54 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 15:52:53 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 13:16:45 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ void	redirect_token(t_token *token, char *input, int *i)
 	int	start;
 
 	start = *i;
+	if (input[*i] == '<' && input[*i + 1] == '<')
+		token->token_type = HEREDOC;
+	else
+		token->token_type = REDIRECT;
 	while (typify(input[*i]) == REDIRECT)
 		(*i)++;
 	while (typify(input[*i]) == BLANK)
 		(*i)++;
-	free(token->str);
-	token->str = ft_substr(input, start, *i - start);
-	token->token_type = REDIRECT;
 }

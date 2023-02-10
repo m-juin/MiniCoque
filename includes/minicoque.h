@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:45:31 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 13:36:56 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,6 @@ char		*redir_heredoc(t_token **token_tab);
 int			hdoc_pipe_count(t_token **token_tab);
 char		*init_heredoc_path(int pipe_nb);
 void		delete_tmp(t_token **token_tab);
-char		*get_limiter(char *token);
 
 /*	redirect_parsing_utils.c	*/
 

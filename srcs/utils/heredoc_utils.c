@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:30:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 11:12:34 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 13:36:36 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,12 @@ char	*redir_heredoc(t_token **token_tab)
 	j = 0;
 	while (token_tab[i] && j < redir_nb)
 	{
-		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
-			== '<' && token_tab[i]->str[1] == '<')
+		if (token_tab[i]->token_type == HEREDOC)
 			j++;
 		if (j < redir_nb)
 			i++;
 	}
-	redir_path = get_redir(token_tab[i]->str);
+	redir_path = ft_strdup(token_tab[i]->str);
 	if (!redir_path)
 		return (NULL);
 	return (redir_path);
@@ -89,18 +88,4 @@ char	*init_heredoc_path(int pipe_nb)
 		path = init_heredoc_path(pipe_nb);
 	}
 	return (path);
-}
-
-char	*get_limiter(char *token)
-{
-	int		i;
-	char	*limiter;
-
-	i = 0;
-	while (typify(token[i]) == BLANK || token[i] == '<')
-		i++;
-	limiter = ft_substr(token, i, ft_strlen(token) - i);
-	if (!limiter)
-		return (NULL);
-	return (limiter);
 }

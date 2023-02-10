@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 12:53:25 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 13:42:59 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ static int	hdoc_signals(int dupped, char *limiter, char *tmp, int fd)
 	return (0);
 }
 
-static int	prompt_loop(int fd, char *tmp, char *limiter)
+static int	prompt_loop(int fd, char *limiter)
 {
+	char		*tmp;
 	int			dupped;
+	t_bool		boo;
 
+	boo = TRUE;
 	dupped = dup(0);
-	while ((tmp[0] == '\0'
-			|| ft_strncmp(tmp, limiter, ft_strlen(tmp)) != 0))
+	while (boo == TRUE)
 	{
-		if (tmp[0] != '\0')
-			free(tmp);
 		tmp = readline(" > ");
 		if (tmp == NULL)
 		{
@@ -59,6 +59,8 @@ static int	prompt_loop(int fd, char *tmp, char *limiter)
 			tmp = ft_strjoin(tmp, "\n");
 			ft_putstr_fd(tmp, fd);
 		}
+		else
+			boo = FALSE;
 	}
 	end_prompt_loop(dupped, limiter, tmp);
 	return (0);
@@ -67,7 +69,6 @@ static int	prompt_loop(int fd, char *tmp, char *limiter)
 static int	prompt_prepare(char *path, t_token **token, int i)
 {
 	char	*limiter;
-	char	*tmp;
 	int		fd;
 	int		err;
 
@@ -77,14 +78,13 @@ static int	prompt_prepare(char *path, t_token **token, int i)
 		free(path);
 		return (-1);
 	}
-	limiter = get_limiter(token[i]->str);
+	limiter = ft_strdup(token[i]->str);
 	if (!limiter)
 	{
 		close(fd);
 		return (-1);
 	}
-	tmp = "";
-	err = prompt_loop(fd, tmp, limiter);
+	err = prompt_loop(fd, limiter);
 	if (err == -1)
 		return (-1);
 	close(fd);
@@ -99,8 +99,7 @@ int	read_heredoc(t_token **token_tab, int tab_lims[2], char *path)
 	signal(SIGINT, hsighandler);
 	while (token_tab[tab_lims[0]] && tab_lims[0] <= tab_lims[1])
 	{
-		if (token_tab[tab_lims[0]]->str[0] == '<'
-			&& token_tab[tab_lims[0]]->str[1] == '<')
+		if (token_tab[tab_lims[0]]->token_type == HEREDOC)
 			ret = prompt_prepare(path, token_tab, tab_lims[0]);
 		if (ret == -1)
 			return (ret);

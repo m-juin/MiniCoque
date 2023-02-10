@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 16:43:29 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/07 14:30:56 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 13:12:05 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ int	heredoc_count(t_token **token_tab)
 	i = 0;
 	while (token_tab[i])
 	{
-		if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
-			== '<' && token_tab[i]->str[1] == '<')
+		if (token_tab[i]->token_type == HEREDOC)
 			redir_nb++;
 		i++;
 	}

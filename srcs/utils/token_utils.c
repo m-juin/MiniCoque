@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 11:39:51 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 13:30:37 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	token_tab_len(t_token **tab, int redir)
 			len++;
 		else
 		{
-			if (tab[i]->token_type != REDIRECT && tab[i]->str)
+			if (tab[i]->token_type != REDIRECT && tab[i]->token_type != HEREDOC
+				&& tab[i]->str)
 				len++;
 		}
 		i++;
