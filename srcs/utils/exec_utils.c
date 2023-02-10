@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:05:39 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:44:13 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 12:43:26 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,32 +48,9 @@ t_bool	ft_isforkable(char *function, char *arg)
 	return (TRUE);
 }
 
-int	print_error(t_btree *root)
+int	print_error(t_btree *branch)
 {
-	struct stat buf;
-	int			ret;
-	
-	ret = stat(root->left->tab_str[0], &buf);
-	if (ret == -1)
-	{
-		if (errno == EACCES)
-			ft_printf_fd(2, "%s: Permission denied\n", root->left->tab_str[0]);
-		else if (errno == ENOENT)
-		{
-			ft_printf_fd(2, "%s: No such file or directory\n",
-				root->left->tab_str[0]);
-		}
-		return (126);
-	}
-	else
-	{
-		if (S_ISDIR(buf) == 0)
-		{
-			ft_printf_fd(2, "%s: Is a directory\n", root->left->tab_str[0]);
-			return (126);
-		}
-	}
-	/*if (isfile(branch->left->tab_str[0]) == 0
+	if (isfile(branch->left->tab_str[0]) == 0
 		&& (branch->left->tab_str[0][0] == '/'
 		|| ft_strncmp(branch->left->tab_str[0], "./", 2) == 0))
 	{
@@ -88,5 +65,5 @@ int	print_error(t_btree *root)
 	{
 		ft_printf_fd(2, "%s: command not found\n", branch->left->tab_str[0]);
 	}
-	return (127);*/
+	return (127);
 }
