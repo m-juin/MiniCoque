@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:15:08 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/10 11:45:31 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <signal.h>
 # include <ft_boolean.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <dirent.h>

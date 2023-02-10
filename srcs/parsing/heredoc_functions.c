@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:12:21 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/09 17:39:26 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 11:24:29 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*get_heredoc_path(t_token **token_tab, int tab_lims[2])
 	ret = read_heredoc(token_tab, tab_lims, path);
 	if (ret == -1)
 	{
+		unlink(path);
 		free(path);
 		return (NULL);
 	}
@@ -63,7 +64,10 @@ static int	no_pipe_heredoc(t_token **token_tab, int heredoc_nb)
 	tab_lims[1] = token_tab_len(token_tab, 0);
 	path = get_heredoc_path(token_tab, tab_lims);
 	if (path == NULL)
+	{
+		delete_tmp(token_tab);
 		return (-1);
+	}
 	free(token_tab[hdoc_index]->str);
 	token_tab[hdoc_index]->str = ft_strdup(path);
 	free(path);
