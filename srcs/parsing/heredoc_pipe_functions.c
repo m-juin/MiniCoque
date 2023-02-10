@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 11:38:55 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/09 16:46:53 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/10 09:19:33 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static int	find_prev_pipe(t_token **token_tab, int i)
 	return (i);
 }
 
-static int	hdoc_pipe(t_token **token_tab, int hdoc_values[2], int i,
-		t_minicoque *data)
+static int	hdoc_pipe(t_token **token_tab, int hdoc_values[2], int i)
 {
 	int		tab_lims[2];
 	char	*tmp;
@@ -39,7 +38,7 @@ static int	hdoc_pipe(t_token **token_tab, int hdoc_values[2], int i,
 	if (hdoc_values[1] == hdoc_values[0])
 	{
 		tmp = token_tab[i]->str;
-		token_tab[i]->str = get_heredoc_path(token_tab, tab_lims, data);
+		token_tab[i]->str = get_heredoc_path(token_tab, tab_lims);
 		free(tmp);
 		hdoc_values[1] = 0;
 		if (token_tab[i]->str == NULL)
@@ -51,8 +50,7 @@ static int	hdoc_pipe(t_token **token_tab, int hdoc_values[2], int i,
 	return (1);
 }
 
-static int	hdoc_pipe_loop(t_token **token_tab, int *hdoc_values, int *i,
-		t_minicoque *data)
+static int	hdoc_pipe_loop(t_token **token_tab, int *hdoc_values, int *i)
 {
 	int	ret;
 
@@ -68,12 +66,11 @@ static int	hdoc_pipe_loop(t_token **token_tab, int *hdoc_values, int *i,
 			return (-1);
 	}
 	if (hdoc_values[0] > 0)
-		ret = hdoc_pipe(token_tab, hdoc_values, *i, data);
+		ret = hdoc_pipe(token_tab, hdoc_values, *i);
 	return (ret);
 }
 
-static int	hdoc_pipe_process(t_token **token_tab, int hdoc_values[2],
-		t_minicoque *data)
+static int	hdoc_pipe_process(t_token **token_tab, int hdoc_values[2])
 {
 	int	i;
 	int	err;
@@ -82,7 +79,7 @@ static int	hdoc_pipe_process(t_token **token_tab, int hdoc_values[2],
 	hdoc_values[1] = 0;
 	while (token_tab[i])
 	{
-		err = hdoc_pipe_loop(token_tab, hdoc_values, &i, data);
+		err = hdoc_pipe_loop(token_tab, hdoc_values, &i);
 		if (err == -1)
 			return (-1);
 		i++;
@@ -90,7 +87,7 @@ static int	hdoc_pipe_process(t_token **token_tab, int hdoc_values[2],
 	return (0);
 }
 
-int	pipe_heredoc(t_token **token_tab, t_minicoque *data)
+int	pipe_heredoc(t_token **token_tab)
 {
 	int		hdoc_values[2];
 	int		i;
@@ -107,6 +104,6 @@ int	pipe_heredoc(t_token **token_tab, t_minicoque *data)
 	free_token(sub_tab);
 	if (hdoc_values[0] == -1)
 		return (-1);
-	ret = hdoc_pipe_process(token_tab, hdoc_values, data);
+	ret = hdoc_pipe_process(token_tab, hdoc_values);
 	return (ret);
 }
