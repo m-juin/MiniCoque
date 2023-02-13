@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:23:07 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 10:59:49 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/13 14:46:24 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,9 @@ int	main(int ac, char **av, char **envp)
 		exit(1);
 	while (1)
 	{
-		coque_data->prompt = get_prompt();
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, signalhandler);
+		coque_data->prompt = get_prompt();
 		readed = readline(coque_data->prompt);
 		s_free(coque_data->prompt);
 		if (readed == NULL)
@@ -111,8 +112,8 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strcmp(readed, "") != 0)
 			add_history(readed);
 		coque_data->root = parse(coque_data->env_var, readed);
-		signal(SIGQUIT, signalhandler);
 		if (coque_data->root != NULL)
 			init_tree_exec(coque_data, coque_data->root);
+		signal(SIGQUIT, signalhandler);
 	}
 }

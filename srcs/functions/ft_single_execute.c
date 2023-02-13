@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 10:14:43 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:04:37 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/13 14:49:30 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	solo_hfork(t_btree *root, int fds[2], t_minicoque *data, int type)
 			return (1);
 	fd = get_entry_fd(fds, root);
 	set_exit_fd(root, type, fds, fd);
+	signal(SIGINT, fsighandler);
 	pid = fork();
 	if (pid == 0)
 	{

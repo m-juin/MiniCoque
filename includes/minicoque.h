@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/13 11:36:30 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/13 14:42:53 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ void		ft_single_exec(t_minicoque *data, t_btree *root, int fds[2]);
 
 void		signalhandler(int sig);
 void		hsighandler(int sig);
+void		fsighandler(int sig);
 
 /*	ft_mutiple_exec.c	*/
 

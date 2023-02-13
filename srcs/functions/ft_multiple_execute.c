@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:36:00 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:04:23 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/13 14:44:42 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	mult_hfork(t_btree *root, int fds[2], t_minicoque *data, int type)
 	{
 		fd = get_entry_fd(fds, root);
 		set_exit_fd(root, type, fds, fd);
+		signal(SIGINT, fsighandler);
 		pid = fork();
 		if (pid == 0)
 		{

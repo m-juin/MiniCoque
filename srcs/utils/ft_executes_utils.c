@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 10:16:02 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/08 14:06:58 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/13 14:45:29 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_init_fork(int fds[2], int fd, t_minicoque *data)
 {
+	signal(SIGINT, signalhandler);
 	if (fd == -1 || fds[1] == -1)
 	{
 		fds[0] = ft_close_fd(fds[0], FALSE);
