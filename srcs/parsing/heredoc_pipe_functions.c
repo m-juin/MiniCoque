@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 11:38:55 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 09:19:33 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:11:58 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ static int	hdoc_pipe(t_token **token_tab, int hdoc_values[2], int i)
 	tab_lims[0] = find_prev_pipe(token_tab, i);
 	if (tab_lims[0] == -1)
 		return (-1);
-	if (token_tab[i]->token_type == REDIRECT && token_tab[i]->str[0]
-		== '<' && token_tab[i]->str[1] == '<')
+	if (token_tab[i]->token_type == HEREDOC)
 		hdoc_values[1]++;
 	if (hdoc_values[1] == hdoc_values[0])
 	{

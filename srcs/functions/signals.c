@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:29:30 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:00:28 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/13 10:02:42 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ void	hsighandler(int sig)
 	sig = sig - 1;
 	ft_putstr_fd("\n", 1);
 	close(0);
+	g_exit_code = 130;
 }

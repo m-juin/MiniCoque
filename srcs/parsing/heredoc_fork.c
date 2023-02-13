@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 14:07:53 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:14:17 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,11 @@ static int	hdoc_signals(int dupped, char *limiter, char *tmp, int fd)
 	return (0);
 }
 
-static int	prompt_loop(int fd, char *limiter)
+static int	prompt_loop(int fd, char *limiter, t_bool boo)
 {
 	char		*tmp;
 	int			dupped;
-	t_bool		boo;
 
-	boo = TRUE;
 	dupped = dup(0);
 	while (boo == TRUE)
 	{
@@ -56,8 +54,9 @@ static int	prompt_loop(int fd, char *limiter)
 		}
 		if (ft_strcmp(tmp, limiter) != 0)
 		{
-			tmp = ft_strjoin(tmp, "\n");
+			tmp = ft_strjoin_f(tmp, "\n", 1);
 			ft_putstr_fd(tmp, fd);
+			free(tmp);
 		}
 		else
 			boo = FALSE;
@@ -84,7 +83,7 @@ static int	prompt_prepare(char *path, t_token **token, int i)
 		close(fd);
 		return (-1);
 	}
-	err = prompt_loop(fd, limiter);
+	err = prompt_loop(fd, limiter, TRUE);
 	if (err == -1)
 		return (-1);
 	close(fd);
