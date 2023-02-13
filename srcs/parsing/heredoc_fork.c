@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/13 10:14:17 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:34:56 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 static void	end_prompt_loop(int dup, char *limiter, char *tmp)
 {
-	dup2(dup, 0);
+	int			err;
+	struct stat	statbuf;
+
+	err = fstat(0, &statbuf);
+	if (err == -1)
+		dup2(dup, 0);
 	close(dup);
 	free(limiter);
 	free(tmp);
@@ -33,7 +38,7 @@ static int	hdoc_signals(int dupped, char *limiter, char *tmp, int fd)
 		return (-1);
 	}
 	ft_printf_fd(1, "MiniCoque: warning: here-document \
-			delimited by end-of-file (wanted `%s')\n", limiter);
+delimited by end-of-file (wanted `%s')\n", limiter);
 	return (0);
 }
 

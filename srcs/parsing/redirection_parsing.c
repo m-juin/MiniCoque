@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 09:20:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/09 17:18:40 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:36:41 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,16 @@ static void	redir_in_n_out(t_token **token_tab, char **redir_tab)
 	}
 }
 
-static void	redir_only_out(t_token **token_tab, char **redir_tab)
+static void	redir_only_loop(t_token **token_tab, char **redir_tab)
 {
 	int		i;
 	int		redir_nb;
-	int		err;
 	t_bool	redir_status;
 
-	if (!token_tab || !redir_tab)
-		return ;
-	err = open_redir_in(token_tab);
-	if (err == -1)
-		return ;
 	redir_nb = 1;
 	redir_status = TRUE;
 	i = 0;
-	while (token_tab[i])
+	while (token_tab[i++])
 	{
 		if (redir_status == TRUE && token_tab[i]->token_type == REDIRECT
 			&& token_tab[i]->str[0] == '>')
@@ -92,8 +86,23 @@ static void	redir_only_out(t_token **token_tab, char **redir_tab)
 			redir_status = get_redirout(token_tab, i, &redir_tab[1], redir_nb);
 			redir_nb++;
 		}
-		i++;
+		if (redir_status == TRUE && token_tab[i]->token_type == REDIRECT
+			&& token_tab[i]->str[0] == '<')
+			redir_status = check_redirin(token_tab[i], &redir_tab[0]);
 	}
+}
+
+static void	redir_only_out(t_token **token_tab, char **redir_tab)
+{
+	int		err;
+
+	if (!token_tab || !redir_tab)
+		return ;
+	err = open_redir_in(token_tab);
+	if (err == -1)
+		return ;
+	redir_only_loop(token_tab, redir_tab);
+	return ;
 }
 
 char	**redirtab_create(t_token **token_tab)

@@ -6,11 +6,29 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:43:42 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 09:44:31 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:36:01 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+t_bool	check_redirin(t_token *token, char **redir_tab)
+{
+	char	*path;
+
+	if (!token)
+		return (FALSE);
+	path = get_redir(token->str);
+	if (!path)
+		return (FALSE);
+	if (access(path, R_OK) != 0)
+	{
+		free(*redir_tab);
+		*redir_tab = path;
+		return (FALSE);
+	}
+	return (TRUE);
+}
 
 t_bool	get_redirin(t_token *token, char **redir_path)
 {

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 13:36:56 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:36:30 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,7 @@ char		**redirtab_create(t_token **token_tab);
 
 /*	redirin_functions	*/
 
+t_bool		check_redirin(t_token *token, char **redir_tab);
 t_bool		get_redirin(t_token *token, char **redir_path);
 int			open_redir_in(t_token **token_tab);
 
