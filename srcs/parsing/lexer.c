@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:31:44 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 13:17:59 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/15 17:07:34 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	dollar_token(t_token *token, char *input, t_env_var *env, int *i)
 	(*i)++;
 	if ((input[*i] == '\'' || input[*i] == '\"'))
 		return ;
-	else if (input[*i] == '\0')
+	else if (input[*i] == '\0' || input[*i] == '$')
 		tmp = ft_strdup("$");
 	else
 		tmp = doll_management(&input[*i], env);
