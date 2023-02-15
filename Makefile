@@ -6,7 +6,7 @@
 #    By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 15:23:54 by mjuin             #+#    #+#              #
-#    Updated: 2023/02/10 11:14:45 by mjuin            ###   ########.fr        #
+#    Updated: 2023/02/15 16:00:52 by mjuin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC =	clang
 
 CFLAGS =	-g -Werror -Wextra -Wall -I./includes -I./libft/include
 
-NAME =	MiniCoque
+NAME =	minishell
 
 SRC =	srcs/main.c \
 		srcs/built-ins/exit.c \
