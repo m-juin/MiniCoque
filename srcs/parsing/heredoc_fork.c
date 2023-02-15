@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:38:49 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/13 11:34:56 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/15 13:35:47 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ static int	prompt_prepare(char *path, t_token **token, int i)
 	}
 	err = prompt_loop(fd, limiter, TRUE);
 	if (err == -1)
+	{
+		unlink(path);
+		delete_tmp(token);
 		return (-1);
+	}
 	close(fd);
 	return (0);
 }

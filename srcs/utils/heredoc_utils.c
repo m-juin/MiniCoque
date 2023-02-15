@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 10:30:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 13:36:36 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/15 13:46:39 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	delete_tmp(t_token **token_tab)
 	pos = 0;
 	while (token_tab[pos] != NULL)
 	{
-		if (ft_strncmp(token_tab[pos]->str, "<< .heredoc_", 12) == 0)
+		if (ft_strncmp(token_tab[pos]->str, ".heredoc_", 9) == 0)
 			if (ft_strncmp(&token_tab[pos]->str[ft_strlen(token_tab[pos]->str)
 						- 4], ".tmp", 4) == 0)
-				unlink(&token_tab[pos]->str[3]);
+				unlink(token_tab[pos]->str);
 		pos++;
 	}
 }
