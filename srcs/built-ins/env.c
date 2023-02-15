@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 09:30:32 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:01:37 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/15 13:22:42 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	env(t_env_var *env_data, char **args)
 	{
 		ft_putstr_fd("Too many argument for env\n", 2);
 		g_exit_code = 1;
+		return (1);
 	}
 	if (env_data == NULL)
 		g_exit_code = 1;
@@ -30,5 +31,5 @@ int	env(t_env_var *env_data, char **args)
 		env_data = env_data->next;
 	}
 	g_exit_code = 0;
-	return (1);
+	return (0);
 }
