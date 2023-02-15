@@ -6,23 +6,35 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:21:23 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:45:17 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/15 11:22:56 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
 
-static void	remove_elem(t_env_var *lst, t_env_var *elem)
+static void	remove_elem(t_env_var **lst, t_env_var *elem)
 {
 	t_env_var	*tmp;
+	t_env_var	*tmp2;
 
-	while (lst->next != elem)
-		lst = lst->next;
-	tmp = lst->next->next;
-	free(lst->next->name);
-	free(lst->next->value);
-	free(lst->next);
-	lst->next = tmp;
+	tmp2 = (*lst);
+	if ((*lst) == elem)
+	{
+		tmp = (*lst)->next;
+		s_free((*lst)->value);
+		s_free((*lst)->name);
+		s_free((*lst));
+		(*lst) = tmp;
+		return ;
+	}
+	while ((*lst)->next != elem)
+		(*lst) = (*lst)->next;
+	tmp = (*lst)->next->next;
+	s_free((*lst)->next->name);
+	s_free((*lst)->next->value);
+	s_free((*lst)->next);
+	(*lst)->next = tmp;
+	(*lst) = tmp2;
 }
 
 static int	get_error(char *path)
@@ -53,7 +65,7 @@ static void	change_index(t_env_var *env, int index)
 	}
 }
 
-int	unset(t_env_var *env, char **args)
+int	unset(t_env_var **env, char **args)
 {
 	int			pos;
 	t_env_var	*tmp;
@@ -68,12 +80,12 @@ int	unset(t_env_var *env, char **args)
 			ret = get_error(args[pos]);
 		else
 			get_error(args[pos]);
-		tmp = get_env(env, args[pos]);
+		tmp = get_env((*env), args[pos]);
 		if (tmp != NULL)
 		{
 			removedindex = tmp->index;
 			remove_elem(env, tmp);
-			change_index(env, removedindex);
+			change_index((*env), removedindex);
 		}
 		pos++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/13 14:42:53 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/15 11:12:59 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int			export(t_env_var *env, char **args);
 
 /*	unset.c	*/
 
-int			unset(t_env_var *env, char **args);
+int			unset(t_env_var **env, char **args);
 
 /*	pwd.c	*/
 

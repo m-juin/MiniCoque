@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 11:00:50 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/09 17:04:31 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/15 10:10:13 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,17 @@ void	replace_value(t_env_var *env, char *path)
 	int	pos;
 
 	pos = ft_strfindchr(path, '=');
+	if (env == NULL)
+		return ;
 	if (pos == -1)
 		return ;
 	if (pos != 0)
 	{
 		if (path[pos - 1] == '+' && env->value != NULL)
 			env->value = ft_strjoin_f(env->value, &path[pos + 1], 1);
-		else
+		else if (env)
 		{
-			if (env->value != NULL)
+			if (env != NULL && env->value != NULL)
 				free(env->value);
 			env->value = ft_strndup(&path[pos + 1], -1);
 		}

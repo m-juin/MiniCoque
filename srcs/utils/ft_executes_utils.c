@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 10:16:02 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/13 14:45:29 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/15 11:14:16 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	choose_exec(t_minicoque *data, t_btree *root)
 	else if (ft_strcmp(root->left->tab_str[0], "export") == 0)
 		export(data->env_var, root->right->tab_str);
 	else if (ft_strcmp(root->left->tab_str[0], "unset") == 0)
-		unset(data->env_var, root->right->tab_str);
+		unset(&data->env_var, root->right->tab_str);
 	else if (ft_strcmp(root->left->tab_str[0], "pwd") == 0)
 		pwd();
 	else if (ft_strcmp(root->right->tab_str[0], "cd") == 0)
