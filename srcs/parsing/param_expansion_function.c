@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:10:41 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 11:13:21 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/18 13:23:42 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	get_to_var_end(char *input, int *i)
 		(*i)++;
 	else
 	{
-		while (input[*i] && typify(input[*i]) == LITERAL)
+		while (input[*i] && typify(input[*i]) == LITERAL && input[*i] != '=')
 			(*i)++;
 	}
 }

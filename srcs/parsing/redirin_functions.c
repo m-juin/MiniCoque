@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:43:42 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/13 11:36:01 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/18 13:35:56 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_bool	check_redirin(t_token *token, char **redir_tab)
 		*redir_tab = path;
 		return (FALSE);
 	}
+	free(path);
 	return (TRUE);
 }
 

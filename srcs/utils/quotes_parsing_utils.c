@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 16:13:38 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/18 09:34:45 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/18 13:32:16 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ char	*finish_double_q(char *s, char *input, int *i, int start)
 	if (!s)
 		s = ft_substr(input, start, *i - start);
 	else
-	{
-		if (s[0] != '\0')
-			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 0);
-		else
-			s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 2);
-	}
+		s = ft_strjoin_f(s, ft_substr(input, start, *i - start), 0);
 	return (s);
 }
