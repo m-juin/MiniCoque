@@ -6,11 +6,37 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 16:13:38 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/09 16:58:28 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/18 09:34:45 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minicoque.h>
+
+char	*quoted_var_management(char *input, int *i, int *start,
+	t_env_var *env)
+{
+	char	*s;
+
+	s = "";
+	if (input[*i + 1] == '?')
+	{
+		s = ft_strjoin_f(s, ft_itoa(g_exit_code), 2);
+		(*i) += 2;
+	}
+	else if (input[*i + 1] == '$')
+	{	
+		s = ft_strjoin_f(s, ft_strdup("$"), 2);
+		(*i) += 1;
+	}
+	else if (typify(input[*i + 1]) == LITERAL)
+	{	
+		*start = *i;
+		s = ft_strjoin_f(s, get_quoted_var(input, i, start, env), 2);
+	}
+	else
+		s = ft_strdup("");
+	return (s);
+}
 
 char	*get_quoted_var(char *input, int *i, int *start, t_env_var *env)
 {

@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 11:31:55 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/15 16:59:03 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/18 09:37:00 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,6 @@ int			redir_out_count(t_token **token_count);
 char		*get_redir(char *str);
 char		*get_redir_type(t_token **token_tab);
 
-/*	quotes_parsing_utils.c	*/
-
-char		*quoted_var(char *input, int *i, int *start, t_env_var *env);
-
 /*	tree_creation_utils.c	*/
 
 t_btree		*init_tree_node(void);
@@ -268,6 +264,8 @@ char		*quotes_management(char *input, t_env_var *env, int *i);
 
 /*	quoted_parsing_utils.c	*/
 
+char		*quoted_var_management(char *input, int *i, int *start,
+				t_env_var *env);
 char		*get_quoted_var(char *input, int *i, int *start, t_env_var *env);
 char		*finish_double_q(char *s, char *input, int *i, int start);
 

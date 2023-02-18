@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/16 09:49:53 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/18 09:34:48 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,6 @@ static char	*simple_q(char *input, int *i)
 	return (s);
 }
 
-static char	*quoted_var_management(char *input, int *i, int *start,
-	t_env_var *env)
-{
-	char	*s;
-
-	s = "";
-	if (input[*i + 1] == '?')
-	{
-		s = ft_strjoin_f(s, ft_itoa(g_exit_code), 2);
-		(*i) += 2;
-	}
-	else if (input[*i + 1] == '$')
-	{	
-		s = ft_strjoin_f(s, ft_strdup("$"), 2);
-		(*i) += 1;
-	}
-	else if (typify(input[*i + 1]) == LITERAL)
-	{	
-		*start = *i;
-		s = ft_strjoin_f(s, get_quoted_var(input, i, start, env), 2);
-	}
-	else
-		s = ft_strdup("");
-	return (s);
-}
-
 static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 {
 	char	*s;
@@ -66,11 +40,31 @@ static char	*double_q_part2(char *input, int *i, int *start, t_env_var *env)
 		return (NULL);
 	s = "";
 	s = ft_strjoin_f(s, ft_substr(input, *start, *i - *start), 2);
-	s = ft_strjoin_f(s, quoted_var_management(input, i, start, env), 2);
+	s = ft_strjoin_f(s, quoted_var_management(input, i, start, env), 0);
 	*start = *i;
 	if ((input[*i] != '\"' && input[*i] != '$') || (input[*i] == '$'
 			&& typify(input[*i + 1]) != LITERAL && input[*i + 1] != '$'))
 		(*i)++;
+	return (s);
+}
+
+static char	*double_q_loop(char *input, int *i, int *start, t_env_var *env)
+{
+	char		*s;
+
+	s = "";
+	while (input[*i] && input[*i] != '\"')
+	{	
+		if (input[*i] == '$')
+		{
+			if (s[0] != '\0')
+				s = ft_strjoin_f(s, double_q_part2(input, i, start, env), 0);
+			else
+				s = double_q_part2(input, i, start, env);
+		}
+		else
+			(*i)++;
+	}
 	return (s);
 }
 
@@ -82,14 +76,7 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	if (!input || !env)
 		return (NULL);
 	start = *i;
-	s = "";
-	while (input[*i] && input[*i] != '\"')
-	{	
-		if (input[*i] == '$')
-			s = ft_strjoin_f(s, double_q_part2(input, i, &start, env), 2);
-		else
-			(*i)++;
-	}
+	s = double_q_loop(input, i, &start, env);
 	if ((!input[*i] || input[*i] == '|') && !s)
 	{
 		ft_printf_fd(2, "minicoque: syntax error near unexpected `''\n");
