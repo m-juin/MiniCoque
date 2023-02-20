@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/18 09:34:48 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/20 10:03:40 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ static char	*double_q_loop(char *input, int *i, int *start, t_env_var *env)
 {
 	char		*s;
 
-	s = "";
+	s = NULL;
 	while (input[*i] && input[*i] != '\"')
 	{	
 		if (input[*i] == '$')
 		{
-			if (s[0] != '\0')
+			if (s)
 				s = ft_strjoin_f(s, double_q_part2(input, i, start, env), 0);
 			else
 				s = double_q_part2(input, i, start, env);
