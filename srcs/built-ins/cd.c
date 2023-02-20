@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:53:22 by mjuin             #+#    #+#             */
-/*   Updated: 2023/02/10 11:00:59 by mjuin            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:24:33 by mjuin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,32 @@ static t_bool	error_handle(char **args)
 	return (TRUE);
 }
 
+static void	set_new_value(t_env_var *env)
+{
+	t_env_var	*tmp;
+
+	tmp = get_env(env, "PWD");
+	if (tmp != NULL)
+	{
+		replace_value(get_env(env, "OLDPWD"), tmp->value);
+		free(tmp->value);
+		tmp->value = NULL;
+		tmp->value = getcwd(tmp->value, PATH_MAX);
+	}
+	else
+	{
+		tmp = get_env(env, "OLDPWD");
+		if (tmp == NULL)
+			return ;
+		tmp->declared = 0;
+		s_free(tmp->value);
+		tmp->value = NULL;
+	}
+}
+
 int	cd(t_env_var *env, char **args)
 {
 	int			ret;
-	t_env_var	*tmp;
 
 	if (error_handle(args) == FALSE)
 		return (1);
@@ -47,15 +69,7 @@ int	cd(t_env_var *env, char **args)
 	if (ret == -1)
 		print_exec_error(args[1]);
 	else
-	{
-		tmp = get_env(env, "PWD");
-		if (tmp == NULL)
-			return (ret);
-		replace_value(get_env(env, "OLDPWD"), tmp->value);
-		free(tmp->value);
-		tmp->value = NULL;
-		tmp->value = getcwd(tmp->value, PATH_MAX);
-	}
+		set_new_value(env);
 	g_exit_code = ret * -1;
 	return (ret * -1);
 }
