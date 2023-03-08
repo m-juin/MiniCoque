@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:48:23 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/08 11:58:29 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/03/08 10:32:19 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	check_bef_aft_pipe(int i, char *input, char *err_msg)
 	{
 		ft_printf_fd(2, "%s `|'\n", err_msg);
 		free(err_msg);
+		g_exit_code = 2;
 		return (-1);
 	}
 	j = i + 1;
@@ -32,6 +33,7 @@ static int	check_bef_aft_pipe(int i, char *input, char *err_msg)
 	{
 		ft_printf_fd(2, "%s `|'\n", err_msg);
 		free(err_msg);
+		g_exit_code = 2;
 		return (-1);
 	}
 	return (0);
@@ -46,6 +48,7 @@ int	pipe_count(char *input, int *i, int *nb)
 	{
 		ft_printf_fd(2, "%s `|'\n", err_msg);
 		free(err_msg);
+		g_exit_code = 2;
 		return (-1);
 	}
 	if (check_bef_aft_pipe(*i, input, err_msg) == -1)

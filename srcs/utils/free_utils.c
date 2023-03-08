@@ -12,14 +12,14 @@
 
 #include <minicoque.h>
 
-void	s_free(void *elem)
-{
-	if (elem != NULL)
+	void	s_free(void *elem)
 	{
-		free(elem);
-		elem = NULL;
+		if (elem != NULL)
+		{
+			free(elem);
+			elem = NULL;
+		}
 	}
-}
 
 void	d_tab_free(char **elem)
 {

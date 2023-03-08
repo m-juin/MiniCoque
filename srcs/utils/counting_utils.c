@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 16:43:29 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/02/10 13:52:39 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/03/08 10:34:17 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	counting_syntax_error(char input)
 	else
 		ft_printf_fd(2, "%s `%c'\n", err_msg, input);
 	free(err_msg);
+	g_exit_code = 2;
 }
 
 static int	redirect_count_loop(char *input, int *i)
@@ -63,7 +64,10 @@ int	redirect_count(char *input, int *i, int *nb)
 		return (-1);
 	}
 	if (redirect_count_loop(input, i) == -1)
+	{	
+		g_exit_code = 2;
 		return (-1);
+	}
 	return (0);
 }
 
