@@ -6,7 +6,7 @@
 /*   By: mjuin <mjuin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:23:24 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/03/08 10:28:07 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/20 10:03:40 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static char	*simple_q(char *input, int *i)
 	if (!input[*i] || input[*i] == '|')
 	{
 		ft_printf_fd(2, "minicoque: syntax error near unexpected `''\n");
-		g_exit_code = 2;
 		return (NULL);
 	}
 	s = ft_substr(input, start, *i - start);
@@ -81,7 +80,6 @@ static char	*double_q(char *input, int *i, t_env_var *env)
 	if ((!input[*i] || input[*i] == '|') && !s)
 	{
 		ft_printf_fd(2, "minicoque: syntax error near unexpected `''\n");
-		g_exit_code = 2;
 		return (NULL);
 	}
 	s = finish_double_q(s, input, i, start);

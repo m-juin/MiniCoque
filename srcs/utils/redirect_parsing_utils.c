@@ -6,7 +6,7 @@
 /*   By: gpasquet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:50:36 by gpasquet          #+#    #+#             */
-/*   Updated: 2023/03/08 10:35:33 by gpasquet         ###   ########.fr       */
+/*   Updated: 2023/02/15 16:58:45 by gpasquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,12 @@ int	redirect_syntax_check(char *input, int *i)
 		{
 			ft_printf_fd(2, "%s `%c'\n", err_msg, input[*i]);
 			free(err_msg);
-			g_exit_code = 2;
 			return (-1);
 		}
 		if (input[*i] == '>' && input[*i + 1] == '<')
 		{
 			ft_printf_fd(2, "%s`%c'\n", err_msg, input[*i]);
 			free(err_msg);
-			g_exit_code = 2;
 			return (-1);
 		}
 	}
