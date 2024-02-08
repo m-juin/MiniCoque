@@ -81,7 +81,7 @@
     <summary style="font-size : 30px; font-weight: bold; padding-top : 15px;"><h1>Project breakdown</h1></summary>
     <p style="padding-left : 10px">Our group splitted the workload in 2 parts:</p>
     <ul style="padding-left : 50px">
-        <li>The input parsing handled by <a href="">GreenPG</a>.</li>
+        <li>The input parsing handled by <a href="https://github.com/GreenPG">GreenPG</a>.</li>
         <li>The remainings features (creation and/or execution of commands, signal management, etc.) was handled by myself.
     </ul>
 </details>
